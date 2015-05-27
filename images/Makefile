@@ -15,6 +15,10 @@ help:
 idm: $@
 	docker build -t bitergia/$@ $@/
 
+.PHONY: orion
+orion: $@
+	docker build -t bitergia/$@ $@/
+
 .PHONY: all
 all: idm
 
