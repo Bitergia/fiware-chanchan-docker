@@ -6,13 +6,13 @@ MAINTAINER Alvaro del Castillo <acs@bitergia.com>
 
 ENV WORKON_HOME /home/chanchan
 ENV DEBIAN_FRONTEND noninteractive
-ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7
-ENV GIT_REV_ORION 1e8518d6ebe1a49695c85d4535ae32bf3279927e
+# ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7
+# ENV GIT_REV_ORION 1e8518d6ebe1a49695c85d4535ae32bf3279927e
 ENV ORION_USER chanchan
 
 # install dependencies
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends\
+    apt-get -y install --no-install-recommends \
         bash \
         git git-core \
         tree ccze \
@@ -20,6 +20,29 @@ RUN apt-get update && \
         && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete
+
+# Install mongodb 3 in Ubuntu 14.04: In future Ubuntu versions we can just remove this step
+
+# Hack so the package is installed no matter upstart is not working: https://github.com/docker/docker/issues/1024
+RUN dpkg-divert --local --rename --add /sbin/initctl && \
+    ln -s /bin/true /sbin/initctl
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
+    echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && \
+    sudo apt-get update && \
+    sudo apt-get -y install mongodb-org
+
+# Remove hack
+RUN rm -f /sbin/initctl && \
+    dpkg-divert --local --rename --remove /sbin/initctl
+
+# Install mongo db C++ driver: In future Ubuntu versions we can just remove this step
+RUN sudo apt-get -y install scons wget
+RUN wget https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.0.2.tar.gz && \
+    tar xfz legacy-1.0.2.tar.gz && \
+    cd mongo-cxx-driver-legacy-1.0.2 && \
+    sudo scons install --prefix=/usr/local
+
 # Fix clang issues
 RUN [ -e /usr/bin/clang ] || ln -s /usr/bin/clang-3.5 /usr/bin/clang && \
     [ -e /usr/bin/clang++ ] || ln -s /usr/bin/clang++-3.5 /usr/bin/clang++
@@ -54,9 +77,14 @@ RUN rm -rf "fiware-orion"
 RUN git clone https://github.com/telefonicaid/fiware-orion && \
     cd fiware-orion && \
     if [ "${GIT_REV_ORION}" != "master" ]; then git checkout ${GIT_REV_ORION}; fi && \
-    sed -e 's/"Ubuntu_14.04.1_LTS")/"Ubuntu_14.04.1_LTS" OR (${DISTRO} STREQUAL "Ubuntu_14.04.2_LTS"))/g' -i src/app/contextBroker/CMakeLists.txt && \
-    sed -e 's/"Ubuntu_14.04.1_LTS")/"Ubuntu_14.04.1_LTS" OR (${DISTRO} STREQUAL "Ubuntu_14.04.2_LTS"))/g' -i src/app/proxyCoap/CMakeLists.txt && \
-    INSTALL_DIR=${WORKON_HOME} make install
+    make
+RUN cd fiware-orion && \
+    sudo INSTALL_DIR=${WORKON_HOME} make install && \
+    sudo strip ${WORKON_HOME}/bin/contextBroker
+
+# Those lines are needed in old versions of Orion before compiling: GIT_REV_ORION
+#    sed -e 's/"Ubuntu_14.04.1_LTS")/"Ubuntu_14.04.1_LTS" OR (${DISTRO} STREQUAL "Ubuntu_14.04.2_LTS"))/g' -i src/app/contextBroker/CMakeLists.txt && \
+#    sed -e 's/"Ubuntu_14.04.1_LTS")/"Ubuntu_14.04.1_LTS" OR (${DISTRO} STREQUAL "Ubuntu_14.04.2_LTS"))/g' -i src/app/proxyCoap/CMakeLists.txt && \
 
 # Needed because init should be run as root
 USER root
