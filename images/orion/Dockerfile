@@ -4,11 +4,11 @@
 FROM bitergia/ubuntu-trusty:latest
 MAINTAINER Alvaro del Castillo <acs@bitergia.com>
 
-ENV WORKON_HOME /home/chanchan
+ENV WORKON_HOME /home/orion
 ENV DEBIAN_FRONTEND noninteractive
 # ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7
 # ENV GIT_REV_ORION 1e8518d6ebe1a49695c85d4535ae32bf3279927e
-ENV ORION_USER chanchan
+ENV ORION_USER orion
 
 # install dependencies
 RUN apt-get update && \
@@ -79,8 +79,9 @@ RUN git clone https://github.com/telefonicaid/fiware-orion && \
     if [ "${GIT_REV_ORION}" != "master" ]; then git checkout ${GIT_REV_ORION}; fi && \
     make
 RUN cd fiware-orion && \
-    sudo INSTALL_DIR=${WORKON_HOME} make install && \
-    sudo strip ${WORKON_HOME}/bin/contextBroker
+    sudo make install && \
+    sudo strip /usr/bin/contextBroker && \
+    sudo strip /usr/bin/proxyCoap
 
 # Those lines are needed in old versions of Orion before compiling: GIT_REV_ORION
 #    sed -e 's/"Ubuntu_14.04.1_LTS")/"Ubuntu_14.04.1_LTS" OR (${DISTRO} STREQUAL "Ubuntu_14.04.2_LTS"))/g' -i src/app/contextBroker/CMakeLists.txt && \
@@ -88,3 +89,6 @@ RUN cd fiware-orion && \
 
 # Needed because init should be run as root
 USER root
+# Needed to start the service and not created in install process
+RUN mkdir -p /var/log/contextBroker && chown ${ORION_USER} /var/log/contextBroker && \
+    update-rc.d contextBroker defaults
