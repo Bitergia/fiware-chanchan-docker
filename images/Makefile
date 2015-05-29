@@ -8,6 +8,8 @@ help:
 	$(info )
 	$(info - all:			Build all available images)
 	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
+	$(info - orion: 		Build Orion Context Broker image)
+	$(info - cygnus:		Build Cygnus image)
 	$(info )
 	@echo ""
 
@@ -17,6 +19,10 @@ idm: $@
 
 .PHONY: orion
 orion: $@
+	docker build -t bitergia/$@ $@/
+
+.PHONY: cygnus
+cygnus: $@
 	docker build -t bitergia/$@ $@/
 
 .PHONY: all

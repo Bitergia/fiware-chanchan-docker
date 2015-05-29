@@ -1,0 +1,21 @@
+# Defaults for cygnus initscript
+# sourced by /etc/init.d/cygnus
+# installed at /etc/default/cygnus by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+#####################################################################
+## Cygnus default configuration
+#####################################################################
+
+# Cygnus home
+CYGNUS_HOME=/home/${CYGNUS_USER}/${APACHE_FLUME_HOME}
+
+# Cygnus user
+CYGNUS_USER="${CYGNUS_USER}"
+CYGNUS_GROUP="${CYGNUS_USER}"
+
+# Default startup timeout: 300 sec.
+CYGNUS_STARTUP_TIMEOUT=300

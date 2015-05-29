@@ -4,11 +4,11 @@
 FROM bitergia/ubuntu-trusty:latest
 MAINTAINER Alvaro del Castillo <acs@bitergia.com>
 
-ENV WORKON_HOME /home/orion
 ENV DEBIAN_FRONTEND noninteractive
 # ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7
 # ENV GIT_REV_ORION 1e8518d6ebe1a49695c85d4535ae32bf3279927e
 ENV ORION_USER orion
+ENV WORKON_HOME /home/${ORION_USER}
 
 # install dependencies
 RUN apt-get update && \
