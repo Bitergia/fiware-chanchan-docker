@@ -1,5 +1,9 @@
 #!/bin/bash
 
+ORION_HOSTNAME=localhost
+ORION_PORT=1026
+CYGNUS_HOSTNAME=localhost
+
 # For all the organizations, subscribe to all changes to entities with names manual:*
 # To change to params: type:org_name
 (curl ${ORION_HOSTNAME}:${ORION_PORT}/NGSI10/subscribeContext -s -S --header 'Content-Type: application/json' --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF

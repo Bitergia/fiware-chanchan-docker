@@ -19,7 +19,8 @@ RUN apt-get update && \
         bash \
         git git-core \
         tree ccze \
-        openjdk-7-jdk maven && \
+        openjdk-7-jdk maven \
+        python && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete
 
@@ -67,6 +68,9 @@ RUN if [ -d "${CYGNUS_CONNECTORS_HOME}" ]; then rm -rf "${CYGNUS_CONNECTORS_HOME
 # Configure CKAN
 ADD cygnus.conf ${APACHE_FLUME_HOME}/conf/cygnus.conf
 RUN sed -i ${APACHE_FLUME_HOME}/conf/cygnus.conf -e "s/api_key = API_KEY/api_key = ${CKAN_API_KEY}/g"
+# Subscribe to Orion to receive notifications
+ADD notify-contex-cygnus.sh /home/${CYGNUS_USER}/notify-contex-cygnus.sh
+RUN echo "Configure and execute /home/${CYGNUS_USER}/notify-contex-cygnus.sh to subscribe Cygnus to Orion"
 
 USER root
 # Configure service start/stop
@@ -78,7 +82,3 @@ RUN sed -i /etc/default/cygnus \
      -e "s/^CYGNUS_GROUP=.*$/CYGNUS_GROUP='${CYGNUS_USER}'/" && \
     update-rc.d cygnus defaults 90 90 && \
     service cygnus restart
-
-# Subscribe to Orion to receive notifications
-ADD notify-contex-cygnus.sh /home/${CYGNUS_USER}/notify-contex-cygnus.sh
-RUN echo "Configure and execute /home/${CYGNUS_USER}/notify-contex-cygnus.sh to subscribe Cygnus to Orion"
