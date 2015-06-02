@@ -12,15 +12,16 @@ help:
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:	Build Authzforce image (based on the GE version))
 	$(info - chanchanapp:	Build ChanChan App (angular client and flask server))
+	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
 	$(info )
 	@echo ""
 
-.PHONY: idm orion authzforce cygnus chanchanapp
-idm orion authzforce cygnus chanchanapp: $@
+.PHONY: idm orion authzforce cygnus chanchanapp idmauthlegacy
+idm orion authzforce cygnus chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
 
 .PHONY: all
-all: idm orion authzforce cygnus chanchanapp
+all: idm orion authzforce cygnus chanchanapp idmauthlegacy
 
 .PHONY: clean clean_idm
 clean: clean_idm
