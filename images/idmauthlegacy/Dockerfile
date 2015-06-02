@@ -4,13 +4,6 @@
 FROM bitergia/ubuntu-trusty:latest
 MAINTAINER Alvaro del Castillo <acs@bitergia.com>
 
-# install IDM
-# bash install-idm.sh
-
-# provision IDM app
-# bash idm-provision-app.sh
-
-
 ENV GIT_REV_IDM=99c9591c8b547583946af08d2f4c77b1db6719fd
 ENV GIT_REV_KEYPASS=431ea3c83d0ebc8809391f136e2b00954f0c014b
 ENV GIT_REV_ORION_PEP=6b80dfae6a0c06eeae66d716a9a3db69371b615b
@@ -61,7 +54,7 @@ RUN ${SCRIPTS_DIR}/setup-users.sh
 ADD patches ${SCRIPTS_DIR}/patches
 
 # IDM needs a javascript machine: nodejs. And ssh to deploy.
-RUN apt-get update && apt-get install -qy ssh nodejs nodejs-legacy npm
+RUN apt-get update && apt-get install -qy ssh ssl-cert nodejs nodejs-legacy npm
 
 ADD prepare-deploy.sh ${SCRIPTS_DIR}/prepare-deploy.sh
 RUN ${SCRIPTS_DIR}/prepare-deploy.sh
