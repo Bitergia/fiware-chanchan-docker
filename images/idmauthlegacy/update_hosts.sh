@@ -33,7 +33,7 @@ function update_hosts () {
     local _public_ip=$1
     local _new_host=$2
 
-    if $( ${SCRIPTS_PATH}/util/check_docker.sh ) ; then
+    if $( ${SCRIPTS_DIR}/check_docker.sh ) ; then
 	update_docker_hosts_file "${_public_ip}" "${_new_host}"
     else
 	update_hosts_file "${_public_ip}" "${_new_host}"

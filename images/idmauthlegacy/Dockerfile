@@ -67,6 +67,10 @@ ADD prepare-deploy.sh ${SCRIPTS_DIR}/prepare-deploy.sh
 RUN ${SCRIPTS_DIR}/prepare-deploy.sh
 ADD do-deploy.sh ${SCRIPTS_DIR}/do-deploy.sh
 RUN ${SCRIPTS_DIR}/do-deploy.sh
+ADD update_hosts.sh ${SCRIPTS_DIR}/update_hosts.sh
+ADD check_docker.sh ${SCRIPTS_DIR}/check_docker.sh
+ADD create-virtualhosts.sh ${SCRIPTS_DIR}/create-virtualhosts.sh
+RUN ${SCRIPTS_DIR}/create-virtualhosts.sh
 
 # enable modules, disable default site, restart service
 RUN a2enmod ssl && a2enmod passenger && \
