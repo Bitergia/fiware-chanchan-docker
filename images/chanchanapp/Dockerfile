@@ -29,6 +29,7 @@ RUN apt-get update && \
         bash \
         git git-core \
         tree ccze \
+        psmisc \
         nodejs nodejs-legacy npm \
         apache2 libapache2-mod-passenger \
         && \
