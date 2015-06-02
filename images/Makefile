@@ -10,20 +10,17 @@ help:
 	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - orion: 		Build Orion Context Broker image)
 	$(info - cygnus:		Build Cygnus image)
-	$(info - authzforce:		Build Authzforce image (based on the GE version))
+	$(info - authzforce:	Build Authzforce image (based on the GE version))
+	$(info - chanchanapp:	Build ChanChan App (angular client and flask server))
 	$(info )
 	@echo ""
 
-.PHONY: idm orion authzforce
-idm orion authzforce: $@
-	docker build -t bitergia/$@ $@/
-
-.PHONY: cygnus
-cygnus: $@
+.PHONY: idm orion authzforce cygnus chanchanapp
+idm orion authzforce cygnus chanchanapp: $@
 	docker build -t bitergia/$@ $@/
 
 .PHONY: all
-all: idm orion authzforce
+all: idm orion authzforce cygnus chanchanapp
 
 .PHONY: clean clean_idm
 clean: clean_idm
