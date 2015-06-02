@@ -40,3 +40,9 @@ export KEYPASS_DBPASS="keypass"
 ## Revisions to use on git repos: v1.0
 export GIT_REV_IDM=99c9591c8b547583946af08d2f4c77b1db6719fd
 export GIT_REV_KEYPASS=431ea3c83d0ebc8809391f136e2b00954f0c014b
+
+# user to register chanchan app on IDM
+export CC_USER_NAME="Chanchan Admin"
+export CC_EMAIL="chanchan@${IDM_HOSTNAME}"
+export CC_PASS="ccadmin"
+

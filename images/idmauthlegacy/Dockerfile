@@ -46,6 +46,15 @@ RUN ${SCRIPTS_DIR}/configure-mysql.sh
 
 RUN apt-get update && apt-get install -qy mysql-server
 
+# Time to install Keypass
+ADD keypass ${SCRIPTS_DIR}/keypass
+ENV KEYPASS_HOME /home/${DEPLOY_USER}/fiware-keypass
+RUN if [ -d "${KEYPASS_HOME}" ]; then rm -rf "${KEYPASS_HOME}"; fi && \
+    git clone https://github.com/telefonicaid/fiware-keypass.git ${KEYPASS_HOME} && \
+    cd ${KEYPASS_HOME} && \
+    if [ "${GIT_REV_KEYPASS}" != "master" ]; then git checkout ${GIT_REV_KEYPASS}; fi && \
+    mvn clean package
+
 RUN ${SCRIPTS_DIR}/create-idm-db.sh
 
 # Setup, prepare deploy and deploy IDM KeyRock legacy (ruby based)
@@ -63,6 +72,8 @@ RUN ${SCRIPTS_DIR}/do-deploy.sh
 ADD update_hosts.sh ${SCRIPTS_DIR}/update_hosts.sh
 ADD check_docker.sh ${SCRIPTS_DIR}/check_docker.sh
 ADD create-virtualhosts.sh ${SCRIPTS_DIR}/create-virtualhosts.sh
+# IDM provision
+ADD idm-provision ${SCRIPTS_DIR}/idm-provision
 RUN ${SCRIPTS_DIR}/create-virtualhosts.sh
 
 # enable modules, disable default site, restart service

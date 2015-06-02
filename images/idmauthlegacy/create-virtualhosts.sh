@@ -77,3 +77,9 @@ EOF
 # enable new virtualhosts
 a2ensite idm
 a2ensite idm-ssl
+a2enmod ssl
+
+# Time to do the provision
+service apache2 restart
+service mysql start
+${SCRIPTS_DIR}/idm-provision/idm-provision-app.sh

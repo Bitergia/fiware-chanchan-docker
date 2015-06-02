@@ -1,0 +1,21 @@
+# Defaults for keypass initscript
+# sourced by /etc/init.d/keypass
+# installed at /etc/default/keypass by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+#####################################################################
+## Keypass default configuration
+#####################################################################
+
+# Keypass home
+KEYPASS_HOME=
+
+# Keypass user
+KEYPASS_USER=
+KEYPASS_GROUP=
+
+# Default startup timeout: 300 sec.
+KEYPASS_STARTUP_TIMEOUT=300
