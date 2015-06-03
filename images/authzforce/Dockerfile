@@ -23,7 +23,6 @@ RUN apt-get update && \
 
 # Modify Tomcat init to detect PID without special permissions
 
-ADD tomcat7.init.patch /etc/init.d/
 RUN mv /etc/init.d/tomcat7 /etc/init.d/tomcat7.tmp
 ADD tomcat7 /etc/init.d/
 RUN chmod 755 /etc/init.d/tomcat7
