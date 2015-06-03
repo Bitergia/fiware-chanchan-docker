@@ -54,10 +54,12 @@ RUN if [ -d "${KEYPASS_HOME}" ]; then rm -rf "${KEYPASS_HOME}"; fi && \
     cd ${KEYPASS_HOME} && \
     if [ "${GIT_REV_KEYPASS}" != "master" ]; then git checkout ${GIT_REV_KEYPASS}; fi && \
     mvn clean package
-
-RUN ${SCRIPTS_DIR}/create-idm-db.sh
+RUN ${SCRIPTS_DIR}/keypass/01-keypass.sh && \
+    ${SCRIPTS_DIR}/keypass/02-config-keypass.sh && \
+    ${SCRIPTS_DIR}/keypass/03-start-keypass.sh
 
 # Setup, prepare deploy and deploy IDM KeyRock legacy (ruby based)
+RUN ${SCRIPTS_DIR}/create-idm-db.sh
 ADD setup-users.sh ${SCRIPTS_DIR}/setup-users.sh
 RUN ${SCRIPTS_DIR}/setup-users.sh
 ADD patches ${SCRIPTS_DIR}/patches
@@ -74,7 +76,14 @@ ADD check_docker.sh ${SCRIPTS_DIR}/check_docker.sh
 ADD create-virtualhosts.sh ${SCRIPTS_DIR}/create-virtualhosts.sh
 # IDM provision
 ADD idm-provision ${SCRIPTS_DIR}/idm-provision
-RUN ${SCRIPTS_DIR}/create-virtualhosts.sh
+RUN ${SCRIPTS_DIR}/create-virtualhosts.sh && \
+    a2enmod ssl && \
+    service apache2 restart && \
+    service mysql start && \
+    ${SCRIPTS_DIR}/idm-provision/idm-provision-app.sh && \
+    ${SCRIPTS_DIR}/keypass/03-start-keypass.sh && \
+    ${SCRIPTS_DIR}/idm-provision/idm-provision-roles.sh
+
 
 # enable modules, disable default site, restart service
 RUN a2enmod ssl && a2enmod passenger && \

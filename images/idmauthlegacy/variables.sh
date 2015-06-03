@@ -45,4 +45,5 @@ export GIT_REV_KEYPASS=431ea3c83d0ebc8809391f136e2b00954f0c014b
 export CC_USER_NAME="Chanchan Admin"
 export CC_EMAIL="chanchan@${IDM_HOSTNAME}"
 export CC_PASS="ccadmin"
+export CC_OAUTH_CREDENTIALS="/tmp/appoauth.txt"
 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export IDM_PROVISION_SCRIPTS="${SCRIPTS_PATH}/idm-provision"
+source ${SCRIPTS_DIR}/variables.sh
+export IDM_PROVISION_SCRIPTS="${SCRIPTS_DIR}/idm-provision"
 
 cd ${IDM_PROVISION_SCRIPTS}
 PATH=${PATH}:${IDM_PROVISION_SCRIPTS}
