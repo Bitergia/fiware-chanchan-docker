@@ -1,0 +1,199 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          orion-pep
+# Required-Start:    $network $local_fs $remote_fs
+# Required-Stop:     $network $local_fs $remote_fs
+# Should-Start:      $all
+# Should-Stop:       $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop Orion-PEP
+# Description:       Start/stop Orion-PEP
+### END INIT INFO
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="Orion-PEP"
+NAME=orion-pep
+PIDFILE=/var/run/$NAME.pid
+CBPIDFILE=/var/run/${NAME}-cb.pid
+SCRIPTNAME=/etc/init.d/$NAME
+LOCKFILE=/var/lock/$NAME.pid
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+
+# Read configuration variable file if it is present
+if [ ! -e /etc/default/$NAME ] ; then
+    echo "Missing file /etc/default/$NAME"
+    exit -1
+fi
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+LOGPATH=/var/log/${NAME}
+LOGFILE=$LOGPATH/orion-pep.log
+TMPDIR=/tmp
+
+[ -d $LOGPATH ] || ( mkdir -p $LOGPATH && chown ${ORION_PEP_USER}:${ORION_PEP_GROUP} $LOGPATH )
+
+ORION_PEP_STARTUP_CMD="bin/pepProxy"
+ORION_PEP_STARTUP_OPTIONS=""
+rotate_log()
+{
+    if [ -f "${LOGFILE}" ] ; then
+        mv "${LOGFILE}" "${LOGFILE%.log}-$(date +%s).log"
+    fi
+    touch "${LOGFILE}"
+    chown ${ORION_PEP_USER}:${ORION_PEP_GROUP} "${LOGFILE}"
+}
+
+running()
+{
+    PID=`ps aux | grep pepProxy | grep -v grep | awk '{print $2}'`
+    if [[ -f /proc/$PID/cmdline && -n $PID ]] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+    log_begin_msg "Starting $DESC"
+    if running ; then
+        echo "`date`: $NAME running, therefore not trying to start" >> $LOGFILE
+        log_success_msg "- apparently already running"
+    else
+        
+        if [ -f $LOCKFILE ] ; then
+            echo "`date`: Lock file exists. Removing lock file." >> $LOGFILE
+            rm -f $LOCKFILE
+        fi
+
+        rotate_log
+
+	export NODE_TLS_REJECT_UNAUTHORIZED=0
+        start-stop-daemon \
+            --quiet \
+            --chuid $ORION_PEP_USER \
+	    --chdir $ORION_PEP_HOME \
+            --exec $ORION_PEP_STARTUP_CMD \
+            --pidfile $PIDFILE \
+            --make-pidfile \
+            --start -- $ORION_PEP_STARTUP_OPTIONS \
+            > $LOGFILE 2>&1 & daemonpid=$!
+
+        sleep=10
+        retval=1
+        while [ $retval -eq 1 -a $sleep -lt $ORION_PEP_STARTUP_TIMEOUT ]; do
+            sleep 5
+            sleep=$(( $sleep + 5 ))
+            grep -q -e "Server started" $LOGFILE > /dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                retval=0
+            fi
+        done
+
+        if running ; then
+            log_success_msg " - startup successful"
+        else
+            log_failure_msg " - startup failed (timed out)"
+        fi
+    fi
+
+    return $retval
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+
+    log_begin_msg "Shutting down $DESC"
+
+    if running ; then
+        force_stop
+        log_success_msg " - shutdown successful"
+        rm -f $LOCKFILE
+        rm -f $PIDFILE
+    else
+        log_warning_msg " - not running"
+        rm -f $LOCKFILE
+        rm -f $PIDFILE
+    fi
+    
+    return $retval
+}
+
+force_stop ()
+{
+    if running ; then
+	
+	PID=`ps aux | grep pepProxy | grep -v grep | awk '{print $2}'`
+	
+	kill -TERM ${PID} >> $LOGFILE
+        sleep 10
+        if running ; then
+            kill -9 ${PID} >> $LOGFILE
+        fi
+        if running ; then
+            log_failure_msg "force-stop failed"
+        else
+            rm -f $PIDFILE
+            log_success_msg "force-stop succeeded"
+        fi
+    fi
+}
+
+status ()
+{
+    if running ; then 
+        echo "${NAME} is running"
+        return 0
+    fi
+    if [ -f $PIDFILE ]; then
+        echo "${NAME} dead but pid file exists"
+        return 1
+    fi
+    if [ -f $LOCKFILE ]; then
+        echo "${NAME} dead but subsys locked"
+        return 2
+    fi
+    echo "${NAME} is stopped"
+    return 3
+}
+
+case "$1" in
+    start)
+        do_start
+        RETVAL=$?
+        ;;
+    stop)
+	do_stop
+        RETVAL=$?
+	;;
+  status)
+        status
+        RETVAL=$?
+        ;;
+  restart|force-reload)
+	do_stop
+        sleep 5
+	do_start
+        RETVAL=$?
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+
+exit $RETVAL

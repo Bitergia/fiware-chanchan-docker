@@ -1,0 +1,21 @@
+# Defaults for orion-pep initscript
+# sourced by /etc/init.d/orion-pep
+# installed at /etc/default/orion-pep by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+#####################################################################
+## Orion-PEP default configuration
+#####################################################################
+
+# Orion-PEP home
+ORION_PEP_HOME=
+
+# Orion-PEP user
+ORION_PEP_USER=
+ORION_PEP_GROUP=
+
+# Default startup timeout: 300 sec.
+ORION_PEP_STARTUP_TIMEOUT=300

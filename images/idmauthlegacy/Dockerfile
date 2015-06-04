@@ -84,8 +84,53 @@ RUN ${SCRIPTS_DIR}/create-virtualhosts.sh && \
     ${SCRIPTS_DIR}/keypass/03-start-keypass.sh && \
     ${SCRIPTS_DIR}/idm-provision/idm-provision-roles.sh
 
-
 # enable modules, disable default site, restart service
 RUN a2enmod ssl && a2enmod passenger && \
     a2dissite 000-default && \
     service apache2 restart
+
+# Orion PEP
+ADD orion-pep ${SCRIPTS_DIR}/orion-pep
+ENV ORION_PEP_HOME /home/${DEPLOY_USER}/fiware-orion-pep
+# user to register chanchan app on IDM
+ENV IDM_HOSTNAME=localhost
+ENV CC_EMAIL=chanchan@${IDM_HOSTNAME}
+ENV CC_PASS=ccadmin
+ENV ORION_HOSTNAME=localhost
+ENV ORION_PORT=10026
+# Configure Orion PEP: first approach. Should be changed to the specific config.
+RUN if [ -d "${ORION_PEP_HOME}" ]; then rm -rf "${ORION_PEP_HOME}"; fi && \
+    git clone https://github.com/telefonicaid/fiware-orion-pep.git ${ORION_PEP_HOME} && \
+    cd ${ORION_PEP_HOME} && \
+    if [ "${GIT_REV_ORION_PEP}" != "master" ]; then git checkout ${GIT_REV_ORION_PEP}; fi && \
+    npm install && \
+    npm install production
+RUN sed -i ${ORION_PEP_HOME}/config.js \
+    -e  "s/module: 'keystone'/module: 'idm'/"\
+    -e  "s/user: 'pepproxy'/user: '${CC_EMAIL}'/" \
+    -e  "s/password: 'pepproxy'/password: '${CC_PASS}'/"\
+    -e  "s/        protocol: 'http'/        protocol: 'https'/"\
+    -e  "/domainName: 'Default',/ d"\
+    -e  "/retries: 5,/ d"\
+    -e  "s/        host: 'localhost'/        host: '${ORION_HOSTNAME}'/"\
+    -e  "s/port: 5000/port: 443/"\
+    -e  "s/port: 10026/port: ${ORION_PORT}/"\
+    -e  "s/path: '\/v3\/role_assignments'/path: '\/user'/"\
+    -e  "s/authPath: '\/v3\/auth\/tokens'/authPath: '\/oauth2\/authorize'/"\
+    -e  "s/config.logLevel = 'FATAL'/config.logLevel = 'DEBUG'/"\
+    -e  "s/config.componentName = 'orion'/config.componentName = 'contextbroker'/"\
+    -e  "s/config.resourceNamePrefix = 'fiware:'/config.resourceNamePrefix = 'frn:'/"
+
+# patch for Orion requests without headers
+RUN sed -i ${ORION_PEP_HOME}/lib/fiware-orion-pep.js \
+    -e "/delete options.headers\['content-length'\];/a\  delete options.headers['fiware-service']; \n\ delete options.headers['fiware-servicepath'];"
+
+RUN sudo cp ${SCRIPTS_DIR}/orion-pep/orion-pep.default /etc/default/orion-pep && \
+    sudo sed -i /etc/default/orion-pep \
+        -e "s|^ORION_PEP_HOME=.*$|ORION_PEP_HOME=${ORION_PEP_HOME}|" \
+        -e "s/^ORION_PEP_USER=.*$/ORION_PEP_USER='${DEPLOY_USER}'/" \
+        -e "s/^ORION_PEP_GROUP=.*$/ORION_PEP_GROUP='${DEPLOY_USER}'/" && \
+    sudo cp ${SCRIPTS_DIR}/orion-pep/orion-pep.init.debian /etc/init.d/orion-pep && \
+    sudo chmod +x /etc/init.d/orion-pep && \
+    sudo update-rc.d orion-pep defaults 90 90
+RUN sudo service orion-pep restart
