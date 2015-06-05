@@ -1,0 +1,14 @@
+chanchanapp:
+    image: bitergia/chanchanapp
+    links:
+        - idmauthlegacy
+        - cygnus
+        - orion
+idmauthlegacy:
+    image: bitergia/idmauthlegacy
+cygnus:
+    image: bitergia/cygnus
+    links:
+        - orion
+orion:
+    image: bitergia/orion
