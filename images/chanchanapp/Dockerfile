@@ -75,6 +75,7 @@ RUN cd ${CC_APP_CLIENT_PATH} && \
     export CI=true && \
     # install dependencies for client side && \
     npm install --loglevel warn
+ADD configure-chanchan.sh ${DEPLOY_USER_DIR}/scripts/configure-chanchan.sh
 
 USER root
 # Configuring Apache
