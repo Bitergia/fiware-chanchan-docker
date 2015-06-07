@@ -80,3 +80,11 @@ ADD configure-chanchan.sh ${DEPLOY_USER_DIR}/scripts/configure-chanchan.sh
 USER root
 # Configuring Apache
 RUN ${SCRIPTS_DIR}/configure-virtualhost.sh
+
+# cluster node config
+ENV CCLUSTER=configure-chanchanapp-cluster
+ADD ${CCLUSTER} ${DEPLOY_USER_DIR}/scripts/${CCLUSTER}
+
+RUN sudo cp ${SCRIPTS_DIR}/${CCLUSTER} /etc/init.d/${CCLUSTER} && \
+    sudo chmod +x /etc/init.d/${CCLUSTER} && \
+    sudo update-rc.d ${CCLUSTER} defaults 99 99

@@ -1,0 +1,28 @@
+#!/bin/bash
+# To be executed on startup to configure chanchan cluster
+### BEGIN INIT INFO
+# Provides:          configure-chanchan-cluster
+# Required-Start:    $network $local_fs $remote_fs
+# Required-Stop:     $network $local_fs $remote_fs
+# Should-Start:      $all
+# Should-Stop:       $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop configure-chanchan-cluster
+# Description:       Start/stop configure-chanchan-cluster
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+CC_APP_CLIENT_PATH="fiware-chanchan/client"
+CC_OAUTH_CREDENTIALS="/config/appoauth.txt"
+DEPLOY_USER=bitergia
+
+if [ -f "${CC_OAUTH_CREDENTIALS}" ]; then
+    ORGANIZATIONS=$( (echo "{" ; (cat "${CC_OAUTH_CREDENTIALS}" | paste -s -d ',') ; echo "}")  | python -m json.tool )
+    su - ${DEPLOY_USER} <<EOF
+cat << __EOF > ${CC_APP_CLIENT_PATH}/app/orgs.json
+${ORGANIZATIONS}
+__EOF
+EOF
+fi

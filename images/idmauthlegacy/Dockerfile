@@ -134,3 +134,9 @@ RUN sudo cp ${SCRIPTS_DIR}/orion-pep/orion-pep.default /etc/default/orion-pep &&
     sudo chmod +x /etc/init.d/orion-pep && \
     sudo update-rc.d orion-pep defaults 90 90
 RUN sudo service orion-pep restart
+
+# Shared config to use the idmauthlegacy node
+RUN mkdir /config && \
+    cp -a /tmp/appoauth.txt /config && \
+    echo `hostname` > /config/idm_host_docker_image
+VOLUME /config
