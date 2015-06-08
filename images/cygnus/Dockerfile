@@ -12,6 +12,7 @@ ENV APACHE_FLUME_HOME="APACHE_FLUME_HOME"
 ENV CKAN_API_KEY="44f762b2-978a-40ca-9dfc-1a8ec8855599"
 ENV DEBIAN_FRONTEND noninteractive
 ENV GIT_REV_CYGNUS=c797a60dabbd0bfc5e90c83efa9c15fed1bc1bd4
+ENV SCRIPTS_DIR ${DEPLOY_USER_DIR}/scripts
 
 # install dependencies
 RUN apt-get update && \
@@ -68,9 +69,6 @@ RUN if [ -d "${CYGNUS_CONNECTORS_HOME}" ]; then rm -rf "${CYGNUS_CONNECTORS_HOME
 # Configure CKAN
 ADD cygnus.conf ${APACHE_FLUME_HOME}/conf/cygnus.conf
 RUN sed -i ${APACHE_FLUME_HOME}/conf/cygnus.conf -e "s/api_key = API_KEY/api_key = ${CKAN_API_KEY}/g"
-# Subscribe to Orion to receive notifications
-ADD notify-contex-cygnus.sh /home/${CYGNUS_USER}/notify-contex-cygnus.sh
-RUN echo "Configure and execute /home/${CYGNUS_USER}/notify-contex-cygnus.sh to subscribe Cygnus to Orion"
 
 USER root
 # Configure service start/stop
@@ -82,3 +80,11 @@ RUN sed -i /etc/default/cygnus \
      -e "s/^CYGNUS_GROUP=.*$/CYGNUS_GROUP='${CYGNUS_USER}'/" && \
     update-rc.d cygnus defaults 90 90 && \
     service cygnus restart
+
+# cluster node config
+ENV CCLUSTER=configure-cygnus-cluster
+ADD ${CCLUSTER} ${DEPLOY_USER_DIR}/scripts/${CCLUSTER}
+
+RUN sudo cp ${SCRIPTS_DIR}/${CCLUSTER} /etc/init.d/${CCLUSTER} && \
+    sudo chmod +x /etc/init.d/${CCLUSTER} && \
+    sudo update-rc.d ${CCLUSTER} defaults 99 99
