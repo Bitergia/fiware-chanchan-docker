@@ -1,14 +1,18 @@
+orion:
+    image: bitergia/orion
+idmauthlegacy:
+    image: bitergia/idmauthlegacy
+    volumes:
+        - /config
 chanchanapp:
     image: bitergia/chanchanapp
     links:
         - idmauthlegacy
         - cygnus
         - orion
-idmauthlegacy:
-    image: bitergia/idmauthlegacy
+    volumes_from:
+        - idmauthlegacy
 cygnus:
     image: bitergia/cygnus
     links:
         - orion
-orion:
-    image: bitergia/orion
