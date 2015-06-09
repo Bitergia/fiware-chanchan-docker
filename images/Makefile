@@ -9,6 +9,7 @@ help:
 	$(info - all:			Build all available images)
 	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - orion: 		Build Orion Context Broker image)
+	$(info - wilma-pep:		Build Wilma PEP Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:	Build Authzforce image (based on the GE version))
 	$(info - chanchanapp:	Build ChanChan App (angular client and flask server))
@@ -16,12 +17,12 @@ help:
 	$(info )
 	@echo ""
 
-.PHONY: idm orion authzforce cygnus chanchanapp idmauthlegacy
-idm orion authzforce cygnus chanchanapp idmauthlegacy: $@
+.PHONY: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy
+idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
 
 .PHONY: all
-all: idm orion authzforce cygnus chanchanapp idmauthlegacy
+all: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy
 
 .PHONY: clean clean_idm
 clean: clean_idm
