@@ -2,6 +2,8 @@ orion:
     image: bitergia/orion
 idmauthlegacy:
     image: bitergia/idmauthlegacy
+    links:
+        - orion
     volumes:
         - /config
 chanchanapp:

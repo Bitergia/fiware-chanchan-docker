@@ -96,8 +96,8 @@ ENV ORION_PEP_HOME /home/${DEPLOY_USER}/fiware-orion-pep
 ENV IDM_HOSTNAME=localhost
 ENV CC_EMAIL=chanchan@${IDM_HOSTNAME}
 ENV CC_PASS=ccadmin
-ENV ORION_HOSTNAME=localhost
-ENV ORION_PORT=10026
+ENV ORION_HOSTNAME=orion
+ENV ORION_PORT=1026
 # Configure Orion PEP: first approach. Should be changed to the specific config.
 RUN if [ -d "${ORION_PEP_HOME}" ]; then rm -rf "${ORION_PEP_HOME}"; fi && \
     git clone https://github.com/telefonicaid/fiware-orion-pep.git ${ORION_PEP_HOME} && \
@@ -105,6 +105,7 @@ RUN if [ -d "${ORION_PEP_HOME}" ]; then rm -rf "${ORION_PEP_HOME}"; fi && \
     if [ "${GIT_REV_ORION_PEP}" != "master" ]; then git checkout ${GIT_REV_ORION_PEP}; fi && \
     npm install && \
     npm install production
+RUN cp ${SCRIPTS_DIR}/orion-pep/config.js ${ORION_PEP_HOME}/config.js
 RUN sed -i ${ORION_PEP_HOME}/config.js \
     -e  "s/module: 'keystone'/module: 'idm'/"\
     -e  "s/user: 'pepproxy'/user: '${CC_EMAIL}'/" \
@@ -113,6 +114,7 @@ RUN sed -i ${ORION_PEP_HOME}/config.js \
     -e  "/domainName: 'Default',/ d"\
     -e  "/retries: 5,/ d"\
     -e  "s/        host: 'localhost'/        host: '${ORION_HOSTNAME}'/"\
+    -e  "s/        host: 'idmhost'/        host: '${IDM_HOSTNAME}'/"\
     -e  "s/port: 5000/port: 443/"\
     -e  "s/port: 10026/port: ${ORION_PORT}/"\
     -e  "s/path: '\/v3\/role_assignments'/path: '\/user'/"\
