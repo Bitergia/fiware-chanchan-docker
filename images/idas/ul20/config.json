@@ -1,0 +1,24 @@
+{
+    "resources": [
+	{
+	    "resource": "/iot/d",
+	    "options": {
+		"FileName": "UL20Service"
+	    }
+	}
+    ],
+    "timezones": "/etc/iot/date_time_zonespec.csv",
+    "storage": {
+	"type": "mongodb",
+	"dbname": "iot",
+	"host": "mongodb"
+    },
+    "ngsi_url": {
+	"cbroker": "http://orion:1026",
+	"updateContext": "/NGSI10/updateContext",
+	"registerContext": "/NGSI9/registerContext",
+	"queryContext": "/NGSI10/queryContext"
+    },
+    "timeout": 11,
+    "dir_log": "/var/log/iot/"
+}

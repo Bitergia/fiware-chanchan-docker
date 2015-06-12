@@ -13,11 +13,13 @@ help:
 	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - orion: 		Build Orion Context Broker $(ORION_VERSION) image)
 	$(info - mongodb: 		Build MongoDB $(MONGO_VERSION) image)
+	$(info - idas: 			Build IDAS images)
 	$(info - wilma-pep:		Build Wilma PEP Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
 	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
 	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
+	$(info - idas-ul20:		Build IDAS UltraLight 2.0 IoTAgent image)
 	$(info )
 	$(info Other available options:)
 	$(info - orion-ubuntu: 		Build Orion Context Broker image using Ubuntu baseimage)
@@ -43,6 +45,11 @@ orion-ubuntu: orion.ubuntu
 orion: orion.centos6
 orion.centos6 orion.ubuntu:
 	docker build -t bitergia/orion:$(ORION_VERSION) -f orion/Dockerfile.$@ orion/
+
+.PHONY: idas idas-ul
+idas: idas-ul20
+idas-ul20:
+	docker build -t bitergia/idas:ul20 idas/ul20/
 
 .PHONY: all
 all: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy mongodb
