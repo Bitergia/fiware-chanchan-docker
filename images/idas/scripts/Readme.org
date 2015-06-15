@@ -2,21 +2,11 @@
 
 ** create_service.sh
 
-./create_service.sh --context-broker-url http://172.17.0.3:1026 \
---idas-host 172.17.0.4 \
---idas-port 8080 \
---api-key test \
---service bitergiaidas \
---service-path /
+./create_service.sh --context-broker-url http://172.17.0.3:1026 --idas-host 172.17.0.4 --idas-port 8080 --api-key test --service bitergiaidas --service-path /
 
 ** create_temp_device.sh
 
-./create_temp_device.sh --idas-host 172.17.0.4 \
---idas-port 8080 \
---service bitergiaidas \
---service-path / \
---device c4:8e:8f:f4:38:2b:Temp_1 \
---entity SENSOR_TEMP:c4:8e:8f:f4:38:2b:Temperature_Sensor_1
+./create_temp_device.sh --idas-host 172.17.0.4 --idas-port 8080 --service bitergiaidas --service-path / --device c4:8e:8f:f4:38:2b:Temp_1 --entity SENSOR_TEMP:c4:8e:8f:f4:38:2b:Temperature_Sensor_1
 
 ** get_temp.sh
 
