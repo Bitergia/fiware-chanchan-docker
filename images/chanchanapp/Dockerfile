@@ -75,6 +75,7 @@ RUN cd ${CC_APP_CLIENT_PATH} && \
     export CI=true && \
     # install dependencies for client side && \
     npm install --loglevel warn
+ADD idas-scripts ${DEPLOY_USER_DIR}/scripts/idas-scripts
 ADD configure-chanchan.sh ${DEPLOY_USER_DIR}/scripts/configure-chanchan.sh
 
 USER root
