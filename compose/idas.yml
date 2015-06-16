@@ -20,3 +20,8 @@ idas:
   links:
     - mongodb
     - orion
+
+cygnus:
+  image: bitergia/cygnus
+  links:
+    - orion
