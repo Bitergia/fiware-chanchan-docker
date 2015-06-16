@@ -1,0 +1,46 @@
+mongodbdata:
+    image: bitergia/mongodb-org:2.6
+    volumes:
+        - /var/lib/mongo
+    restart: no
+    entrypoint: ["/bin/echo","Data-only container for mongodb"]
+
+mongodb:
+    image: bitergia/mongodb-org:2.6
+    volumes_from:
+        - mongodbdata
+    expose:
+        - "27017"
+orion:
+    image: bitergia/orion:0.22.0
+    links:
+        - mongodb
+idas:
+  image: bitergia/idas:ul20
+  links:
+    - mongodb
+    - orion
+
+cygnus:
+    image: bitergia/cygnus
+    links:
+        - orion
+
+idmauthlegacy:
+    image: bitergia/idmauthlegacy
+    links:
+        - orion
+    volumes:
+        - /config
+
+chanchanapp:
+    image: bitergia/chanchanapp
+    links:
+        - idmauthlegacy
+        - cygnus
+        - orion
+        - idas
+    volumes:
+        - ~/devel/fiware/fiware-chanchan:/home/bitergia/fiware-chanchan
+    volumes_from:
+        - idmauthlegacy
