@@ -24,3 +24,8 @@
 ./send_data.sh --idas-host 172.17.0.4 --idas-port 8080 --service bitergiaidas --service-path / --device c4:8e:8f:f4:38:2b:Temp_1 --api-key test --measurement "t|$(./get_temp.sh)"
 #+END_SRC
 
+** list_devices.sh
+
+#+BEGIN_SRC shell-script
+./list_devices.sh --service bitergiaidas --service-path / --idas-host 172.17.0.4 --idas-port 8080
+#+END_SRC
