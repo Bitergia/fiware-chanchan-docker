@@ -71,6 +71,15 @@ ADD cygnus.conf ${APACHE_FLUME_HOME}/conf/cygnus.conf
 RUN sed -i ${APACHE_FLUME_HOME}/conf/cygnus.conf -e "s/api_key = API_KEY/api_key = ${CKAN_API_KEY}/g"
 
 USER root
+
+# Install MySQL for mysql sink
+ADD variables.sh ${SCRIPTS_DIR}/variables.sh
+ADD configure-mysql.sh ${SCRIPTS_DIR}/configure-mysql.sh
+# preseed debconf to set the mysql root password
+RUN ${SCRIPTS_DIR}/configure-mysql.sh
+RUN apt-get update && apt-get install -qy mysql-server
+
+
 # Configure service start/stop
 ADD cygnus.default /etc/default/cygnus
 ADD cygnus.init /etc/init.d/cygnus

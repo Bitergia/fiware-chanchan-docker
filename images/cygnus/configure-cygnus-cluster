@@ -95,3 +95,30 @@ EOF
     ]
 }
 EOF
+
+# IDAS temperature sensors
+(curl ${ORION_HOSTNAME}:${ORION_PORT}/NGSI10/subscribeContext -s -S --header 'Content-Type: application/json' --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{
+    "entities": [
+        {
+            "type": "thing",
+            "isPattern": "true",
+            "id": "SENSOR_TEMP:*" 
+        }
+    ],
+    "attributes": [
+        "temperature" 
+    ],
+    "reference": "http://${CYGNUS_HOSTNAME}:6001/notify",
+    "duration": "P1M",
+    "notifyConditions": [
+        {
+            "type": "ONCHANGE",
+            "condValues": [
+                "TimeInstant" 
+            ]
+        }
+    ],
+    "throttling": "PT1S" 
+}
+EOF
