@@ -82,3 +82,9 @@ ADD idm.conf /etc/apache2/sites-available/idm.conf
 RUN a2dissite 000-default && a2ensite idm
 RUN chown www-data:www-data ${KEYROCK_HOME}/horizon/openstack_dashboard/local
 RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK_HOME}/horizon/static
+
+# Authzforce domain configuration
+
+ADD config-domain.sh /opt/scripts/config-domain.sh
+RUN chmod 755 /opt/scripts/config-domain.sh
+ENTRYPOINT ["/opt/scripts/config-domain.sh"]

@@ -20,10 +20,16 @@ RUN apt-get update && \
 
 # download and install Authzforce (service starts Automatically)
 
-RUN git clone https://github.com/ging/fi-ware-pep-proxy.git && \
-    cd fi-ware-pep-proxy && \
+RUN git clone https://github.com/ging/fi-ware-pep-proxy.git fiware-pep-proxy && \
+    cd fiware-pep-proxy && \
     npm install
 
 # Configure PEP proxy
 
-ADD config.js /home/bitergia/fi-ware-pep-proxy 
+ADD config.js /home/bitergia/fiware-pep-proxy/config.js
+
+# Retrieve domain
+
+ADD config-domain.sh /home/bitergia/config-domain.sh
+RUN chmod 755 /home/bitergia/config-domain.sh
+ENTRYPOINT ["/home/bitergia/config-domain.sh"]

@@ -1,6 +1,6 @@
 var config = {};
 
-config.pep_port = 10026;
+config.pep_port = 1026;
 
 // Set this var to undefined if you don't want the server to listen on HTTPS
 // config.https = {
@@ -11,19 +11,19 @@ config.pep_port = 10026;
 //};
 
 // Our IdM IP
-config.account_host = '172.17.0.71';
+config.account_host = 'idm';
 
 // Our Keystone Settings. In this case Keystone and Horizon are at the same host
-config.keystone_host = '172.17.0.71';
+config.keystone_host = 'idm';
 config.keystone_port = 5000;
 
 // The host of the app to protect
-config.app_host = '172.17.0.96';
-config.app_port = '80';
+config.app_host = 'orion';
+config.app_port = '10026';
 
 // The username and password we've used for registering the app (just for testing)
-config.username = 'idm';
-config.password = 'idm';
+config.username = 'user1@test.com';
+config.password = 'test';
 
 // in seconds
 config.chache_time = 300;
@@ -32,9 +32,9 @@ config.chache_time = 300;
 // only compatible with oauth2 tokens engine
 config.azf = {
     enabled: true,
-    host: '172.17.0.72',
+    host: 'authzforce',
     port: 8080,
-    path: '/authzforce/domains/f7727b3b-0a04-11e5-9a3a-adc96088fc92/pdp'
+    path:
 };
 
 // options: oauth2/keystone
