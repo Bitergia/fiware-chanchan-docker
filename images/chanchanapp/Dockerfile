@@ -32,6 +32,7 @@ RUN apt-get update && \
         psmisc \
         nodejs nodejs-legacy npm \
         apache2 libapache2-mod-passenger \
+        mysql-client \
         && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete
