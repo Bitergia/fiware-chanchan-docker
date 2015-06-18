@@ -12,6 +12,7 @@ ENV APACHE_FLUME_HOME="APACHE_FLUME_HOME"
 ENV CKAN_API_KEY="44f762b2-978a-40ca-9dfc-1a8ec8855599"
 ENV DEBIAN_FRONTEND noninteractive
 ENV GIT_REV_CYGNUS=c797a60dabbd0bfc5e90c83efa9c15fed1bc1bd4
+ENV DEPLOY_USER_DIR /home/${CYGNUS_USER}
 ENV SCRIPTS_DIR ${DEPLOY_USER_DIR}/scripts
 
 # install dependencies
@@ -75,10 +76,16 @@ USER root
 # Install MySQL for mysql sink
 ADD variables.sh ${SCRIPTS_DIR}/variables.sh
 ADD configure-mysql.sh ${SCRIPTS_DIR}/configure-mysql.sh
+ADD add-network.user-mysql.sh ${SCRIPTS_DIR}/add-network.user-mysql.sh
+
 # preseed debconf to set the mysql root password
 RUN ${SCRIPTS_DIR}/configure-mysql.sh
 RUN apt-get update && apt-get install -qy mysql-server
-
+# Enable external network access 
+RUN sed -i /etc/mysql/my.cnf \
+    -e "s/bind-address.*= 127.0.0.1/bind-address = 0.0.0.0/"
+# Enable root user access from other containers
+RUN service mysql start && ${SCRIPTS_DIR}/add-network.user-mysql.sh
 
 # Configure service start/stop
 ADD cygnus.default /etc/default/cygnus
