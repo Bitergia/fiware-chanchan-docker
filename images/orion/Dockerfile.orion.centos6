@@ -46,5 +46,6 @@ RUN git clone https://github.com/telefonicaid/fiware-orion && \
     install -m 0644 etc/config/contextBroker /etc/sysconfig/contextBroker && \
     chkconfig contextBroker on && \
     sed -e 's/^BROKER_DATABASE_HOST=localhost/BROKER_DATABASE_HOST=mongodb/' -i /etc/sysconfig/contextBroker && \
+    sed -e 's/^BROKER_PORT=1026/BROKER_PORT=10026/' -i /etc/sysconfig/contextBroker && \
     cd /opt && \
     rm -rf /opt/fiware-orion
