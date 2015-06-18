@@ -11,27 +11,21 @@ RUN adduser --comment "${ORION_USER}" ${ORION_USER}
 WORKDIR /opt
 
 RUN yum -y install git make cmake gcc-c++ scons libmicrohttpd-devel boost-devel libcurl-devel clang CUnit-devel && \
-    yum clean all
-
-# Install mongo db C++ driver
-RUN curl -kOL https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.0.2.tar.gz && \
+    curl -kOL https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.0.2.tar.gz && \
     tar xfz legacy-1.0.2.tar.gz && \
     cd mongo-cxx-driver-legacy-1.0.2 && \
     scons install --prefix=/usr/local && \
     cd /opt && \
-    rm -rf legacy-1.0.2.tar.gz mongo-cxx-driver-legacy-1.0.2
-
-# proxycoap
-RUN git clone https://github.com/staropram/cantcoap && \
+    rm -rf legacy-1.0.2.tar.gz mongo-cxx-driver-legacy-1.0.2 && \
+    git clone https://github.com/staropram/cantcoap && \
     cd cantcoap && \
     git checkout ${GIT_REV_ORION_PROXYCOAP} && \
     make && \
     cp cantcoap.h dbg.h nethelper.h /usr/local/include && \
     cp libcantcoap.a /usr/local/lib && \
     cd /opt && \
-    rm -rf /opt/cantcoap
-
-RUN git clone https://github.com/telefonicaid/fiware-orion && \
+    rm -rf /opt/cantcoap && \
+    git clone https://github.com/telefonicaid/fiware-orion && \
     cd fiware-orion && \
     git checkout ${GIT_REV_ORION} && \
     make && \
@@ -48,4 +42,13 @@ RUN git clone https://github.com/telefonicaid/fiware-orion && \
     sed -e 's/^BROKER_DATABASE_HOST=localhost/BROKER_DATABASE_HOST=mongodb/' -i /etc/sysconfig/contextBroker && \
     sed -e 's/^BROKER_PORT=1026/BROKER_PORT=10026/' -i /etc/sysconfig/contextBroker && \
     cd /opt && \
-    rm -rf /opt/fiware-orion
+    rm -rf /opt/fiware-orion && \
+    yum -y erase git perl rsync \
+	cmake libarchive \
+	gcc-c++ cloog-ppl cpp gcc glibc-devel glibc-headers kernel-headers libgomp libstdc++-devel mpfr ppl \
+	scons libmicrohttpd-devel boost-devel libcurl-devel \
+	clang llvm llvm-libs \
+	CUnit-devel CUnit pkgconfig \
+	autoconf automake m4 libidn-devel && \
+    yum clean all && \
+    rm -f /usr/local/lib/libcantcoap.a /usr/local/lib/libmongoclient.a
