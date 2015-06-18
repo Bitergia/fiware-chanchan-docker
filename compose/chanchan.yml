@@ -25,6 +25,8 @@ cygnus:
     image: bitergia/cygnus
     links:
         - orion
+    expose:
+        - "3306"
 
 idmauthlegacy:
     image: bitergia/idmauthlegacy
