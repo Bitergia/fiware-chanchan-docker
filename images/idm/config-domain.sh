@@ -12,7 +12,7 @@ DOMAIN="$(curl -s --request GET http://authzforce:8080/authzforce/domains | awk 
 
 if [ -z "$DOMAIN" ]; then 
     echo "Domain is not created yet!"
-    curl --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://authzforce:8080/authzforce/domains
+    curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://authzforce:8080/authzforce/domains
     DOMAIN="$(curl -s --request GET http://authzforce:8080/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
     echo $DOMAIN
 else

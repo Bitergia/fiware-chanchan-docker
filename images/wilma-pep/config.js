@@ -22,7 +22,7 @@ config.app_host = 'orion';
 config.app_port = '10026';
 
 // The username and password we've used for registering the app (just for testing)
-config.username = 'user1@test.com';
+config.username = 'user0@test.com';
 config.password = 'test';
 
 // in seconds

@@ -27,9 +27,16 @@ RUN git clone https://github.com/ging/fi-ware-pep-proxy.git /opt/fi-ware-pep-pro
 
 WORKDIR /opt/fi-ware-pep-proxy
 
+# Install forever to make PEP run at Startup
+
+RUN npm install forever --global
+
 # Configure PEP proxy
 
 ADD config.js ${WILMA_HOME}/config.js
+
+COPY wilmapep.conf /etc/init/wilmapep.conf
+#COPY dumb.conf /etc/init/dumb.conf
 
 # Retrieve domain
 
