@@ -4,6 +4,7 @@
 FROM bitergia/ubuntu-trusty:latest
 MAINTAINER Alberto Martín <alberto.martin@bitergia.com>
 
+ENV WILMA_HOME /opt/fi-ware-pep-proxy
 ENV DEBIAN_FRONTEND noninteractive
 
 # Installing nodeJS
@@ -20,16 +21,18 @@ RUN apt-get update && \
 
 # download and install Authzforce (service starts Automatically)
 
-RUN git clone https://github.com/ging/fi-ware-pep-proxy.git fiware-pep-proxy && \
-    cd fiware-pep-proxy && \
+RUN git clone https://github.com/ging/fi-ware-pep-proxy.git /opt/fi-ware-pep-proxy && \
+    cd /opt/fi-ware-pep-proxy && \
     npm install
+
+WORKDIR /opt/fi-ware-pep-proxy
 
 # Configure PEP proxy
 
-ADD config.js /home/bitergia/fiware-pep-proxy/config.js
+ADD config.js ${WILMA_HOME}/config.js
 
 # Retrieve domain
 
-ADD config-domain.sh /home/bitergia/config-domain.sh
-RUN chmod 755 /home/bitergia/config-domain.sh
-ENTRYPOINT ["/home/bitergia/config-domain.sh"]
+ADD config-domain.sh /opt/scripts/config-domain.sh
+RUN chmod 755 /opt/scripts/config-domain.sh
+ENTRYPOINT ["/opt/scripts/config-domain.sh"]

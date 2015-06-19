@@ -22,7 +22,7 @@ fi
 
 # Configure PEP Proxy adding authzforce complete URL
 
-sed -e "s@^    path:@    path:'/authzforce/domains/$DOMAIN/pdp'@" -i /home/bitergia/fiware-pep-proxy/config.js
+sed -e "s@^    path:@    path:'/authzforce/domains/$DOMAIN/pdp'@" -i /opt/fi-ware-pep-proxy/config.js
 
 # Start container back
 
