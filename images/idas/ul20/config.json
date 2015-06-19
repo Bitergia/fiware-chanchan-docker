@@ -14,7 +14,7 @@
 	"host": "mongodb"
     },
     "ngsi_url": {
-	"cbroker": "http://orion:1026",
+	"cbroker": "http://orion:10026",
 	"updateContext": "/NGSI10/updateContext",
 	"registerContext": "/NGSI9/registerContext",
 	"queryContext": "/NGSI10/queryContext"
