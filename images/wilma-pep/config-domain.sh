@@ -29,9 +29,9 @@ sed -e "s@^    path:@    path:'/authzforce/domains/$DOMAIN/pdp'@" -i /opt/fi-war
 
 sleep 10
 
-FRESHTOKEN="$(curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "user0@test.com", "domain": { "id": "default" }, "password": "test"} } } } }' http://idm:5000/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}')"
+FRESHTOKEN="$(curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "pepproxy@test.com", "domain": { "id": "default" }, "password": "test"} } } } }' http://idm:5000/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}')"
 MEMBERID="$(curl -s -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://idm:5000/v3/roles | python -m json.tool | grep -iw id | awk -F'"' '{print $4}' | head -n 1)"
-REQUEST="$(curl -s -X PUT -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://idm:5000/v3/domains/default/users/user0/roles/${MEMBERID})"
+REQUEST="$(curl -s -X PUT -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://idm:5000/v3/domains/default/users/pepproxy/roles/${MEMBERID})"
 
 # Start container back
 

@@ -37,7 +37,10 @@ RUN apt-get update && \
     find /var/lib/apt/lists -type f -delete
 
 # clone git repo
-RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm
+#RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm
+RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm && \
+    mv /opt/fi-ware-idm/deployment/keystone.py /opt/fi-ware-idm/deployment/keystone.py.bkp
+COPY keystone.py /opt/fi-ware-idm/deployment/keystone.py
 WORKDIR /opt/fi-ware-idm
 
 # configure fabric
