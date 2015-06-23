@@ -534,3 +534,166 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
         application=chanchan_app.id,
         organization=user1.default_project_id)
 
+    # Adding permissions for Orion
+
+    perm0 = keystone.fiware_roles.permissions.create(
+                name='updateContext', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/updateContext',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm0)
+
+    perm1 = keystone.fiware_roles.permissions.create(
+                name='queryContext', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/queryContext',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm1)
+
+    perm2 = keystone.fiware_roles.permissions.create(
+                name='subscribeContext', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/subscribeContext',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm2)
+
+    perm3 = keystone.fiware_roles.permissions.create(
+                name='updateContextSubscription', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/updateContextSubscription',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm3)
+
+    perm4 = keystone.fiware_roles.permissions.create(
+                name='unsubscribeContext', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/unsubscribeContext',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm4)
+
+    perm5 = keystone.fiware_roles.permissions.create(
+                name='registry/registerContext', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/registry/registerContext',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm5)
+
+    perm6 = keystone.fiware_roles.permissions.create(
+                name='registry/discoverContextAvailability', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/registry/discoverContextAvailability',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm6)
+
+    perm7 = keystone.fiware_roles.permissions.create(
+                name='/registry/subscribeContextAvailability', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1//registry/subscribeContextAvailability',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm7)
+
+    perm8 = keystone.fiware_roles.permissions.create(
+                name='registry/updateContextAvailabilitySubscription', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/registry/updateContextAvailabilitySubscription',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm8)
+
+    perm9 = keystone.fiware_roles.permissions.create(
+                name='registry/unsubscribeContextAvailability', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/registry/unsubscribeContextAvailability',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm9)
+
+    perm10 = keystone.fiware_roles.permissions.create(
+                name='registry/contextAvailabilitySubscriptions', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/registry/contextAvailabilitySubscriptions',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm10)
+
+    perm11 = keystone.fiware_roles.permissions.create(
+                name='contextTypes', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/contextTypes',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm11)
+
+    perm12 = keystone.fiware_roles.permissions.create(
+                name='contextSubscriptions', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/contextSubscriptions',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm12)
+
+    perm13 = keystone.fiware_roles.permissions.create(
+                name='contextEntities', 
+                application=chanchan_app, 
+                action= 'POST', 
+                resource= 'V1/contextEntities',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm13)
+
+    perm14 = keystone.fiware_roles.permissions.create(
+                name='contextEntities(GET)', 
+                application=chanchan_app, 
+                action= 'GET', 
+                resource= 'V1/contextEntities',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm14)
+
+    perm15 = keystone.fiware_roles.permissions.create(
+                name='contextSubscriptions', 
+                application=chanchan_app, 
+                action= 'GET', 
+                resource= 'V1/contextSubscriptions',
+                is_internal=False)
+
+    keystone.fiware_roles.permissions.add_to_role(
+                    role_orion, perm15)
+
+
