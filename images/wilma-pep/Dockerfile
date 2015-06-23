@@ -23,6 +23,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/ging/fi-ware-pep-proxy.git /opt/fi-ware-pep-proxy && \
     cd /opt/fi-ware-pep-proxy && \
+    git checkout 85df40e376311beed51d1c21104414c8c3c9b2bf && \
     npm install
 
 WORKDIR /opt/fi-ware-pep-proxy
