@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from pysqlite2 import dbapi2 as sqlite3
-import anyjson, os
+import json, os
 
 def dict_factory(cursor, row):
     d = {}
@@ -35,7 +35,11 @@ secretr = cur.fetchone()["b"]
 # Export it to a json file
 
 f = open('/config/app.json', 'w')
-f.writelines(anyjson.serialize({"id": idr, "secret": secretr}))
+f.writelines(json.dumps(
+	{'id': idr, 'secret': secretr},
+	sort_keys=True,
+	indent=4, 
+        separators=(',', ': ')))
 f.close()
 
 con.close()
