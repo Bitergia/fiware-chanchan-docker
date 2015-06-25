@@ -37,7 +37,6 @@ RUN npm install forever --global
 ADD config.js ${WILMA_HOME}/config.js
 
 COPY wilmapep.conf /etc/init/wilmapep.conf
-#COPY dumb.conf /etc/init/dumb.conf
 
 # Retrieve domain
 

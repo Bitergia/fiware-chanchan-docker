@@ -36,7 +36,7 @@ help:
 .PHONY: idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy
 idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
-	[ "$@" = "cygnus" ] && docker tag -f bitergia/$@ bitergia/$@:$(CYGNUS_VERSION)
+	-[ "$@" = "cygnus" ] && docker tag -f bitergia/$@ bitergia/$@:$(CYGNUS_VERSION) || true
 
 .PHONY: mongodb-2.6 mongodb-3.0 mongodb
 mongodb-2.6:

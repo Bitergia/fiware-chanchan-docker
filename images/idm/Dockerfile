@@ -1,4 +1,8 @@
+# Copyright (C) 2015 Bitergia
+# GPLv3 License
+
 FROM bitergia/ubuntu-trusty:latest
+MAINTAINER Alvaro del Castillo <acs@bitergia.com>, Alberto Martín <alberto.martin@bitergia.com>
 
 ENV WORKON_HOME /opt/virtualenvs
 ENV KEYROCK_HOME /opt/fi-ware-idm
