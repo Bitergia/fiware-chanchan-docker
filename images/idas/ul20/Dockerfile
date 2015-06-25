@@ -9,7 +9,11 @@ RUN curl -kOL https://forge.fiware.org/docman/view.php/49/5159/iot-agent-mqtt.tg
     yum localinstall -y iot-agent-base*.rpm && \
     yum localinstall -y iot-agent-ul*.rpm && \
     rm -f iot-agent-mqtt.tgz && \
+    yum -y install nc && \
     yum clean all && \
     chkconfig iotagent on
 
 COPY config.json /etc/iot/
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
