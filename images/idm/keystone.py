@@ -524,7 +524,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
     # Make user 1 owner of the organization B and give Orion role
     user1 = users[1]
 
-    keystone.roles.grant(user=user0.id,
+    keystone.roles.grant(user=user1.id,
                          role=owner_role.id,
                          project=org_b.id)
 
