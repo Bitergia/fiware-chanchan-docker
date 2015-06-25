@@ -32,6 +32,7 @@ RUN apt-get update && \
 	    libmysqlclient-dev \
 	    python-mysqldb \
 	    libsqlite3-dev \
+            sqlite3 \
 	    && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete
@@ -86,6 +87,13 @@ ADD idm.conf /etc/apache2/sites-available/idm.conf
 RUN a2dissite 000-default && a2ensite idm
 RUN chown www-data:www-data ${KEYROCK_HOME}/horizon/openstack_dashboard/local
 RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK_HOME}/horizon/static
+
+# Extract clientID and client-secret from database
+
+COPY get-app-secrets.py /opt/fi-ware-idm/keystone/get-app-secrets.py
+RUN bash -c "source /opt/fi-ware-idm/keystone/.venv/bin/activate && \
+    mkdir /config && \
+    python /opt/fi-ware-idm/keystone/get-app-secrets.py"
 
 # Authzforce domain configuration
 
