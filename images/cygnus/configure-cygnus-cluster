@@ -16,7 +16,7 @@
 
 # Subscribe to orion host for receive notifications
 ORION_HOSTNAME=orion
-ORION_PORT=1026
+ORION_PORT=10026
 CYGNUS_HOSTNAME=`hostname -i` # can't link orion to cygnus (circular link in docker). Use IP
 
 # For all the organizations, subscribe to all changes to entities with names manual:*
