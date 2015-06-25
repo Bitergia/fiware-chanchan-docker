@@ -1,5 +1,6 @@
 MONGO_VERSION = 2.6
 ORION_VERSION = 0.22.0
+MARIADB_VERSION = 10.0
 
 .PHONY: help
 help:
@@ -20,11 +21,14 @@ help:
 	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
 	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
 	$(info - idas-ul20:		Build IDAS UltraLight 2.0 IoTAgent image)
+	$(info - mariadb: 		Build MariaDB $(MARIADB_VERSION) image)
 	$(info )
 	$(info Other available options:)
 	$(info - orion-ubuntu: 		Build Orion Context Broker image using Ubuntu baseimage)
 	$(info - mongodb-2.6: 		Build MongoDB 2.6 image)
 	$(info - mongodb-3.0: 		Build MongoDB 3.0 image)
+	$(info - mariadb-5.5: 		Build MariaDB 5.5 image)
+	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
 	$(info )
 	@echo ""
 
@@ -40,6 +44,14 @@ mongodb-3.0:
 mongodb:
 	docker build -t bitergia/mongodb-org:$(MONGO_VERSION) mongodb/$(MONGO_VERSION)/
 
+.PHONY: mariadb-10.0 mariadb-5.5 mariadb
+mariadb-10.0:
+	@$(MAKE) mariadb MARIADB_VERSION=10.0
+mariadb-5.5:
+	@$(MAKE) mariadb MARIADB_VERSION=5.5
+mariadb:
+	docker build -t bitergia/mariadb:$(MARIADB_VERSION) mariadb/$(MARIADB_VERSION)/
+
 .PHONY: orion orion.ubuntu orion.centos6 orion-ubuntu
 orion-ubuntu: orion.ubuntu
 orion: orion.centos6
@@ -52,7 +64,7 @@ idas-ul20:
 	docker build -t bitergia/idas:ul20 idas/ul20/
 
 .PHONY: all
-all: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy mongodb
+all: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy mongodb mariadb
 
 .PHONY: clean clean_idm
 clean: clean_idm
