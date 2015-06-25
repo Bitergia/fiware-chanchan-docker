@@ -1,6 +1,7 @@
 MONGO_VERSION = 2.6
 ORION_VERSION = 0.22.0
 MARIADB_VERSION = 10.0
+CYGNUS_VERSION = 0.5.1
 
 .PHONY: help
 help:
@@ -14,7 +15,7 @@ help:
 	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - orion: 		Build Orion Context Broker $(ORION_VERSION) image)
 	$(info - mongodb: 		Build MongoDB $(MONGO_VERSION) image)
-	$(info - idas: 			Build IDAS images)
+	$(info - idas:			Build IDAS images)
 	$(info - wilma-pep:		Build Wilma PEP Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
@@ -24,7 +25,7 @@ help:
 	$(info - mariadb: 		Build MariaDB $(MARIADB_VERSION) image)
 	$(info )
 	$(info Other available options:)
-	$(info - orion-ubuntu: 		Build Orion Context Broker image using Ubuntu baseimage)
+	$(info - orion-ubuntu:		Build Orion Context Broker image using Ubuntu baseimage)
 	$(info - mongodb-2.6: 		Build MongoDB 2.6 image)
 	$(info - mongodb-3.0: 		Build MongoDB 3.0 image)
 	$(info - mariadb-5.5: 		Build MariaDB 5.5 image)
@@ -35,6 +36,7 @@ help:
 .PHONY: idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy
 idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
+	[ "$@" = "cygnus" ] && docker tag -f bitergia/$@ bitergia/$@:$(CYGNUS_VERSION)
 
 .PHONY: mongodb-2.6 mongodb-3.0 mongodb
 mongodb-2.6:
