@@ -5,6 +5,7 @@ CYGNUS_VERSION = 0.5.1
 IDM_VERSION = 4.3.0
 WILMA_VERSION = 4.3.0
 AUTHZFORCE_VERSION = 4.2.0
+IDAS_LWM2M_VERSION = 0.2.0
 
 .PHONY: help
 help:
@@ -16,8 +17,8 @@ help:
 	$(info )
 	$(info - all:			Build all available images)
 	$(info - idm-keyrock:		Build Keyrock IdM image (based on the new Keyrock version))
-	$(info - orion: 		Build Orion Context Broker $(ORION_VERSION) image)
-	$(info - mongodb: 		Build MongoDB $(MONGO_VERSION) image)
+	$(info - orion:		Build Orion Context Broker $(ORION_VERSION) image)
+	$(info - mongodb:		Build MongoDB $(MONGO_VERSION) image)
 	$(info - idas:			Build IDAS images)
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
@@ -25,13 +26,14 @@ help:
 	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
 	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
 	$(info - idas-ul20:		Build IDAS UltraLight 2.0 IoTAgent image)
-	$(info - mariadb: 		Build MariaDB $(MARIADB_VERSION) image)
+	$(info - idas-lwm2m:		Build IDAS OMA Lightweight M2M IoTAgent image)
+	$(info - mariadb:		Build MariaDB $(MARIADB_VERSION) image)
 	$(info )
 	$(info Other available options:)
 	$(info - orion-ubuntu:		Build Orion Context Broker image using Ubuntu baseimage)
-	$(info - mongodb-2.6: 		Build MongoDB 2.6 image)
-	$(info - mongodb-3.0: 		Build MongoDB 3.0 image)
-	$(info - mariadb-5.5: 		Build MariaDB 5.5 image)
+	$(info - mongodb-2.6:		Build MongoDB 2.6 image)
+	$(info - mongodb-3.0:		Build MongoDB 3.0 image)
+	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
 	$(info )
 	@echo ""
@@ -55,7 +57,7 @@ cygnus:
 .PHONY: orion
 orion:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) fiware-orion/$(ORION_VERSION)/
-        
+
 .PHONY: chanchanapp idmauthlegacy
 chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
@@ -81,10 +83,12 @@ orion-ubuntu: orion.ubuntu
 orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
-.PHONY: idas idas-ul20
-idas: idas-ul20
+.PHONY: idas idas-ul20 idas-lwm2m
+idas: idas-ul20 idas-lwm2m
 idas-ul20:
 	docker build -t bitergia/idas:ul20 idas/ul20/
+idas-lwm2m:
+	docker build -t bitergia/idas-lwm2m:$(IDAS_LWM2M_VERSION) idas/lwm2m/$(IDAS_LWM2M_VERSION)/
 
 .PHONY: all
 all: idm-keyrock orion authzforce pep-wilma cygnus chanchanapp idmauthlegacy mongodb mariadb

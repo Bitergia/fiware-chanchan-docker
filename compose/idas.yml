@@ -17,8 +17,15 @@ orion:
         - mongodb
     expose:
         - "10026"
-idas:
+
+idasul20:
     image: bitergia/idas:ul20
+    links:
+        - mongodb
+        - orion
+
+idaslwm2m:
+    image: bitergia/idas-lwm2m:0.2.0
     links:
         - mongodb
         - orion
