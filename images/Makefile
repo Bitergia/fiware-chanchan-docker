@@ -81,7 +81,7 @@ orion-ubuntu: orion.ubuntu
 orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
-.PHONY: idas idas-ul
+.PHONY: idas idas-ul20
 idas: idas-ul20
 idas-ul20:
 	docker build -t bitergia/idas:ul20 idas/ul20/

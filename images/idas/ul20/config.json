@@ -10,8 +10,9 @@
     "timezones": "/etc/iot/date_time_zonespec.csv",
     "storage": {
 	"type": "mongodb",
-	"dbname": "iot",
-	"host": "mongodb"
+	"dbname": "iot-ul20",
+	"host": "mongodb",
+	"port": "27017"
     },
     "ngsi_url": {
 	"cbroker": "http://orion:10026",

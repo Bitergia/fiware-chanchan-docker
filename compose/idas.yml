@@ -15,8 +15,10 @@ orion:
     image: bitergia/fiware-orion:0.22.0
     links:
         - mongodb
+    expose:
+        - "10026"
 idas:
-  image: bitergia/idas:ul20
-  links:
-    - mongodb
-    - orion
+    image: bitergia/idas:ul20
+    links:
+        - mongodb
+        - orion
