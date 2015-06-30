@@ -6,21 +6,6 @@ Find detailed information of this Generic enabler at [Fiware catalogue](http://c
 
 This image is intended to work together with [Identity Manager - Keyrock](http://catalogue.fiware.org/enablers/identity-management-keyrock) and [PEP Proxy Wilma](http://catalogue.fiware.org/enablers/pep-proxy-wilma) generic enabler; and also integrated in our [Chanchan APP](https://github.com/Bitergia/fiware-chanchan).
 
-**Table of Contents**
-
-- [Requirements](#requirements)
-- [Image contents](#image-contents)
-- [Building the image](#building-the-image)
-- [Usage](#usage)
-- [Stopping the container](#stopping-the-container)
-- [About SSH](#about-ssh)
-  - [Using/generate your own SSH key](#usinggenerate-your-own-ssh-key)
-
-## Requirements
-
-* [Docker](https://github.com/docker/docker)
-* `bitergia/ubuntu-trusty` baseimage, available at [Dockerhub](https://registry.hub.docker.com/u/bitergia/ubuntu-trusty)
-
 ## Image contents
 
 - [x] `bitergia/ubuntu-trusty` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#image-contents)
@@ -28,34 +13,21 @@ This image is intended to work together with [Identity Manager - Keyrock](http:/
 - [x] tomcat7
 - [x] Authzforce 4.2.0
 
-## Building the image
-
-This images are intended for Docker usage. Images are already built at [Bitergia dockerhub](https://registry.hub.docker.com/repos/bitergia/).
-
-Still, if you want to build the entire image yourself, you can use the Makefile provided:
-
-Clone this repository:
-
-```
-git clone https://github.com/Bitergia/fiware-chanchan.git
-cd fiware-chanchan/docker/images
-```
-
-Build the image:
-
-```
-make authzforce
-```
-
-And that's it!
-
 ## Usage
 
 This image gives you a minimal installation for testing purposes. The [AuthZForce Installation and administration guide](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Authorization_PDP_-_AuthZForce_-_Installation_and_Administration_Guide_%28R4.2.0%29#Appendix) provides you a better approach for using it in a production environment.
 
-This image, if used with the Chanchan APP, is fully provided. [PEP Proxy Wilma](http://catalogue.fiware.org/enablers/pep-proxy-wilma) image is aware of the [Domain creation](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Authorization_PDP_-_AuthZForce_-_Installation_and_Administration_Guide_%28R4.2.0%29#Domain_Creation). 
+This image, if used with the [Chanchan APP](https://github.com/Bitergia/fiware-chanchan), is fully provided for testing. [PEP Proxy Wilma](http://catalogue.fiware.org/enablers/pep-proxy-wilma)incluided in Chanchan APP is aware of the [Domain creation](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Authorization_PDP_-_AuthZForce_-_Installation_and_Administration_Guide_%28R4.2.0%29#Domain_Creation). 
 
-Still, you can always do it your self. As stands in the [AuthZForce Installation and administration guide](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Authorization_PDP_-_AuthZForce_-_Installation_and_Administration_Guide_%28R4.2.0%29#Policy_Domain_Administation) you can:
+Still, you can always do it yourself. 
+
+Create a container using `bitergia/authzforce` image by doing:
+
+```
+docker run -d --name <container-name> bitergia/authzforce:4.2.0
+```
+
+As stands in the [AuthZForce Installation and administration guide](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Authorization_PDP_-_AuthZForce_-_Installation_and_Administration_Guide_%28R4.2.0%29#Policy_Domain_Administation) you can:
 
 * **Create a domain**
 
@@ -125,3 +97,13 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
 **Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/authzforce` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
+
+## User feedback
+
+### Documentation
+
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/authzforce).
+
+### Issues
+
+If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan/issues).

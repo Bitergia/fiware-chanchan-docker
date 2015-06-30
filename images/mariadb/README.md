@@ -1,30 +1,33 @@
-## MongoDB Docker image
+## MariaDB Docker image
 
-Dockerfile to build a [MongoDB](https://en.wikipedia.org/wiki/MongoDB) container image which can be linked to other containers.
+Dockerfile to build a [MariaDB](https://mariadb.org/en/about) container image which can be linked to other containers.
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`2.6`   (2.6/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/mongodb/2.6/Dockerfile))
-* [`3.0`   (3.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/mongodb/3.0/Dockerfile))
+* [`5.5`   (5.5/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/mariadb/5.5/Dockerfile))
+* [`10.0`   (10.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/mariadb/10.0/Dockerfile))
 
 ## Image contents
 
-- [x] `bitergia/centos-6` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/centos#image-contents)
-- [x] MongoDB repository
-- [x] MongoDB
-- [x] Listening on port `27017`
+- [x] `bitergia/ubuntu-trusty` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#image-contents)
+- [x] MariaDB repository
+- [x] debconf-utils
+- [x] mariadb-server
+- [x] Listening on port `3306`
+
 
 ## Usage
 
-Create a container using `bitergia/mongodb` image is as easy as doing:
+Create a container using `bitergia/mariadb` image is as easy as doing:
 
 ```
-docker run -d --name <container-name> bitergia/mongodb:2.6
+docker run -d --name <container-name> bitergia/mariadb:5.5
 ```
+
 or
 
 ```
-docker run -d --name <container-name> bitergia/mongodb:3.0
+docker run -d --name <container-name> bitergia/mariadb:10.0
 ```
 
 * **Data storage**
@@ -39,7 +42,7 @@ To avoid this, we suggest to use the [docker-stop](https://github.com/Bitergia/d
 
 ## About SSH
 
-SSH is enabled by default with a pre-generated insecure SSH key. As the image us based in `bitergia/centos-6` image, it contains the same SSH privileges.
+SSH is enabled by default with a pre-generated insecure SSH key. As the image us based in `bitergia/ubuntu-trusty` image, it contains the same SSH privileges.
 That means, for accessing the image through SSH, you will need the SSH insecure keys. Those keys are the following:
 
 * `bitergia-docker` - Available [here](https://raw.githubusercontent.com/Bitergia/docker/master/baseimages/bitergia-docker)
@@ -67,14 +70,14 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 
 ### Using/generate your own SSH key
 
-Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/centos#about-ssh).
-**Note** that the information below is regarding the `bitergia/centos-6` baseimage. If you have already pulled or made a `bitergia/mongodb` image based in the `bitergia/centos-6` image before applying the keys change, you will need to re-build both images again.
+Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
+**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/mariadb` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 ## User feedback
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/mongodb).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/mariadb).
 
 ### Issues
 
