@@ -10,7 +10,7 @@ Dockerfile to build a [MongoDB](https://en.wikipedia.org/wiki/MongoDB) container
 ## Image contents
 
 - [x] `bitergia/centos-6` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/centos#image-contents)
-- [x] MongoDB repository
+- [x] Enabled MongoDB repository from mongodb.org
 - [x] MongoDB
 - [x] Listening on port `27017`
 
