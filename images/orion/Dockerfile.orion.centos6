@@ -39,8 +39,6 @@ RUN yum -y install git make cmake gcc-c++ scons libmicrohttpd-devel boost-devel 
     install -m 0755 etc/init.d/contextBroker.centos /etc/init.d/contextBroker && \
     install -m 0644 etc/config/contextBroker /etc/sysconfig/contextBroker && \
     chkconfig contextBroker on && \
-    sed -e 's/^BROKER_DATABASE_HOST=localhost/BROKER_DATABASE_HOST=mongodb/' -i /etc/sysconfig/contextBroker && \
-    sed -e 's/^BROKER_PORT=1026/BROKER_PORT=10026/' -i /etc/sysconfig/contextBroker && \
     cd /opt && \
     rm -rf /opt/fiware-orion && \
     yum -y erase git perl rsync \
@@ -52,3 +50,8 @@ RUN yum -y install git make cmake gcc-c++ scons libmicrohttpd-devel boost-devel 
 	autoconf automake m4 libidn-devel && \
     yum clean all && \
     rm -f /usr/local/lib/libcantcoap.a /usr/local/lib/libmongoclient.a
+
+WORKDIR /
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
