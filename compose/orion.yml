@@ -15,8 +15,5 @@ orion:
     image: bitergia/orion:0.22.0
     links:
         - mongodb
-idas:
-  image: bitergia/idas:ul20
-  links:
-    - mongodb
-    - orion
+    expose:
+        - "10026"

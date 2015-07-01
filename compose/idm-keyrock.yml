@@ -1,0 +1,13 @@
+authzforce:
+    image: bitergia/authzforce
+    expose:
+        - "8080"
+
+idm:
+    image: bitergia/idm
+    links:
+        - authzforce
+    volumes:
+        - /config
+    expose:
+        - "5000"

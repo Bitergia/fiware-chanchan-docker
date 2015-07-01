@@ -25,18 +25,13 @@ mongodb:
         - mongodbdata
     expose:
         - "27017"
+
 orion:
     image: bitergia/orion:0.22.0
     links:
         - mongodb
     expose:
         - "10026"
-
-idas:
-  image: bitergia/idas:ul20
-  links:
-    - mongodb
-    - orion
 
 cygnus:
     image: bitergia/cygnus
@@ -54,38 +49,3 @@ cygnus:
         - MYSQL_PORT=3306
         - MYSQL_USER=root
         - MYSQL_PASSWORD=bitergia
-
-authzforce:
-    image: bitergia/authzforce
-    expose:
-        - "8080"
-
-pepwilma:
-    image: bitergia/pep-wilma
-    links:
-        - orion
-        - idm
-        - authzforce
-
-idm:
-    image: bitergia/idm
-    links:
-        - authzforce
-    volumes:
-        - /config
-    expose:
-        - "5000"
-
-chanchanapp:
-    image: bitergia/chanchanapp
-    links:
-        - idm
-        - pepwilma
-        - cygnus
-        - orion
-        - idas
-        - mariadb
-    volumes:
-        - ~/devel/fiware/fiware-chanchan:/home/bitergia/fiware-chanchan
-    volumes_from:
-        - idm
