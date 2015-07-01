@@ -12,11 +12,11 @@ help:
 	$(info Available options:)
 	$(info )
 	$(info - all:			Build all available images)
-	$(info - idm:			Build Keyrock IdM image (based on the new Keyrock version))
+	$(info - idm-keyrock:		Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - orion: 		Build Orion Context Broker $(ORION_VERSION) image)
 	$(info - mongodb: 		Build MongoDB $(MONGO_VERSION) image)
 	$(info - idas:			Build IDAS images)
-	$(info - wilma-pep:		Build Wilma PEP Proxy image)
+	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
 	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
@@ -33,8 +33,8 @@ help:
 	$(info )
 	@echo ""
 
-.PHONY: idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy
-idm authzforce wilma-pep cygnus chanchanapp idmauthlegacy: $@
+.PHONY: idm-keyrock authzforce pep-wilma cygnus chanchanapp idmauthlegacy
+idm-keyrock authzforce pep-wilma cygnus chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
 	-[ "$@" = "cygnus" ] && docker tag -f bitergia/$@ bitergia/$@:$(CYGNUS_VERSION) || true
 
@@ -66,10 +66,10 @@ idas-ul20:
 	docker build -t bitergia/idas:ul20 idas/ul20/
 
 .PHONY: all
-all: idm orion authzforce wilma-pep cygnus chanchanapp idmauthlegacy mongodb mariadb
+all: idm-keyrock orion authzforce pep-wilma cygnus chanchanapp idmauthlegacy mongodb mariadb
 
-.PHONY: clean clean_idm
-clean: clean_idm
+.PHONY: clean clean_idm-keyrock
+clean: clean_idm-keyrock
 
-clean_idm:
-	-@docker rmi bitergia/idm
+clean_idm-keyrock:
+	-@docker rmi bitergia/idm-keyrock
