@@ -51,6 +51,10 @@ pep-wilma:
 .PHONY: cygnus
 cygnus:
 	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
+
+.PHONY: orion
+orion:
+	docker build -t bitergia/fiware-orion:$(ORION_VERSION) fiware-orion/$(ORION_VERSION)/
         
 .PHONY: chanchanapp idmauthlegacy
 chanchanapp idmauthlegacy: $@
@@ -72,10 +76,9 @@ mariadb-5.5:
 mariadb:
 	docker build -t bitergia/mariadb:$(MARIADB_VERSION) mariadb/$(MARIADB_VERSION)/
 
-.PHONY: orion orion.ubuntu orion.centos6 orion-ubuntu
+.PHONY: orion.ubuntu orion-ubuntu
 orion-ubuntu: orion.ubuntu
-orion: orion.centos6
-orion.centos6 orion.ubuntu:
+orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
 .PHONY: idas idas-ul
