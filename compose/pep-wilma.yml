@@ -12,6 +12,13 @@ mongodb:
     expose:
         - "27017"
 
+orion:
+    image: bitergia/orion:0.22.0
+    links:
+        - mongodb
+    expose:
+        - "10026"
+
 authzforce:
     image: bitergia/authzforce
     expose:
