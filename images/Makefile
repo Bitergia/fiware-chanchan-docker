@@ -2,6 +2,9 @@ MONGO_VERSION = 2.6
 ORION_VERSION = 0.22.0
 MARIADB_VERSION = 10.0
 CYGNUS_VERSION = 0.5.1
+IDM_VERSION = 4.3.0
+WILMA_VERSION = 4.3.0
+AUTHZFORCE_VERSION = 4.2.0
 
 .PHONY: help
 help:
@@ -33,10 +36,25 @@ help:
 	$(info )
 	@echo ""
 
-.PHONY: idm-keyrock authzforce pep-wilma cygnus chanchanapp idmauthlegacy
-idm-keyrock authzforce pep-wilma cygnus chanchanapp idmauthlegacy: $@
+.PHONY: idm-keyrock
+idm-keyrock:
+	docker build -t bitergia/idm-keyrock:$(IDM_VERSION) idm-keyrock/$(IDM_VERSION)/
+
+.PHONY: authzforce
+authzforce:
+	docker build -t bitergia/authzforce:$(AUTHZFORCE_VERSION) authzforce/$(AUTHZFORCE_VERSION)/
+
+.PHONY: pep-wilma
+pep-wilma:
+	docker build -t bitergia/pep-wilma:$(WILMA_VERSION) pep-wilma/$(WILMA_VERSION)/
+
+.PHONY: cygnus
+cygnus:
+	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
+        
+.PHONY: chanchanapp idmauthlegacy
+chanchanapp idmauthlegacy: $@
 	docker build -t bitergia/$@ $@/
-	-[ "$@" = "cygnus" ] && docker tag -f bitergia/$@ bitergia/$@:$(CYGNUS_VERSION) || true
 
 .PHONY: mongodb-2.6 mongodb-3.0 mongodb
 mongodb-2.6:
@@ -44,7 +62,7 @@ mongodb-2.6:
 mongodb-3.0:
 	@$(MAKE) mongodb MONGO_VERSION=3.0
 mongodb:
-	docker build -t bitergia/mongodb-org:$(MONGO_VERSION) mongodb/$(MONGO_VERSION)/
+	docker build -t bitergia/mongodb:$(MONGO_VERSION) mongodb/$(MONGO_VERSION)/
 
 .PHONY: mariadb-10.0 mariadb-5.5 mariadb
 mariadb-10.0:
@@ -58,7 +76,7 @@ mariadb:
 orion-ubuntu: orion.ubuntu
 orion: orion.centos6
 orion.centos6 orion.ubuntu:
-	docker build -t bitergia/orion:$(ORION_VERSION) -f orion/Dockerfile.$@ orion/
+	docker build -t bitergia/orion:$(ORION_VERSION) -f orion/$(ORION_VERSION)/Dockerfile.$@ orion/$(ORION_VERSION)/
 
 .PHONY: idas idas-ul
 idas: idas-ul20
