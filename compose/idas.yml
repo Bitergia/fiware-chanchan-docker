@@ -12,7 +12,7 @@ mongodb:
     expose:
         - "27017"
 orion:
-    image: bitergia/orion:0.22.0
+    image: bitergia/fiware-orion:0.22.0
     links:
         - mongodb
 idas:

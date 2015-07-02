@@ -76,7 +76,7 @@ mariadb:
 orion-ubuntu: orion.ubuntu
 orion: orion.centos6
 orion.centos6 orion.ubuntu:
-	docker build -t bitergia/orion:$(ORION_VERSION) -f orion/$(ORION_VERSION)/Dockerfile.$@ orion/$(ORION_VERSION)/
+	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
 .PHONY: idas idas-ul
 idas: idas-ul20

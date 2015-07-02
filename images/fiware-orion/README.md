@@ -49,7 +49,7 @@ No problem, the only thing is that you will have to deploy a MongoDB yourself an
 An example of how to run it could be:
 
 ```
-docker run -d --name <container-name> bitergia/orion:0.22.0
+docker run -d --name <container-name> bitergia/fiware-orion:0.22.0
 ```
 
 By running this, it expects a MongoDB database running on:
@@ -61,7 +61,7 @@ By running this, it expects a MongoDB database running on:
 So if you have your MongoDB somewhere else, just attach it as a parameter like:
 
 ```
-docker run -d --name <container-name> -e MONGODB_HOSTNAME=<mongodb-host> -e MONGODB_PORT=<mongodb-port> bitergia/orion:0.22.0
+docker run -d --name <container-name> -e MONGODB_HOSTNAME=<mongodb-host> -e MONGODB_PORT=<mongodb-port> bitergia/fiware-orion:0.22.0
 ```
 
 ## Stopping the container
@@ -101,13 +101,13 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 ### Using/generate your own SSH key
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/centos#about-ssh).
-**Note** that the information below is regarding the `bitergia/centos-6` baseimage. If you have already pulled or made a `bitergia/orion` image based in the `bitergia/centos-6` image before applying the keys change, you will need to re-build both images again.
+**Note** that the information below is regarding the `bitergia/centos-6` baseimage. If you have already pulled or made a `bitergia/fiware-orion` image based in the `bitergia/centos-6` image before applying the keys change, you will need to re-build both images again.
 
 ## User feedback
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/orion).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/fiware-orion).
 
 ### Issues
 
