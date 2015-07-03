@@ -20,12 +20,12 @@ orion:
         - "10026"
 
 authzforce:
-    image: bitergia/authzforce
+    image: bitergia/authzforce:4.2.0
     expose:
         - "8080"
 
 idm:
-    image: bitergia/idm
+    image: bitergia/idm-keyrock:4.3.0
     links:
         - authzforce
     volumes:
@@ -34,7 +34,7 @@ idm:
         - "5000"
 
 pepwilma:
-    image: bitergia/pep-wilma
+    image: bitergia/pep-wilma:4.3.0
     links:
         - orion
         - idm

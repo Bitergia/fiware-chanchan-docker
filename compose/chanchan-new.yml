@@ -39,7 +39,7 @@ idas:
     - orion
 
 cygnus:
-    image: bitergia/cygnus
+    image: bitergia/cygnus:0.5.1
     links:
         - orion
         - mariadb
@@ -56,19 +56,19 @@ cygnus:
         - MYSQL_PASSWORD=bitergia
 
 authzforce:
-    image: bitergia/authzforce
+    image: bitergia/authzforce:4.2.0
     expose:
         - "8080"
 
 pepwilma:
-    image: bitergia/pep-wilma
+    image: bitergia/pep-wilma:4.3.0
     links:
         - orion
         - idm
         - authzforce
 
 idm:
-    image: bitergia/idm
+    image: bitergia/idm-keyrock:4.3.0
     links:
         - authzforce
     volumes:
