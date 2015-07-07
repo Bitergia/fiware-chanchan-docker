@@ -27,8 +27,10 @@ idasiotacpp:
         - "8080"
         - "8081"
 
-idaslwm2m:
-    image: bitergia/idas-lwm2m:0.2.0
+idasiotalwm2m:
+    image: bitergia/idas-iota-lwm2m:0.2.0
     links:
         - mongodb
         - orion
+    expose:
+        - "4041"

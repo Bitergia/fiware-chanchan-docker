@@ -27,7 +27,7 @@ help:
 	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
 	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
 	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
-	$(info - idas-lwm2m:		Build IDAS OMA Lightweight M2M IoTAgent image)
+	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
 	$(info - mariadb:		Build MariaDB $(MARIADB_VERSION) image)
 	$(info )
 	$(info Other available options:)
@@ -85,12 +85,12 @@ orion-ubuntu: orion.ubuntu
 orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
-.PHONY: idas idas-ul20 idas-lwm2m idas-iota-cpp
-idas: idas-lwm2m idas-iota-cpp
+.PHONY: idas idas-ul20 idas-iota-lwm2m idas-iota-cpp
+idas: idas-iota-lwm2m idas-iota-cpp
 idas-ul20:
 	docker build -t bitergia/idas:ul20 idas/ul20/
-idas-lwm2m:
-	docker build -t bitergia/idas-lwm2m:$(IDAS_LWM2M_VERSION) idas/lwm2m/$(IDAS_LWM2M_VERSION)/
+idas-iota-lwm2m:
+	docker build -t bitergia/idas-iota-lwm2m:$(IDAS_LWM2M_VERSION) idas/iota-lwm2m/$(IDAS_LWM2M_VERSION)/
 
 idas-iota-cpp:
 	docker build -t bitergia/idas-iota-cpp:$(IDAS_IOTACPP_VERSION) idas/iota-cpp/$(IDAS_IOTACPP_VERSION)/
