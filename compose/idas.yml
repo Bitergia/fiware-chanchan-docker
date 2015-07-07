@@ -18,11 +18,14 @@ orion:
     expose:
         - "10026"
 
-idasul20:
-    image: bitergia/idas:ul20
+idasiotacpp:
+    image: bitergia/idas-iota-cpp:1.2.0
     links:
         - mongodb
         - orion
+    expose:
+        - "8080"
+        - "8081"
 
 idaslwm2m:
     image: bitergia/idas-lwm2m:0.2.0

@@ -1,0 +1,39 @@
+{
+    "resources": [
+	{
+	    "resource": "/iot/d",
+	    "options": {
+		"FileName": "UL20Service"
+	    }
+	},
+       {
+        "resource": "/iot/mqtt",
+        "options": {
+            "ConfigFile": "MqttService.xml",
+            "FileName": "MqttService"
+        }
+       },
+       {
+        "resource": "/iot/tt",
+        "options": {
+            "ConfigFile": "TTService.xml",
+            "FileName": "TTService"
+        }
+       }
+    ],
+    "timezones": "/etc/iot/date_time_zonespec.csv",
+    "storage": {
+	"type": "mongodb",
+	"dbname": "MONGODB_DATABASE",
+	"host": "MONGODB_HOSTNAME",
+	"port": "MONGODB_PORT"
+    },
+    "ngsi_url": {
+	"cbroker": "http://ORION_HOSTNAME:ORION_PORT",
+	"updateContext": "/NGSI10/updateContext",
+	"registerContext": "/NGSI9/registerContext",
+	"queryContext": "/NGSI10/queryContext"
+    },
+    "timeout": 11,
+    "dir_log": "/var/log/iot/"
+}
