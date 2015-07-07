@@ -17,7 +17,7 @@ We strongly suggest you to use [docker-compose](https://docs.docker.com/compose/
 So for this purpose, we have already a simple file that launches:
 
    * Orion (service protected)
-   * Authzforge (permissions persitance)
+   * Authzforce (permissions persitance)
    * IDM KeyRock (identitiy management)
    * PEP Wilma as a service
 
@@ -29,14 +29,11 @@ Once you get it, you just have to:
 docker-compose -f pep-wilma.yml up -d
 ```
 
-And all the services will be up. End to end testing can be done using the complete [chanchanapp docker compose](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/compose/chanchan-new.yml).
-
-**Note**: as retrieving the `<container-ip>` can be a bit 'tricky', we've created a set of utilities and useful scripts for handling docker images. You can find them all [here](https://github.com/Bitergia/docker/tree/master/utils).
-
+And all the services will be up. End to end testing can be done using the complete [chanchanapp docker compose](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/compose/chanchan-new.yml)
  
 ## What if I don't want to use docker-compose?
 
-No problem, the only thing is that you will have to deploy IDM, Authzforge and Orion containers yourself and their IPs with the hosts idm, authzforge and orion in wilma-pep container.
+No problem, the only thing is that you will have to deploy IDM, Authzforce and Orion containers yourself and their IPs with the hosts idm, authzforce and orion in wilma-pep container.
 
 ## About SSH
 
@@ -69,7 +66,7 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 ### Using/generate your own SSH key
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
-**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/pep-wilma image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
+**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/pep-wilma` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 ## User feedback
 

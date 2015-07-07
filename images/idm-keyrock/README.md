@@ -9,6 +9,7 @@ Find detailed information of this Generic enabler at [Fiware catalogue](http://c
 - [x] `bitergia/ubuntu-trusty` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#image-contents)
 - [x] KeyRock backend based on OpenStack KeyStone
 - [x] KeyRock frontend based on OpenStack Horizon
+- [x] Keystone running on port `5000`
 
 ## Usage
 
@@ -41,7 +42,7 @@ http://<container-ip>
 No problem, you can run the container alone and use it services.
 
 ```
-docker run -d --name <container-name> bitergia/idm-keyrock
+docker run -d --name <container-name> bitergia/idm-keyrock:4.3.0
 ```
 
 ## Stopping the container
@@ -81,7 +82,7 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 ### Using/generate your own SSH key
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
-**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/pep-wilma image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
+**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/idm-keyrock` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 
 ## User feedback
