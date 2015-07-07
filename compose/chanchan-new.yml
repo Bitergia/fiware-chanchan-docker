@@ -33,7 +33,7 @@ orion:
         - "10026"
 
 idas:
-  image: bitergia/idas:ul20
+  image: bitergia/idas-iota-cpp:1.2.0
   links:
     - mongodb
     - orion
