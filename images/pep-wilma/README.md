@@ -1,6 +1,6 @@
 ## PEP Proxy - Wilma Docker image
 
-The [PEP Proxy - Wilma](https://github.com/ging/fi-ware-pep-proxy) is an implementation of the implementation of PEP Proxy Generic Enabler.
+The [PEP Proxy - Wilma](https://github.com/ging/fi-ware-pep-proxy) is an implementation of PEP Proxy Generic Enabler.
 
 Find detailed information of this Generic enabler at [Fiware catalogue](http://catalogue.fiware.org/enablers/pep-proxy-wilma).
 
