@@ -1,92 +1,104 @@
 #!/bin/bash
 
-AUTHZFORCE_HOSTNAME=authzforce
-AUTHZFORCE_PORT=8080
-TIMEOUT=10
-try=0
-ok=0
+[ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
+[ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
+[ -z "${IDM_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_HOSTNAME=idm
+[ -z "${IDM_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_PORT=5000
+declare DOMAIN=''
 
-echo "Testing Authzforce port"
-while [ $try -lt $TIMEOUT -a $ok -eq 0 ] ; do
-        echo "Checking connection with Authzforce at ${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT} (try $try)..."
-        if nc -z -w $TIMEOUT $AUTHZFORCE_HOSTNAME $AUTHZFORCE_PORT ; then
-            # Authzforce is up
-            ok=1
-        else
-            # keep waiting
-            sleep 1
-            try=$(( $try + 1 ))
-        fi
-done
-if [ ! $ok ] ; then
-        echo "Failed to connect to Authzforce at ${AUHTZFORCE_HOSTNAME}:${AUTHFORCE_PORT}"
-        exit 1
+# fix variables when using docker-compose
+if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+    export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
+fi
+if [[ ${IDM_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+    export IDM_PORT=${BASH_REMATCH[1]}
 fi
 
-# Request to Authzforce to retrieve Domain
+function check_host_port () {
 
-try=0
-ok=0
-echo "Testing Authzforce url"
-while [ $try -lt $TIMEOUT -a $ok -eq 0 ] ; do
-        echo "Checking if Authzforce is ready at ${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains (try $try)..."
-        if curl ${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains -s | grep -q href ; then
-            ok=1
-            echo "Authzforce is ready!"
-        else
-            sleep 1
-            try=$(( $try + 1 ))
-        fi
-done
-if [ ! $ok ] ; then
-        echo "Failed to connect to Authzforce at ${AUHTZFORCE_HOSTNAME}:${AUTHFORCE_PORT}"
-        exit 1
-fi
+    local _timeout=10
+    local _tries=0
+    local _is_open=0
 
-# Request to Authzforce to retrieve Domain
+    if [ $# -lt 2 ] ; then
+    echo "check_host_port: missing parameters."
+    echo "Usage: check_host_port <host> <port> [max-tries]"
+    exit 1
+    fi
 
-DOMAIN="$(curl -s --request GET http://authzforce:8080/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)" 
+    local _host=$1
+    local _port=$2
+    local _max_tries=${3:-${_timeout}}
+    local NC=$( which nc )
 
-# Checks if the Domain exists. If not, creates one
+    if [ ! -e "${NC}" ] ; then
+    echo "Unable to find 'nc' command."
+    exit 1
+    fi
 
-if [ -z "$DOMAIN" ]; then 
-    echo "Domain is not created yet!"
-    curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://authzforce:8080/authzforce/domains --output /dev/null
-    DOMAIN="$(curl -s --request GET http://authzforce:8080/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
-    echo "Domain has been created: $DOMAIN"
-else
-    echo "Domain value is not empty: "
-    echo $DOMAIN
-fi
+    echo "Testing if port '${_port}' is open at host '${_host}'."
+
+    while [ ${_tries} -lt ${_max_tries} -a ${_is_open} -eq 0 ] ; do
+    echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))] ... "
+    if ${NC} -z -w ${_timeout} ${_host} ${_port} ; then
+        echo "OK."
+        _is_open=1
+    else
+        echo "Failed."
+        sleep 1
+        _tries=$(( ${_tries} + 1 ))
+    fi
+    done
+
+    if [ ${_is_open} -eq 0 ] ; then
+    echo "Failed to connect to port '${_port}' on host '${_host}' after ${_tries} tries."
+    echo "Port is closed or host is unreachable."
+    exit 1
+    else
+    echo "Port '${_port}' at host '${_host}' is open."
+    fi
+}
+
+
+function check_domain () {
+
+    if [ $# -lt 2 ] ; then
+    echo "check_host_port: missing parameters."
+    echo "Usage: check_host_port <host> <port> [max-tries]"
+    exit 1
+    fi
+
+    local _host=$1
+    local _port=$2
+
+    # Request to Authzforce to retrieve Domain
+
+    DOMAIN="$(curl -s --request GET http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)" 
+
+    # Checks if the Domain exists. If not, creates one
+
+    if [ -z "$DOMAIN" ]; then 
+        echo "Domain is not created yet!"
+        curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains --output /dev/null
+        DOMAIN="$(curl -s --request GET http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
+        echo "Domain has been created: $DOMAIN"
+    else
+        echo "Domain value is not empty: "
+        echo $DOMAIN
+    fi
+
+}
+
+# Call checks
+
+check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
+check_host_port ${IDM_HOSTNAME} ${IDM_PORT}
+check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
+
 
 # Configure PEP Proxy adding authzforce complete URL
 
 sed -e "s@^    path:@    path:'/authzforce/domains/$DOMAIN/pdp'@" -i /opt/fi-ware-pep-proxy/config.js
-
-# Check that IdM is up and responsive 
-
-IDM_HOSTNAME=idm
-IDM_PORT=5000
-try=0
-ok=0
-
-echo "Testing Keystone port"
-while [ $try -lt $TIMEOUT -a $ok -eq 0 ] ; do
-        echo "Checking connection with Keystone at ${IDM_HOSTNAME}:${IDM_PORT} (try $try)..."
-        if nc -z -w $TIMEOUT $IDM_HOSTNAME $IDM_PORT ; then
-            # Keystone is up
-            ok=1
-            echo "Keystone is ready!"
-        else
-            # keep waiting
-            sleep 1
-            try=$(( $try  1 ))
-        fi
-done
-if [ ! $ok ] ; then
-        echo "Failed to connect to Keystone at ${IDM_HOSTNAME}:${IDM_PORT}"
-        exit 1
-fi
 
 # Configure Domain permissions to user 'pepproxy' at IdM
 
