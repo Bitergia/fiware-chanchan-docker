@@ -52,7 +52,7 @@ WORKDIR /opt/fi-ware-idm
 RUN cp conf/settings.py.example conf/settings.py
 RUN bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     mkvirtualenv idm_tools && \
-    pip install -r requirements.txt && pip install -I oslo.i18n==1.7 "
+    pip install -r requirements.txt"
 
 #RUN sed -e "s/env.run('sudo apt-get install {0}'.format(dependencies))/env.run('sudo apt-get -y install {0}'.format(dependencies))/g" -i deployment/horizon.py
 
@@ -77,7 +77,6 @@ RUN bash -c "apt-get update && \
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
     fab localhost horizon.install && \
-    /opt/fi-ware-idm/horizon/tools/with_venv.sh pip install -I oslo.i18n==1.7 && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete"
 
