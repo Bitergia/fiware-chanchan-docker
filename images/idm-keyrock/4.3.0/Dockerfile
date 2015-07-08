@@ -77,6 +77,7 @@ RUN bash -c "apt-get update && \
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
     fab localhost horizon.install && \
+    sed -i /opt/fi-ware-idm/horizon/openstack_dashboard/local/local_settings.py -e 's|OPENSTACK_KEYSTONE_URL = \"https:|OPENSTACK_KEYSTONE_URL = \"http:|g' && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete"
 
