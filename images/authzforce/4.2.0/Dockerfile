@@ -42,3 +42,7 @@ RUN service tomcat7 start
 
 RUN curl -O -L http://catalogue.fiware.org/sites/default/files/storage/enablers/authzforce_4.2.0-fiware_all.deb && \
     dpkg -i authzforce_4.2.0-fiware_all.deb
+
+### Exposed ports
+# - App server
+EXPOSE 8080

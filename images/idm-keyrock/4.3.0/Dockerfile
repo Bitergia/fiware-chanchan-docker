@@ -104,3 +104,9 @@ RUN bash -c "source /opt/fi-ware-idm/keystone/.venv/bin/activate && \
 ADD config-domain.sh /opt/scripts/config-domain.sh
 RUN chmod 755 /opt/scripts/config-domain.sh
 ENTRYPOINT ["/opt/scripts/config-domain.sh"]
+
+### Exposed ports
+# - Keystone
+EXPOSE 5000
+# - Horizon (HTTPS)
+EXPOSE 443

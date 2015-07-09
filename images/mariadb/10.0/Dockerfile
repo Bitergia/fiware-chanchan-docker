@@ -20,6 +20,8 @@ RUN apt-get update && \
     find /var/lib/apt/lists -type f -delete && \
     rm -fr /var/lib/mysql/*
 
+### Exposed ports
+# - MariaDB default port
 EXPOSE 3306
 
 COPY docker-entrypoint.sh /

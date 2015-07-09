@@ -40,3 +40,7 @@ RUN cp ${IOTA_PATH}/rpm/SOURCES/etc/init.d/iotagent-lwm2m /etc/init.d/iotagent-l
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+### Exposed ports
+# - IoT Agent
+EXPOSE 4041

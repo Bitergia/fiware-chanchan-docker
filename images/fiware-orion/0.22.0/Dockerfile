@@ -55,3 +55,7 @@ WORKDIR /
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+### Exposed ports
+# - Orion
+EXPOSE 10026

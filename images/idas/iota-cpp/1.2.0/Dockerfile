@@ -59,3 +59,9 @@ RUN chown ${IOTACPP_USER}:${IOTACPP_USER} /etc/iot/config.json
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+### Exposed ports
+# - IoT Agent Admin port
+EXPOSE 8081
+# - IoT Agent port
+EXPOSE 8080

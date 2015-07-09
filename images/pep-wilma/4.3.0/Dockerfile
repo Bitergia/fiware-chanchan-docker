@@ -43,3 +43,7 @@ COPY wilmapep.conf /etc/init/wilmapep.conf
 ADD config-domain.sh /opt/scripts/config-domain.sh
 RUN chmod 755 /opt/scripts/config-domain.sh
 ENTRYPOINT ["/opt/scripts/config-domain.sh"]
+
+### Exposed ports
+# - Wilma PEP
+EXPOSE 1026

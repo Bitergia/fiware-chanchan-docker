@@ -9,5 +9,6 @@ RUN yum install -y mongodb-org && \
     chkconfig mongod on && \
     sed -e 's/^bind_ip/#bind_ip/g' -i /etc/mongod.conf
 
+### Exposed ports
+# - Mongod default port
 EXPOSE 27017
-

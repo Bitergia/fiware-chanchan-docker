@@ -71,3 +71,10 @@ RUN sed -i /etc/default/cygnus \
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 RUN touch /subscribe-to-orion
+
+### Exposed ports
+# - Cygnus notifications are received on this ports
+EXPOSE 5001
+EXPOSE 5002
+EXPOSE 5050
+EXPOSE 6001
