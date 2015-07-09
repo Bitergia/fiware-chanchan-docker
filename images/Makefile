@@ -96,7 +96,7 @@ idas-iota-cpp:
 	docker build -t bitergia/idas-iota-cpp:$(IDAS_IOTACPP_VERSION) idas/iota-cpp/$(IDAS_IOTACPP_VERSION)/
 
 .PHONY: all
-all: idm-keyrock orion authzforce pep-wilma cygnus chanchanapp idmauthlegacy mongodb mariadb
+all: idm-keyrock orion authzforce pep-wilma cygnus chanchanapp idmauthlegacy mongodb mariadb idas
 
 .PHONY: clean clean_idm-keyrock
 clean: clean_idm-keyrock
