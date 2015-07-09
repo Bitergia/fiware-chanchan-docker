@@ -85,7 +85,7 @@ chanchanapp:
         - orion
         - idas
         - mariadb
-    volumes:
-        - ~/devel/fiware/fiware-chanchan:/home/bitergia/fiware-chanchan
+    # volumes:
+    #     - ~/devel/fiware/fiware-chanchan:/home/bitergia/fiware-chanchan
     volumes_from:
         - idm
