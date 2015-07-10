@@ -5,6 +5,8 @@ set -e
 [ -z "${MONGODB_PORT}" ] && echo "MONGODB_PORT is undefined.  Using default value of '27017'" && export MONGODB_PORT=27017
 [ -z "${ORION_PORT}" ] && echo "ORION_PORT is undefined.  Using default value of '10026'" && export ORION_PORT=10026
 
+[ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
+
 # fix variables when using docker-compose
 if [[ ${MONGODB_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
     export MONGODB_PORT=${BASH_REMATCH[1]}
@@ -28,7 +30,7 @@ function check_host_port () {
 
     local _host=$1
     local _port=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local NC=$( which nc )
 
     if [ ! -e "${NC}" ] ; then

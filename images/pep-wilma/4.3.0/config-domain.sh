@@ -4,6 +4,8 @@
 [ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
 [ -z "${IDM_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_HOSTNAME=idm
 [ -z "${IDM_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_PORT=5000
+[ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
+
 declare DOMAIN=''
 
 # fix variables when using docker-compose
@@ -28,7 +30,7 @@ function check_host_port () {
 
     local _host=$1
     local _port=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local NC=$( which nc )
 
     if [ ! -e "${NC}" ] ; then

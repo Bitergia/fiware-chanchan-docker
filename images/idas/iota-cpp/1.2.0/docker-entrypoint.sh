@@ -7,6 +7,7 @@ set -e
 [ -z "${ORION_HOSTNAME}" ] && echo "ORION_HOSTNAME is undefined.  Using default value of 'orion'" && export ORION_HOSTNAME=orion
 [ -z "${ORION_PORT}" ] && echo "ORION_PORT is undefined.  Using default value of '10026'" && export ORION_PORT=10026
 [ -z "${IOTA_PATH}" ] && echo "IOTA_PATH is undefined.  Using default value of '/etc/iot'" && export IOTA_PATH=/etc/iot
+[ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
 # fix variables when using docker-compose
 if [[ ${MONGODB_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
@@ -31,7 +32,7 @@ function check_host_port () {
 
     local _host=$1
     local _port=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local NC=$( which nc )
 
     if [ ! -e "${NC}" ] ; then
@@ -76,7 +77,7 @@ function check_url () {
 
     local _url=$1
     local _regex=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local CURL=$( which curl )
 
     if [ ! -e ${CURL} ] ; then

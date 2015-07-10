@@ -10,6 +10,7 @@ set -e
 [ -z "${IOTA_DEFAULT_SERVICE}" ] && echo "IOTA_DEFAULT_SERVICE is undefined.  Using default value of 'bitergiaidas'" && export IOTA_DEFAULT_SERVICE=bitergia
 [ -z "${IOTA_DEFAULT_SUBSERVICE}" ] && echo "IOTA_DEFAULT_SUBSERVICE is undefined.  Using default value of '/devices'" && export IOTA_DEFAULT_SUBSERVICE=/devices
 [ -z "${IOTA_PATH}" ] && echo "IOTA_PATH is undefined.  Using default value of '/opt/lightweightm2m-iotagent'" && export IOTA_PATH=/opt/lightweightm2m-iotagent
+[ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
 if [ -z "${IOTA_SERVER_IP}" ]; then
     echo "IOTA_SERVER_IP is undefined.  Using container IP".
@@ -41,7 +42,7 @@ function check_host_port () {
 
     local _host=$1
     local _port=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local NC=$( which nc )
 
     if [ ! -e "${NC}" ] ; then
@@ -86,7 +87,7 @@ function check_url () {
 
     local _url=$1
     local _regex=$2
-    local _max_tries=${3:-${_timeout}}
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
     local CURL=$( which curl )
 
     if [ ! -e ${CURL} ] ; then
