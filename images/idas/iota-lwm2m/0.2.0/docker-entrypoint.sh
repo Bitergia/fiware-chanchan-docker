@@ -53,7 +53,7 @@ function check_host_port () {
     echo "Testing if port '${_port}' is open at host '${_host}'."
 
     while [ ${_tries} -lt ${_max_tries} -a ${_is_open} -eq 0 ] ; do
-	echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))] ... "
+	echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
 	if ${NC} -z -w ${_timeout} ${_host} ${_port} ; then
 	    echo "OK."
 	    _is_open=1
@@ -96,7 +96,7 @@ function check_url () {
     fi
 
     while [ ${_tries} -lt ${_max_tries} -a ${_ok} -eq 0 ] ; do
-	echo -n "Checking url '${_url}' [try $(( ${_tries} + 1 ))] ... "
+	echo -n "Checking url '${_url}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
 	if ${CURL} -s ${_url} | grep -q "${_regex}" ; then
 	    echo "OK."
 	    _ok=1
