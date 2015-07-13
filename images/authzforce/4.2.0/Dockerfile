@@ -27,8 +27,6 @@ RUN mv /etc/init.d/tomcat7 /etc/init.d/tomcat7.tmp
 ADD tomcat7 /etc/init.d/
 RUN chmod 755 /etc/init.d/tomcat7
 
-EXPOSE 8080
-
 # Restore initctl
 
 RUN rm -f /usr/sbin/policy-rc.d
