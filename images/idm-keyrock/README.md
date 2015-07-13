@@ -17,7 +17,7 @@ We strongly suggest you to use [docker-compose](https://docs.docker.com/compose/
 
 So for this purpose, we have already a simple file that launches:
 
-   * Authzforge
+   * Authzforce
    * IDM KeyRock
 
 The file `idm-keyrock.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/idm-keyrock.yml).
@@ -44,6 +44,69 @@ No problem, you can run the container alone and use it services.
 ```
 docker run -d --name <container-name> bitergia/idm-keyrock:4.3.0
 ```
+
+By running this, it expects an Authzforce instance running on:
+
+    * AUTHZFORCE_HOSTNAME: `authzforce`
+    * AUTHZFORCE_PORT: `8080`
+
+So if you have your Authzforce somewhere else, just attach it as a parameter like:
+
+```
+docker run -d --name <container-name> \
+-e AUTHZFORCE_HOSTNAME=<authzforce-host> \
+-e AUTHZFORCE_PORT=<authzforce-port> \
+bitergia/idm-keyrock:4.3.0
+```
+
+## IdM Users, Organizations, Apps, Roles and Permissions
+
+This IdM image was intended to work for the [Fiware Chanchan](https://github.com/Bitergia/fiware-chanchan). Due to this, we've generated Users, Organizations, Apps, Roles and Permissions adapted to it. 
+
+**Note** the following provision is intended just for testing purposes. To add/remove information to this image, you can always use the [Identity API](http://developer.openstack.org/api-ref-identity-v3.html)
+
+### Users
+
+| Role     | Username           | Password   |
+|----------|--------------------|------------|
+| Admin    | idm                | idm        |
+| Provider | pepproxy@test.com  | test       |
+| Owner    | user0@test.com     | test       |
+| Owner    | user1@test.com     | test       |
+| Owner    | user2@test.com     | test       |
+| Owner    | user3@test.com     | test       |
+| Owner    | user4@test.com     | test       |
+| Owner    | user5@test.com     | test       |
+| Owner    | user6@test.com     | test       |
+| Owner    | user7@test.com     | test       |
+| Owner    | user8@test.com     | test       |
+| Owner    | user9@test.com     | test       |
+
+### Organizations (or *projects* if using the [Identity API](http://developer.openstack.org/api-ref-identity-v3.html))
+
+| Organization name   | Description                    | Users                     |
+|---------------------|--------------------------------|---------------------------|
+| Organization A      | Test Organization A            | user0@test.com (owner)    |
+| Organization B      | Test Organization B            | user1@test.com (owner)    |
+
+
+### Apps
+
+| Application name    | Description                             | URL                | Redirect URI            |
+|---------------------|-----------------------------------------|--------------------|-------------------------|
+| Chanchan            | Chanchan Test Application               | http://localhost   | http://localhost/login  |
+
+### Roles
+
+| Role name           | Granted to user                         | 
+|---------------------|-----------------------------------------|
+| Provider            | pepproxy@test.com                       |
+| Orion Operations    | user0@test.com                          |
+|                     | user1@test.com                          |
+
+### Permissions
+
+We've added several permissions for Orion Operations. You can check all of them by accessing the IdM or [here](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/idm-keyrock/4.3.0/keystone.py#L537)
 
 ## Stopping the container
 
