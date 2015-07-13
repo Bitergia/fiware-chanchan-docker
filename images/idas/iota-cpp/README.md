@@ -49,6 +49,26 @@ An example of how to run it could be:
 docker run -d --name <container-name> bitergia/idas-iota-cpp:1.2.0
 ```
 
+By running this, it expects a MongoDB database and Orion running on:
+
+    * MONGODB_HOSTNAME: `mongodb`
+    * MONGODB_PORT: `27017`
+    * MONGODB_DATABASE: `iota-cpp`
+    * ORION_HOSTNAME: `orion`
+    * ORION_PORT: `10026`
+
+So if you have your MongoDB and Orion somewhere else, just attach it as a parameter like:
+
+```
+docker run -d --name <container-name> \
+-e MONGODB_HOSTNAME=<mongodb-host> \
+-e MONGODB_PORT=<mongodb-port> \
+-e MONGODB_DATABASE=<mongodb-database> \
+-e ORION_HOSTNAME=<orion-host> \
+-e ORION_PORT=<orion-port> \
+bitergia/idas-iota-cpp:1.2.0
+```
+
 
 ## Stopping the container
 
