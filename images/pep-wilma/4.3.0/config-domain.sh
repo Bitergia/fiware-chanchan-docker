@@ -2,8 +2,8 @@
 
 [ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
 [ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
-[ -z "${IDM_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_HOSTNAME=idm
-[ -z "${IDM_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_PORT=5000
+[ -z "${IDM_KEYSTONE_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYSTONE_HOSTNAME=idm
+[ -z "${IDM_KEYSTONE_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_KEYSTONE_PORT=5000
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
 declare DOMAIN=''
@@ -12,8 +12,8 @@ declare DOMAIN=''
 if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
     export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
 fi
-if [[ ${IDM_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-    export IDM_PORT=${BASH_REMATCH[1]}
+if [[ ${IDM_KEYSTONE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+    export IDM_KEYSTONE_PORT=${BASH_REMATCH[1]}
 fi
 
 function check_host_port () {
@@ -94,7 +94,7 @@ function check_domain () {
 # Call checks
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-check_host_port ${IDM_HOSTNAME} ${IDM_PORT}
+check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 
 
@@ -104,9 +104,9 @@ sed -e "s@^    path:@    path:'/authzforce/domains/$DOMAIN/pdp'@" -i /opt/fi-war
 
 # Configure Domain permissions to user 'pepproxy' at IdM
 
-FRESHTOKEN="$(curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "idm", "domain": { "id": "default" }, "password": "idm"} } } } }' http://${IDM_HOSTNAME}:${IDM_PORT}/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}')"
-MEMBERID="$(curl -s -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://${IDM_HOSTNAME}:${IDM_PORT}/v3/roles | python -m json.tool | grep -iw id | awk -F'"' '{print $4}' | head -n 1)"
-REQUEST="$(curl -s -X PUT -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://${IDM_HOSTNAME}:${IDM_PORT}/v3/domains/default/users/pepproxy/roles/${MEMBERID})"
+FRESHTOKEN="$(curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "idm", "domain": { "id": "default" }, "password": "idm"} } } } }' http://${IDM_KEYSTONE_HOSTNAME}:${IDM_KEYSTONE_PORT}/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}')"
+MEMBERID="$(curl -s -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://${IDM_KEYSTONE_HOSTNAME}:${IDM_KEYSTONE_PORT}/v3/roles | python -m json.tool | grep -iw id | awk -F'"' '{print $4}' | head -n 1)"
+REQUEST="$(curl -s -X PUT -H "X-Auth-Token:$FRESHTOKEN" -H "Content-type: application/json" http://${IDM_KEYSTONE_HOSTNAME}:${IDM_KEYSTONE_PORT}/v3/domains/default/users/pepproxy/roles/${MEMBERID})"
 
 echo "User pepproxy has been granted with:"
 echo "Role: ${MEMBERID}"
