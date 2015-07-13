@@ -1,5 +1,5 @@
 MONGO_VERSION = 2.6
-ORION_VERSION = 0.22.0
+ORION_VERSION = 0.23.0
 MARIADB_VERSION = 10.0
 CYGNUS_VERSION = 0.5.1
 IDM_VERSION = 4.3.0
@@ -31,7 +31,9 @@ help:
 	$(info - mariadb:		Build MariaDB $(MARIADB_VERSION) image)
 	$(info )
 	$(info Other available options:)
-	$(info - orion-ubuntu:		Build Orion Context Broker image using Ubuntu baseimage)
+	$(info - orion.ubuntu:		Build Orion Context Broker using Ubuntu baseimage)
+	$(info - orion-0.22.0:		Build Orion Context Broker 0.22.0 baseimage)
+	$(info - orion-0.22.0.ubuntu:	Build Orion Context Broker 0.22.0 using Ubuntu baseimage)
 	$(info - mongodb-2.6:		Build MongoDB 2.6 image)
 	$(info - mongodb-3.0:		Build MongoDB 3.0 image)
 	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
@@ -56,7 +58,9 @@ pep-wilma:
 cygnus:
 	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
 
-.PHONY: orion
+.PHONY: orion-0.22.0 orion
+orion-0.22.0:
+	@$(MAKE) orion ORION_VERSION=0.22.0
 orion:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) fiware-orion/$(ORION_VERSION)/
 
@@ -80,8 +84,9 @@ mariadb-5.5:
 mariadb:
 	docker build -t bitergia/mariadb:$(MARIADB_VERSION) mariadb/$(MARIADB_VERSION)/
 
-.PHONY: orion.ubuntu orion-ubuntu
-orion-ubuntu: orion.ubuntu
+.PHONY: orion.ubuntu orion-0.22.0.ubuntu
+orion-0.22.0.ubuntu: 
+	@$(MAKE) orion.ubuntu ORION_VERSION=0.22.0
 orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 

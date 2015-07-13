@@ -2,6 +2,12 @@
 
 The [Orion Context Broker](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker) is an implementation of the Publish/Subscribe Context Broker GE, providing the NGSI9 and NGSI10 interfaces.
 
+## Supported tags and respective `Dockerfile` links
+
+* [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/fiware-orion/0.22.0/Dockerfile))
+* [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/fiware-orion/0.23.0/Dockerfile))
+
+
 Find detailed information of this Generic enabler at [Fiware catalogue](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker).
 
 ## Requirements
@@ -49,7 +55,7 @@ No problem, the only thing is that you will have to deploy a MongoDB yourself an
 An example of how to run it could be:
 
 ```
-docker run -d --name <container-name> bitergia/fiware-orion:0.22.0
+docker run -d --name <container-name> bitergia/fiware-orion:0.23.0
 ```
 
 By running this, it expects a MongoDB database running on:
@@ -61,7 +67,7 @@ By running this, it expects a MongoDB database running on:
 So if you have your MongoDB somewhere else, just attach it as a parameter like:
 
 ```
-docker run -d --name <container-name> -e MONGODB_HOSTNAME=<mongodb-host> -e MONGODB_PORT=<mongodb-port> bitergia/fiware-orion:0.22.0
+docker run -d --name <container-name> -e MONGODB_HOSTNAME=<mongodb-host> -e MONGODB_PORT=<mongodb-port> bitergia/fiware-orion:0.23.0
 ```
 
 ## Stopping the container
