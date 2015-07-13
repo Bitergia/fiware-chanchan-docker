@@ -19,12 +19,12 @@ We strongly suggest you to use [docker-compose](https://docs.docker.com/compose/
 
 So for this purpose, we have already a simple file that launches:
 
-   * A MongoDB database
-   * Data-only container for the MongoDB database
+   * A MariaDB database
+   * Data-only container for the MariaDB database
    * Orion Context Broker as a service
    * Cygnus as a service
 
-The file `orion.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/cygnus.yml).
+The file `cygnus.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/cygnus.yml).
 
 Once you get it, you just have to:
 
@@ -32,14 +32,43 @@ Once you get it, you just have to:
 docker-compose -f cygnus.yml up -d
 ```
 
-And all the services will be up. End to end testing can be done by doing publishing in orion context with entities [following this format](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/cygnus/0.5.1/configure-cygnus-cluster).
-
-**Note**: as retrieving the `<container-ip>` for orion and cygnus containers can be a bit 'tricky', we've created a set of utilities and useful scripts for handling docker images. You can find them all [here](https://github.com/Bitergia/docker/tree/master/utils).
+And all the services will be up. End to end testing can be done by doing publishing in orion context with entities [following this format](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/cygnus/0.5.1/docker-entrypoint.sh#L115).
 
  
 ## What if I don't want to use docker-compose?
 
-No problem, the only thing is that you will have to deploy an orion container yourself and specify the parameters [during subscription]((https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/cygnus/0.5.1/configure-cygnus-cluster)).
+No problem, the only thing is that you will have to deploy a MariaDB and Orion Context Broker yourself and specify the parameters.
+
+An example of how to run it could be:
+
+```
+docker run -d --name <container-name> bitergia/cygnus:0.5.1
+```
+
+By running this, it expects the following parameters (mandatory):
+
+	* MYSQL_HOST
+	* MYSQL_PORT
+	* MYSQL_USER
+	* MYSQL_PASSWORD
+
+And the following ones are set by default to:
+
+	* ORION_HOSTNAME: `orion`
+	* ORION_PORT: `10026`
+
+So if you have your MariaDB and Orion somewhere else, just attach its parameters like:
+
+```
+docker run -d --name <container-name> \
+-e MYSQL_HOST=<mysql-host> \
+-e MYSQL_PORT=<mysql-port> \
+-e MYSQL_USER=<mysql-user> \
+-e MYSQL_PASSWORD=<mysql-password> \
+-e ORION_HOSTNAME=<orion-host> \
+-e ORION_PORT=<orion-port> \
+bitergia/cygnus:0.5.1
+```
 
 ## About SSH
 
@@ -72,7 +101,7 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 ### Using/generate your own SSH key
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
-**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/authzforce` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
+**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/cygnus` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 ## User feedback
 
