@@ -7,7 +7,7 @@ set -e
 [ -z "${ORION_HOSTNAME}" ] && echo "ORION_HOSTNAME is undefined.  Using default value of 'orion'" && export ORION_HOSTNAME=orion
 [ -z "${ORION_PORT}" ] && echo "ORION_PORT is undefined.  Using default value of '10026'" && export ORION_PORT=10026
 [ -z "${IOTA_SERVER_PORT}" ] && echo "IOTA_SERVER_PORT is undefined.  Using default value of '4041'" && export IOTA_SERVER_PORT=4041
-[ -z "${IOTA_DEFAULT_SERVICE}" ] && echo "IOTA_DEFAULT_SERVICE is undefined.  Using default value of 'bitergiaidas'" && export IOTA_DEFAULT_SERVICE=bitergia
+[ -z "${IOTA_DEFAULT_SERVICE}" ] && echo "IOTA_DEFAULT_SERVICE is undefined.  Using default value of 'bitergiaidas'" && export IOTA_DEFAULT_SERVICE=bitergiaidas
 [ -z "${IOTA_DEFAULT_SUBSERVICE}" ] && echo "IOTA_DEFAULT_SUBSERVICE is undefined.  Using default value of '/devices'" && export IOTA_DEFAULT_SUBSERVICE=/devices
 [ -z "${IOTA_PATH}" ] && echo "IOTA_PATH is undefined.  Using default value of '/opt/lightweightm2m-iotagent'" && export IOTA_PATH=/opt/lightweightm2m-iotagent
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30

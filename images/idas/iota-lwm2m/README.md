@@ -41,12 +41,41 @@ And all the services will be up. End to end testing can be done using the comple
  
 ## What if I don't want to use docker-compose?
 
-No problem, the only thing is that you will have to deploy a MongoDB and orion yourself and modify the [config parameters](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/idas/iota-lwm2m/0.2.0/config.js).
+No problem, the only thing is that you will have to deploy a MongoDB and Orion yourself and modify the [config parameters](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/idas/iota-lwm2m/0.2.0/config.js).
 
 An example of how to run it could be:
 
 ```
 docker run -d --name <container-name> bitergia/idas-iota-lwm2m:0.2.0
+```
+
+By running this, it expects a MongoDB database and Orion running on:
+
+    * MONGODB_HOSTNAME: `mongodb`
+    * MONGODB_PORT: `27017`
+    * MONGODB_DATABASE: `iota-cpp`
+    * ORION_HOSTNAME: `orion`
+    * ORION_PORT: `10026`
+
+And also, the following settings are pre-configured:
+
+	* IOTA_SERVER_PORT: `4041`
+	* IOTA_DEFAULT_SERVICE: `bitergiaidas`
+	* IOTA_DEFAULT_SUBSERVICE: `/devices`
+
+So if you have your MongoDB and Orion somewhere else, or you want to configure the port or default service, just attach it as a parameter like:
+
+```
+docker run -d --name <container-name> \
+-e MONGODB_HOSTNAME=<mongodb-host> \
+-e MONGODB_PORT=<mongodb-port> \
+-e MONGODB_DATABASE=<mongodb-database> \
+-e ORION_HOSTNAME=<orion-host> \
+-e ORION_PORT=<orion-port> \
+-e IOTA_SERVER_PORT=<iota-port> \
+-e IOTA_DEFAULT_SERVICE=<iota-service> \
+-e IOTA_DEFAULT_SUBSERVICE=<iota-subservice> \
+bitergia/idas-iota-cpp:1.2.0
 ```
 
 
