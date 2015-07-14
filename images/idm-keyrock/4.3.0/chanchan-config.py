@@ -10,6 +10,9 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
+# dict to be shared with chanchan using a JSON file
+chanchan_config = {}
+
 # Connect to the database
 
 con = sqlite3.connect("/opt/fi-ware-idm/keystone/keystone.db")
@@ -28,17 +31,10 @@ cur.execute("select id as a from consumer_oauth2 where name=?", t)
 idr = cur.fetchone()["a"]
 
 # Extract the Oauth2 secret ID
-
 cur.execute("select secret as b from consumer_oauth2 where name=?", t)
 secretr = cur.fetchone()["b"]
 
-# Export it to a json file
-
-f = open('/config/app.json', 'w')
-f.writelines(json.dumps({'id': idr, 'secret': secretr},
-                        sort_keys=True,
-                        indent=4, separators=(',', ': ')))
-f.close()
+chanchan_config = {'id': idr, 'secret': secretr}
 
 # Extract the organizations names
 cur.execute("select name from project where name like '%organization%'")
@@ -47,12 +43,14 @@ orgs_list = []
 for org in orgs:
 	orgs_list.append(org['name'])
 
-# Export it to a json file
+chanchan_config['orgs'] = orgs_list;
 
-f = open('/config/orgs.json', 'w')
-f.writelines(json.dumps(orgs_list,
+# Write the JSON file
+f = open('/config/idm2chanchan.json', 'w')
+f.writelines(json.dumps(chanchan_config,
                         sort_keys=True,
                         indent=4, separators=(',', ': ')))
 f.close()
+
 
 con.close()
