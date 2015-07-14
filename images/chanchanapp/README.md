@@ -1,4 +1,4 @@
-## IDM KeyRock Docker image
+## ChanChanApp Docker image
 
 The [ChanChanApp](https://github.com/Bitergia/fiware-chanchan) is a demo 
 application showing howto publish in CKAN and MySQL context information 
