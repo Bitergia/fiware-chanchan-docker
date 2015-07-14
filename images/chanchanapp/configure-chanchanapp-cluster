@@ -27,13 +27,3 @@ ${ORGANIZATIONS}
 __EOF
 EOF
 fi
-
-# IDM host
-IDM_HOST='idmauthlegacy'
-IDM_HOST_IMAGE=`cat /config/idm_host_docker_image`
-su - ${DEPLOY_USER} <<EOF
-cp ${CC_APP_CLIENT_PATH}/app/hosts.json.example ${CC_APP_CLIENT_PATH}/app/hosts.json
-sed -i ${CC_APP_CLIENT_PATH}/app/hosts.json \
-    -e  "s/\"idm\":\"localhost\"/\"idm\":\"${IDM_HOST}\"/" \
-    -e  "s/\"idm_host_docker_image\":\"localhost\"/\"idm_host_docker_image\":\"idm.${IDM_HOST_IMAGE}\"/"
-EOF
