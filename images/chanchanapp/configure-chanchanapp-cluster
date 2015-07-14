@@ -14,16 +14,11 @@
 
 . /lib/lsb/init-functions
 
-# orgs secrets key from IDM
+# config from IDM to chanchan: orgs, app
+IDM_CONFIG='/config/idm2chanchan.json'  
 CC_APP_CLIENT_PATH="fiware-chanchan/client"
-CC_OAUTH_CREDENTIALS="/config/appoauth.txt"
 DEPLOY_USER=bitergia
 
-if [ -f "${CC_OAUTH_CREDENTIALS}" ]; then
-    ORGANIZATIONS=$( (echo "{" ; (cat "${CC_OAUTH_CREDENTIALS}" | paste -s -d ',') ; echo "}")  | python -m json.tool )
-    su - ${DEPLOY_USER} <<EOF
-cat << __EOF > ${CC_APP_CLIENT_PATH}/app/orgs.json
-${ORGANIZATIONS}
-__EOF
-EOF
+if [ -f "${IDM_CONFIG}" ]; then
+    su - ${DEPLOY_USER} -c "cp ${IDM_CONFIG} ${CC_APP_CLIENT_PATH}/app"
 fi
