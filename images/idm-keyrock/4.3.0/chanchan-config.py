@@ -35,11 +35,24 @@ secretr = cur.fetchone()["b"]
 # Export it to a json file
 
 f = open('/config/app.json', 'w')
-f.writelines(json.dumps(
-	{'id': idr, 'secret': secretr},
-	sort_keys=True,
-	indent=4, 
-        separators=(',', ': ')))
+f.writelines(json.dumps({'id': idr, 'secret': secretr},
+                        sort_keys=True,
+                        indent=4, separators=(',', ': ')))
+f.close()
+
+# Extract the organizations names
+cur.execute("select name from project where name like '%organization%'")
+orgs = cur.fetchall()
+orgs_list = []
+for org in orgs:
+	orgs_list.append(org['name'])
+
+# Export it to a json file
+
+f = open('/config/orgs.json', 'w')
+f.writelines(json.dumps(orgs_list,
+                        sort_keys=True,
+                        indent=4, separators=(',', ': ')))
 f.close()
 
 con.close()
