@@ -9,6 +9,7 @@ Find detailed information of this Generic enabler at [Fiware catalogue](http://c
 - [x] `bitergia/ubuntu-trusty` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#image-contents)
 - [x] Node.js
 - [x] PEP Wilma
+- [x] PEP Wilma running on port `1026`
 
 ## Usage
 
@@ -71,6 +72,8 @@ And then send one of the [authorized requests](https://github.com/Bitergia/fiwar
 }
 EOF
 ```
+
+**Note**: as retrieving the `<container-ip>` can be a bit 'tricky', we've created a set of utilities and useful scripts for handling docker images. You can find them all [here](https://github.com/Bitergia/docker/tree/master/utils).
 
 And that's it!
 
