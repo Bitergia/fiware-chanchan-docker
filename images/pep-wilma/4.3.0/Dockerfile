@@ -34,9 +34,14 @@ RUN npm install forever --global
 
 # Configure PEP proxy
 
-ADD config.js ${WILMA_HOME}/config.js
+COPY config.js ${WILMA_HOME}/config.js
 
 COPY wilmapep.conf /etc/init/wilmapep.conf
+
+# Add script to retrieve token automatically
+
+COPY auth-token.sh /usr/local/bin/auth-token.sh
+RUN chmod 755 /usr/local/bin/auth-token.sh
 
 # Retrieve domain
 
