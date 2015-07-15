@@ -39,3 +39,5 @@ pepwilma:
         - orion
         - idm
         - authzforce
+    volumes_from:
+        - idm
