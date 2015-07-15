@@ -129,8 +129,8 @@ function get_token () {
 
     # Retrieve Client ID and client Secret Automatically
 
-    CLIENT_ID="$(cat /config/app.json | awk '/id/{print $NF}' | cut -d '"' -f2)"
-    CLIENT_SECRET="$(cat /config/app.json | awk '/secret/{print $NF}' | cut -d '"' -f2)"
+    CLIENT_ID="$(cat /config/idm2chanchan.json | awk '/id/{print $NF}' | cut -d '"' -f2)"
+    CLIENT_SECRET="$(cat /config/idm2chanchan.json | awk '/secret/{print $NF}' | cut -d '"' -f2)"
 
     # Generate the Authentication Header for the request
 
