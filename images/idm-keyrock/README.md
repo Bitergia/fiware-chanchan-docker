@@ -45,10 +45,11 @@ No problem, you can run the container alone and use it services.
 docker run -d --name <container-name> bitergia/idm-keyrock:4.3.0
 ```
 
-By running this, it expects an Authzforce instance running on:
+By running this, it expects an Authzforce instance running by default on:
 
     * AUTHZFORCE_HOSTNAME: `authzforce`
     * AUTHZFORCE_PORT: `8080`
+    * MAGIC_KEY: `daf26216c5434a0a80f392ed9165b3b4`
 
 So if you have your Authzforce somewhere else, just attach it as a parameter like:
 
@@ -56,6 +57,7 @@ So if you have your Authzforce somewhere else, just attach it as a parameter lik
 docker run -d --name <container-name> \
 -e AUTHZFORCE_HOSTNAME=<authzforce-host> \
 -e AUTHZFORCE_PORT=<authzforce-port> \
+-e MAGIC_KEY=<magic-key> \
 bitergia/idm-keyrock:4.3.0
 ```
 
