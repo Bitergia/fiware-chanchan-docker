@@ -26,7 +26,7 @@ So for this purpose, we have already a simple file that launches:
    * IDAS
 
 
-You can download [`chanchan-new.yml`](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/compose/chanchan-new.yml).
+The file `chanchan-new.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/chanchan-new.yml).
 
 Once you get it, you just have to:
 
@@ -80,7 +80,7 @@ You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/
 ### Using/generate your own SSH key
 
 Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
-**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/idm-keyrock` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
+**Note** that the information below is regarding the `bitergia/chanchanapp` baseimage. If you have already pulled or made a `bitergia/chanchanapp` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 
 ## User feedback
