@@ -35,13 +35,13 @@ And all the services will be up. At this point, you will have to use the `X-Auth
 In our image, you can retrieve the `X-Auth-Token` by doing:
 
 ```
-docker exec -i -t compose_pepwilma_1 auth-token.sh <user-email> <password>
+docker exec -i -t <pepwilma-container-name> auth-token.sh <user-email> <password>
 ```
 
 And you will get a fresh one. This step can be done as many times as you want, to get a fresh token. So in our IdM, we've already authorized `user0@test.com` to make requests against Orion. You just have to get a token for that user:
 
 ```
-docker exec -i -t compose_pepwilma_1 auth-token.sh user0@test.com test
+docker exec -i -t <pepwilma-container-name> auth-token.sh user0@test.com test
 ```
 
 And then send one of the [authorized requests](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock#permissions) against the Proxy. For example:
