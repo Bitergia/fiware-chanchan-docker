@@ -540,7 +540,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='updateContext', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/updateContext',
+                resource= 'v1/updateContext',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -550,7 +550,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='queryContext', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/queryContext',
+                resource= 'v1/queryContext',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -560,7 +560,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='subscribeContext', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/subscribeContext',
+                resource= 'v1/subscribeContext',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -570,7 +570,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='updateContextSubscription', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/updateContextSubscription',
+                resource= 'v1/updateContextSubscription',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -580,7 +580,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='unsubscribeContext', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/unsubscribeContext',
+                resource= 'v1/unsubscribeContext',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -590,7 +590,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='registry/registerContext', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/registry/registerContext',
+                resource= 'v1/registry/registerContext',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -600,7 +600,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='registry/discoverContextAvailability', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/registry/discoverContextAvailability',
+                resource= 'v1/registry/discoverContextAvailability',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -610,7 +610,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='/registry/subscribeContextAvailability', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1//registry/subscribeContextAvailability',
+                resource= 'v1//registry/subscribeContextAvailability',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -620,7 +620,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='registry/updateContextAvailabilitySubscription', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/registry/updateContextAvailabilitySubscription',
+                resource= 'v1/registry/updateContextAvailabilitySubscription',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -630,7 +630,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='registry/unsubscribeContextAvailability', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/registry/unsubscribeContextAvailability',
+                resource= 'v1/registry/unsubscribeContextAvailability',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -640,7 +640,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='registry/contextAvailabilitySubscriptions', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/registry/contextAvailabilitySubscriptions',
+                resource= 'v1/registry/contextAvailabilitySubscriptions',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -650,7 +650,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='contextTypes', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/contextTypes',
+                resource= 'v1/contextTypes',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -660,7 +660,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='contextSubscriptions', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/contextSubscriptions',
+                resource= 'v1/contextSubscriptions',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -670,7 +670,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='contextEntities', 
                 application=chanchan_app, 
                 action= 'POST', 
-                resource= 'V1/contextEntities',
+                resource= 'v1/contextEntities',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -680,7 +680,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='contextEntities(GET)', 
                 application=chanchan_app, 
                 action= 'GET', 
-                resource= 'V1/contextEntities',
+                resource= 'v1/contextEntities',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
@@ -690,7 +690,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
                 name='contextSubscriptions', 
                 application=chanchan_app, 
                 action= 'GET', 
-                resource= 'V1/contextSubscriptions',
+                resource= 'v1/contextSubscriptions',
                 is_internal=False)
 
     keystone.fiware_roles.permissions.add_to_role(
