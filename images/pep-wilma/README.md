@@ -14,9 +14,9 @@ Find detailed information of this Generic enabler at [Fiware catalogue](http://c
 
 We strongly suggest you to use [docker-compose](https://docs.docker.com/compose/). With docker compose you can define multiple containers in a single file, and link them easily. 
 
-So for this purpose, we have already a simple file that launches:
+So for this purpose, we have already a simple file for testing that launches:
 
-   * Orion (service protected)
+   * Orion (a service to protect)
    * Authzforce (permissions persitance)
    * IDM KeyRock (identitiy management)
    * PEP Wilma as a service
@@ -29,11 +29,93 @@ Once you get it, you just have to:
 docker-compose -f pep-wilma.yml up -d
 ```
 
-And all the services will be up. End to end testing can be done using the complete [chanchanapp docker compose](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/compose/chanchan-new.yml)
- 
+And all the services will be up. At this point, you will have to use the `X-Auth-Token` to be able to make requests against the protected resource, as described [here](https://github.com/ging/fi-ware-idm/wiki/Using-the-FIWARE-LAB-instance#authorization-code-grant).
+
+In our image, you can retrieve the `X-Auth-Token` by doing:
+
+```
+docker exec -i -t compose_pepwilma_1 auth-token.sh <user-email> <password>
+```
+
+And you will get a fresh one. This step can be done as many times as you want, to get a fresh token. So in our IdM, we've already authorized `user0@test.com` to make requests against Orion. You just have to get a token for that user:
+
+```
+docker exec -i -t compose_pepwilma_1 auth-token.sh user0@test.com test
+```
+
+And then send one of the [authorized requests](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock#permissions) against the Proxy. For example:
+
+```
+(curl <wilmapep-container-ip>:<wilmapep-container-port>/v1/updateContext -s --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'X-Auth-Token: <x-auth-token>' -d @- | python -mjson.tool) <<EOF
+{
+    "contextElements": [
+        {
+            "type": "Room",
+            "isPattern": "false",
+            "id": "Room1",
+            "attributes": [
+            {
+                "name": "temperature",
+                "type": "float",
+                "value": "23"
+            },
+            {
+                "name": "pressure",
+                "type": "integer",
+                "value": "720"
+            }
+            ]
+        }
+    ],
+    "updateAction": "APPEND"
+}
+EOF
+```
+
+And that's it!
+
+You can always play with the users, roles and permissions at IdM (add, remove...) to check that the resource is being well protected :)
+
+For that purpose, the user aware of roles management is the `pepproxy@test.com` (provider). This means, you will have to login with this user in order to be able to handle the roles and permissions of the application. Check [here](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock#idm-users-organizations-apps-roles-and-permissions) the full list of users, organizations, roles and apps provided.
+
 ## What if I don't want to use docker-compose?
 
 No problem, the only thing is that you will have to deploy IDM, Authzforce and Orion containers yourself and their IPs with the hosts idm, authzforce and orion in wilma-pep container.
+
+```
+docker run -d --name <container-name> bitergia/pep-wilma:4.3.0
+```
+
+By running this, it expects an Authzforce, IdM Keystone and App to protect running by default on:
+
+	* AUTHZFORCE_HOSTNAME: `authzforce`
+    * AUTHZFORCE_PORT: `8080`
+	* IDM_KEYSTONE_HOSTNAME: `idm`
+    * IDM_KEYSTONE_PORT: `5000`
+    * APP_HOSTNAME: `orion`
+    * APP_PORT: `10026`
+
+Also, the following parameters can be re-configured in the PEP-Wilma:
+
+	* PEP_USERNAME: `pepproxy@test.com`
+ 	* PEP_PASSWORD: `test`
+	* PEP_PORT: `1026`
+	* IDM_USERNAME: `user0@test.com`
+	* IDM_USERPASS: `test`
+	* MAGIC_KEY: `daf26216c5434a0a80f392ed9165b3b4`
+
+So if you have your Authzforce, Keystone and Orion (or app to protect) somewhere else, just attach it as a parameter like:
+
+```
+docker run -d --name <container-name> \
+-e AUTHZFORCE_HOSTNAME=<authzforce-host> \
+-e AUTHZFORCE_PORT=<authzforce-port> \
+-e IDM_KEYSTONE_HOSTNAME=<keystone-host> \
+-e IDM_KEYSTONE_PORT=<keystone-port> \
+-e APP_HOSTNAME=<app-host> \
+-e APP_PORT=<app-port> \
+bitergia/pep-wilma:4.3.0
+```
 
 ## About SSH
 
