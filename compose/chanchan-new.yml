@@ -26,7 +26,7 @@ mongodb:
     expose:
         - "27017"
 orion:
-    image: bitergia/fiware-orion:0.22.0
+    image: bitergia/fiware-orion:0.23.0
     links:
         - mongodb
     expose:
@@ -66,6 +66,8 @@ pepwilma:
         - orion
         - idm
         - authzforce
+    volumes_from:
+        - idm
 
 idm:
     image: bitergia/idm-keyrock:4.3.0
