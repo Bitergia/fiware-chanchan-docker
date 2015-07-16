@@ -101,9 +101,9 @@ RUN bash -c "source /opt/fi-ware-idm/keystone/.venv/bin/activate && \
 
 # Authzforce domain configuration
 
-ADD config-domain.sh /opt/scripts/config-domain.sh
-RUN chmod 755 /opt/scripts/config-domain.sh
-ENTRYPOINT ["/opt/scripts/config-domain.sh"]
+ADD docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod 755 /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ### Exposed ports
 # - Keystone
