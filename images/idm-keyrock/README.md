@@ -20,7 +20,7 @@ So for this purpose, we have already a simple file that launches:
    * Authzforce
    * IDM KeyRock
 
-The file `idm-keyrock.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/idm-keyrock.yml).
+The file `idm-keyrock.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/docker/compose/idm-keyrock.yml).
 
 Once you get it, you just have to:
 
@@ -108,7 +108,7 @@ This IdM image was intended to work for the [Fiware Chanchan](https://github.com
 
 ### Permissions
 
-We've added several permissions for Orion Operations. You can check all of them by accessing the IdM or [here](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/idm-keyrock/4.3.0/keystone.py#L537)
+We've added several permissions for Orion Operations. You can check all of them by accessing the IdM or [here](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/idm-keyrock/4.3.0/keystone.py#L537)
 
 ## Stopping the container
 
@@ -154,8 +154,8 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/idm-keyrock).
 
 ### Issues
 
-If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan/issues).
+If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan-docker/issues).

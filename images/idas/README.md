@@ -27,7 +27,7 @@ So for this purpose, we have already a simple file that launches:
    * Orion Context Broker as a service
    * IDAS ul20
 
-The file `idas.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/idas.yml).
+The file `idas.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/docker/compose/idas.yml).
 
 Once you get it, you just have to:
 
@@ -41,7 +41,7 @@ And all the services will be up. End to end testing can be done using the comple
  
 ## What if I don't want to use docker-compose?
 
-No problem, the only thing is that you will have to deploy a MongoDB and orion yourself and modify the [config parameters](https://github.com/Bitergia/fiware-chanchan/blob/master/docker/images/idas/ul20/config.json).
+No problem, the only thing is that you will have to deploy a MongoDB and orion yourself and modify the [config parameters](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/idas/ul20/config.json).
 
 An example of how to run it could be:
 
@@ -93,8 +93,8 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idas).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/idas).
 
 ### Issues
 
-If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan/issues).
+If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan-docker/issues).

@@ -22,7 +22,7 @@ So for this purpose, we have already a simple file for testing that launches:
    * IDM KeyRock (identitiy management)
    * PEP Wilma as a service
 
-The file `pep-wilma.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan/master/docker/compose/pep-wilma.yml).
+The file `pep-wilma.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/docker/compose/pep-wilma.yml).
 
 Once you get it, you just have to:
 
@@ -44,7 +44,7 @@ And you will get a fresh one. This step can be done as many times as you want, t
 docker exec -i -t <pepwilma-container-name> auth-token.sh user0@test.com test
 ```
 
-And then send one of the [authorized requests](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock#permissions) against the Proxy. For example:
+And then send one of the [authorized requests](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/idm-keyrock#permissions) against the Proxy. For example:
 
 ```
 (curl <wilmapep-container-ip>:<wilmapep-container-port>/v1/updateContext -s --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'X-Auth-Token: <x-auth-token>' -d @- | python -mjson.tool) <<EOF
@@ -79,7 +79,7 @@ And that's it!
 
 You can always play with the users, roles and permissions at IdM (add, remove...) to check that the resource is being well protected :)
 
-For that purpose, the user aware of roles management is the `pepproxy@test.com` (provider). This means, you will have to login with this user in order to be able to handle the roles and permissions of the application. Check [here](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/idm-keyrock#idm-users-organizations-apps-roles-and-permissions) the full list of users, organizations, roles and apps provided.
+For that purpose, the user aware of roles management is the `pepproxy@test.com` (provider). This means, you will have to login with this user in order to be able to handle the roles and permissions of the application. Check [here](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/idm-keyrock#idm-users-organizations-apps-roles-and-permissions) the full list of users, organizations, roles and apps provided.
 
 ## What if I don't want to use docker-compose?
 
@@ -157,8 +157,8 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan/tree/master/docker/images/pep-wilma).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/pep-wilma).
 
 ### Issues
 
-If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan/issues).
+If you find any issue with this image, feel free to contact us via [Github issue tracking system](https://github.com/Bitergia/fiware-chanchan-docker/issues).
