@@ -24,7 +24,7 @@ So for this purpose, we have already a simple file that launches:
    * Orion Context Broker as a service
    * Cygnus as a service
 
-The file `cygnus.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/docker/compose/cygnus.yml).
+The file `cygnus.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/compose/cygnus.yml).
 
 Once you get it, you just have to:
 
@@ -32,7 +32,7 @@ Once you get it, you just have to:
 docker-compose -f cygnus.yml up -d
 ```
 
-And all the services will be up. End to end testing can be done by doing publishing in orion context with entities [following this format](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/cygnus/0.5.1/docker-entrypoint.sh#L115).
+And all the services will be up. End to end testing can be done by doing publishing in orion context with entities [following this format](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/cygnus/0.5.1/docker-entrypoint.sh#L115).
 
  
 ## What if I don't want to use docker-compose?
@@ -107,7 +107,7 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/cygnus).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/cygnus).
 
 ### Issues
 

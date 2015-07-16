@@ -4,8 +4,8 @@ The [Orion Context Broker](http://catalogue.fiware.org/enablers/publishsubscribe
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/fiware-orion/0.22.0/Dockerfile))
-* [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/fiware-orion/0.23.0/Dockerfile))
+* [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.22.0/Dockerfile))
+* [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.23.0/Dockerfile))
 
 
 Find detailed information of this Generic enabler at [Fiware catalogue](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker).
@@ -31,7 +31,7 @@ So for this purpose, we have already a simple file that launches:
    * Data-only container for the MongoDB database
    * Orion Context Broker as a service
 
-The file `orion.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/docker/compose/orion.yml).
+The file `orion.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/compose/orion.yml).
 
 Once you get it, you just have to:
 
@@ -113,7 +113,7 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/fiware-orion).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/fiware-orion).
 
 ### Issues
 

@@ -4,8 +4,8 @@ Dockerfile to build a [MongoDB](https://en.wikipedia.org/wiki/MongoDB) container
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`2.6`   (2.6/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/mongodb/2.6/Dockerfile))
-* [`3.0`   (3.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/mongodb/3.0/Dockerfile))
+* [`2.6`   (2.6/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/mongodb/2.6/Dockerfile))
+* [`3.0`   (3.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/mongodb/3.0/Dockerfile))
 
 ## Image contents
 
@@ -74,7 +74,7 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/mongodb).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/mongodb).
 
 ### Issues
 

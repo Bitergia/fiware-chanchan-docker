@@ -4,8 +4,8 @@ Dockerfile to build a [MariaDB](https://mariadb.org/en/about) container image wh
 
 ## Supported tags and respective `Dockerfile` links
 
-* [`5.5`   (5.5/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/mariadb/5.5/Dockerfile))
-* [`10.0`   (10.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/docker/images/mariadb/10.0/Dockerfile))
+* [`5.5`   (5.5/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/mariadb/5.5/Dockerfile))
+* [`10.0`   (10.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/mariadb/10.0/Dockerfile))
 
 ## Image contents
 
@@ -77,7 +77,7 @@ Information on how to do that can be found [here](https://github.com/Bitergia/do
 
 ### Documentation
 
-All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/docker/images/mariadb).
+All the information regarding the image generation is hosted publicly on [Github](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/mariadb).
 
 ### Issues
 
