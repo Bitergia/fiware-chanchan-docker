@@ -24,7 +24,6 @@ help:
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
-	$(info - chanchanapp:		Build ChanChan App (angular client and flask server))
 	$(info - idmauthlegacy:	Build IdM legacy (ruby), Orion PEP and Keypass image)
 	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
 	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
@@ -64,8 +63,8 @@ orion-0.22.0:
 orion:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) fiware-orion/$(ORION_VERSION)/
 
-.PHONY: chanchanapp idmauthlegacy
-chanchanapp idmauthlegacy: $@
+.PHONY: idmauthlegacy
+idmauthlegacy:
 	docker build -t bitergia/$@ $@/
 
 .PHONY: mongodb-2.6 mongodb-3.0 mongodb
@@ -101,7 +100,7 @@ idas-iota-cpp:
 	docker build -t bitergia/idas-iota-cpp:$(IDAS_IOTACPP_VERSION) idas/iota-cpp/$(IDAS_IOTACPP_VERSION)/
 
 .PHONY: all
-all: idm-keyrock orion authzforce pep-wilma cygnus chanchanapp idmauthlegacy mongodb mariadb idas
+all: idm-keyrock orion authzforce pep-wilma cygnus idmauthlegacy mongodb mariadb idas
 
 .PHONY: clean clean_idm-keyrock
 clean: clean_idm-keyrock
