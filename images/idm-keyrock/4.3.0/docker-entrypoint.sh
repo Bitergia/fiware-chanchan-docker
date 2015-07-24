@@ -2,6 +2,8 @@
 
 [ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
 [ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
+[ -z "${IDM_KEYROCK_HOSTNAME}" ] && echo "IDM_KEYROCK_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYROCK_HOSTNAME=idm
+[ -z "${IDM_KEYROCK_PORT}" ] && echo "IDM_KEYROCK_PORT is undefined.  Using default value of '443'" && export IDM_KEYROCK_PORT=443
 [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
@@ -97,6 +99,11 @@ check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 
 sed -e "s@^ACCESS_CONTROL_URL = None@ACCESS_CONTROL_URL = 'http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains/${DOMAIN}/pap/policySet'@" -i /opt/fi-ware-idm/horizon/openstack_dashboard/local/local_settings.py
 sed -e "s@^ACCESS_CONTROL_MAGIC_KEY = None@ACCESS_CONTROL_MAGIC_KEY = '${MAGIC_KEY}'@" -i /opt/fi-ware-idm/horizon/openstack_dashboard/local/local_settings.py
+
+# Parse value into apache configuration
+
+sed -i /etc/apache2/sites-available/idm.conf \
+    -e "s|IDM_KEYROCK_HOSTNAME|${IDM_KEYROCK_HOSTNAME}|g"
 
 # Start container back
 
