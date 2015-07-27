@@ -475,14 +475,14 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     # Create chanchan APP and give provider role to the pepProxy
     # TODO: modify the url + callback when the app is ready
-    chanchan_app = keystone.oauth2.consumers.create(
-        name='Chanchan',
-        redirect_uris=['http://localhost/login'],
-        description='Chanchan Test Application',
+    devguide_app = keystone.oauth2.consumers.create(
+        name='FIWARE devGuide',
+        redirect_uris=['http://compose_devguide_1/login'],
+        description='Fiware devGuide Test Application',
         scopes=['all_info'],
         client_type='confidential',
         grant_type='authorization_code',
-        url='http://localhost',
+        url='http://compose_devguide_1',
         img='/static/dashboard/img/logos/small/app.png')
     provider_role = next(r for r
                          in keystone.fiware_roles.roles.list()
@@ -490,14 +490,14 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
     keystone.fiware_roles.roles.add_to_user(
         role=provider_role.id,
         user=pep_user.id,
-        application=chanchan_app.id,
+        application=devguide_app.id,
         organization=pep_user.default_project_id)
 
     # Create a role 'Orion' for the application
     role_orion = keystone.fiware_roles.roles.create(
         name='Orion Operations',
         is_internal=False,
-        application=chanchan_app.id)
+        application=devguide_app.id)
 
     # Give it the permission to get and assign only the owned roles
  
@@ -518,7 +518,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
     keystone.fiware_roles.roles.add_to_user(
         role=role_orion.id,
         user=user0.id,
-        application=chanchan_app.id,
+        application=devguide_app.id,
         organization=user0.default_project_id)
 
     # Make user 1 owner of the organization B and give Orion role
@@ -531,14 +531,14 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
     keystone.fiware_roles.roles.add_to_user(
         role=role_orion.id,
         user=user1.id,
-        application=chanchan_app.id,
+        application=devguide_app.id,
         organization=user1.default_project_id)
 
     # Adding permissions for Orion
 
     perm0 = keystone.fiware_roles.permissions.create(
                 name='updateContext', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/updateContext',
                 is_internal=False)
@@ -548,7 +548,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm1 = keystone.fiware_roles.permissions.create(
                 name='queryContext', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/queryContext',
                 is_internal=False)
@@ -558,7 +558,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm2 = keystone.fiware_roles.permissions.create(
                 name='subscribeContext', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/subscribeContext',
                 is_internal=False)
@@ -568,7 +568,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm3 = keystone.fiware_roles.permissions.create(
                 name='updateContextSubscription', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/updateContextSubscription',
                 is_internal=False)
@@ -578,7 +578,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm4 = keystone.fiware_roles.permissions.create(
                 name='unsubscribeContext', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/unsubscribeContext',
                 is_internal=False)
@@ -588,7 +588,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm5 = keystone.fiware_roles.permissions.create(
                 name='registry/registerContext', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/registry/registerContext',
                 is_internal=False)
@@ -598,7 +598,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm6 = keystone.fiware_roles.permissions.create(
                 name='registry/discoverContextAvailability', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/registry/discoverContextAvailability',
                 is_internal=False)
@@ -608,7 +608,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm7 = keystone.fiware_roles.permissions.create(
                 name='/registry/subscribeContextAvailability', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1//registry/subscribeContextAvailability',
                 is_internal=False)
@@ -618,7 +618,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm8 = keystone.fiware_roles.permissions.create(
                 name='registry/updateContextAvailabilitySubscription', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/registry/updateContextAvailabilitySubscription',
                 is_internal=False)
@@ -628,7 +628,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm9 = keystone.fiware_roles.permissions.create(
                 name='registry/unsubscribeContextAvailability', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/registry/unsubscribeContextAvailability',
                 is_internal=False)
@@ -638,7 +638,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm10 = keystone.fiware_roles.permissions.create(
                 name='registry/contextAvailabilitySubscriptions', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/registry/contextAvailabilitySubscriptions',
                 is_internal=False)
@@ -648,7 +648,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm11 = keystone.fiware_roles.permissions.create(
                 name='contextTypes', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/contextTypes',
                 is_internal=False)
@@ -658,7 +658,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm12 = keystone.fiware_roles.permissions.create(
                 name='contextSubscriptions', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/contextSubscriptions',
                 is_internal=False)
@@ -668,7 +668,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm13 = keystone.fiware_roles.permissions.create(
                 name='contextEntities', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'POST', 
                 resource= 'v1/contextEntities',
                 is_internal=False)
@@ -678,7 +678,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm14 = keystone.fiware_roles.permissions.create(
                 name='contextEntities(GET)', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'GET', 
                 resource= 'v1/contextEntities',
                 is_internal=False)
@@ -688,7 +688,7 @@ def test_data(keystone_path=settings.KEYSTONE_ROOT):
 
     perm15 = keystone.fiware_roles.permissions.create(
                 name='contextSubscriptions', 
-                application=chanchan_app, 
+                application=devguide_app, 
                 action= 'GET', 
                 resource= 'v1/contextSubscriptions',
                 is_internal=False)

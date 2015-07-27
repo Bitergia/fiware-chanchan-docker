@@ -21,7 +21,7 @@ cur = con.cursor()
 
 # Define the app name to search
 
-symbol = 'Chanchan'
+symbol = 'FIWARE devGuide'
 t = (symbol,)
 
 
