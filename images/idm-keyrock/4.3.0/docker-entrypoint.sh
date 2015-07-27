@@ -5,6 +5,7 @@
 [ -z "${IDM_KEYROCK_HOSTNAME}" ] && echo "IDM_KEYROCK_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYROCK_HOSTNAME=idm
 [ -z "${IDM_KEYROCK_PORT}" ] && echo "IDM_KEYROCK_PORT is undefined.  Using default value of '443'" && export IDM_KEYROCK_PORT=443
 [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
+[ -z "${WORKON_HOME}" ] && echo "WORKON_HOME is undefined.  Using default value of '/opt/virtualenvs'" && export WORKON_HOME=/opt/virtualenvs
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
 declare DOMAIN=''
@@ -89,11 +90,27 @@ function check_domain () {
 
 }
 
+function data_provision () {
+
+	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+    workon idm_tools
+    fab localhost keystone_test.test_data
+
+}
+
+function config_file () {
+
+	source /opt/fi-ware-idm/keystone/.venv/bin/activate
+	mkdir /config
+	python /opt/fi-ware-idm/keystone/chanchan-config.py
+}
+
 # Call checks
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-
+data_provision
+config_file
 
 # Parse the value into the IdM settings
 

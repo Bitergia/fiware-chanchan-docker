@@ -66,7 +66,7 @@ RUN bash -c "apt-get update && \
     (fab localhost keystone.dev_server &) && \
     sleep 10 && \
     fab localhost keystone.populate && \
-    fab localhost keystone.test_data && \
+#    fab localhost keystone.test_data && \
     (ps axf | grep -i keystone-all | grep -v grep | cut -d ' ' -f 1 | xargs kill -s TERM) && \
     sed -e \"s/^start on .*$/start on runlevel [2345]/g\" -i /etc/init/keystone_idm.conf && \
     apt-get clean && \
@@ -95,9 +95,9 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 # Extract clientID and client-secret from database
 
 COPY chanchan-config.py /opt/fi-ware-idm/keystone/chanchan-config.py
-RUN bash -c "source /opt/fi-ware-idm/keystone/.venv/bin/activate && \
-    mkdir /config && \
-    python /opt/fi-ware-idm/keystone/chanchan-config.py"
+COPY keystone_test.py /opt/fi-ware-idm/deployment/keystone_test.py
+
+RUN bash -c "sed -i '/from deployment import keystone/a from deployment import keystone_test' /opt/fi-ware-idm/fabfile.py" 
 
 # Authzforce domain configuration
 
