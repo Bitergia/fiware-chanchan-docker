@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from pysqlite2 import dbapi2 as sqlite3
-import json, os
+import json, os, argparse
+
+parser = argparse.ArgumentParser(description='This is a demo script by nixCraft.')
+parser.add_argument('-n','--name', help='Name of the app to search',required=True)
+parser.add_argument('-f','--file',help='File where to output the results', required=True)
+args = parser.parse_args()
 
 def dict_factory(cursor, row):
     d = {}
@@ -21,7 +26,7 @@ cur = con.cursor()
 
 # Define the app name to search
 
-symbol = 'FIWARE devGuide'
+symbol = args.name
 t = (symbol,)
 
 
@@ -46,7 +51,7 @@ for org in orgs:
 chanchan_config['orgs'] = orgs_list;
 
 # Write the JSON file
-f = open('/config/idm2chanchan.json', 'w')
+f = open(args.file, 'w')
 f.writelines(json.dumps(chanchan_config,
                         sort_keys=True,
                         indent=4, separators=(',', ': ')))

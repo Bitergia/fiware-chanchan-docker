@@ -6,6 +6,9 @@
 [ -z "${IDM_KEYROCK_PORT}" ] && echo "IDM_KEYROCK_PORT is undefined.  Using default value of '443'" && export IDM_KEYROCK_PORT=443
 [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
 [ -z "${WORKON_HOME}" ] && echo "WORKON_HOME is undefined.  Using default value of '/opt/virtualenvs'" && export WORKON_HOME=/opt/virtualenvs
+[ -z "${APP_NAME}" ] && echo "APP_NAME is undefined.  Using default value of 'FIWARE devGuide'" && export APP_NAME="FIWARE devGuide"
+[ -z "${CONFIG_FILE}" ] && echo "CONFIG_FILE is undefined.  Using default value of '/config/idm2chanchan.json'" && export CONFIG_FILE=/config/idm2chanchan.json
+[ -z "${PROVISION_FILE}" ] && echo "PROVISION_FILE is undefined.  Using default value of '/config/keystone_provision.py'" && export PROVISION_FILE=/config/keystone_provision.py
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
 declare DOMAIN=''
@@ -90,27 +93,67 @@ function check_domain () {
 
 }
 
-function data_provision () {
+function check_file () {
 
+    local _tries=0
+    local _is_available=0
+
+    local _file=$1
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
+
+    echo "Testing if file '${_file}' is available."
+
+    while [ ${_tries} -lt ${_max_tries} -a ${_is_available} -eq 0 ] ; do
+    echo -n "Checking file '${_file}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
+    if [ -r ${_file} ] ; then
+        echo "OK."
+        _is_available=1
+    else
+        echo "Failed."
+        sleep 1
+        _tries=$(( ${_tries} + 1 ))
+    fi
+    done
+
+    if [ ${_is_available} -eq 0 ] ; then
+    echo "Failed to to retrieve '${_file}' after ${_tries} tries."
+    echo "File is unavailable."
+    exit 1
+    else
+    echo "File '${_file}' is available."
+    fi
+}
+
+function _data_provision () {
+
+    sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
+    cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
 	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     workon idm_tools
-    fab localhost keystone_test.test_data
+    echo "Lauching dev_server"
+    (fab localhost keystone.dev_server &)
+    sleep 10
+    echo "Providing the roles"
+    fab localhost keystone_provision.test_data
+    echo "Provision done. Killing process"
+    (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
 
 }
 
-function config_file () {
+function _config_file () {
 
+	echo "Parsing App information into a JSON file"
 	source /opt/fi-ware-idm/keystone/.venv/bin/activate
-	mkdir /config
-	python /opt/fi-ware-idm/keystone/chanchan-config.py
+	python /opt/fi-ware-idm/keystone/chanchan-config.py --name ${APP_NAME} --file ${CONFIG_FILE}
 }
 
 # Call checks
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-data_provision
-config_file
+check_file ${PROVISION_FILE}
+_data_provision
+_config_file
 
 # Parse the value into the IdM settings
 
