@@ -94,9 +94,9 @@ This IdM image was intended to work for the [Fiware Chanchan](https://github.com
 
 ### Apps
 
-| Application name    | Description                             | URL                | Redirect URI            |
-|---------------------|-----------------------------------------|--------------------|-------------------------|
-| Chanchan            | Chanchan Test Application               | http://localhost   | http://localhost/login  |
+| Application name  | Description                       | URL                       | Redirect URI                     |
+|-------------------|-----------------------------------|---------------------------|----------------------------------|
+| FIWARE devGuide   | Fiware devGuide Test Application  | http://compose_devguide_1 | http://compose_devguide_1/login  |
 
 ### Roles
 
