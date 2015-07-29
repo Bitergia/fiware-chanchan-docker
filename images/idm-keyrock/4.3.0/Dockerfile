@@ -42,10 +42,7 @@ RUN apt-get update && \
     find /var/lib/apt/lists -type f -delete
 
 # clone git repo
-#RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm
-RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm && \
-    mv /opt/fi-ware-idm/deployment/keystone.py /opt/fi-ware-idm/deployment/keystone.py.bkp
-COPY keystone.py /opt/fi-ware-idm/deployment/keystone.py
+RUN git clone https://github.com/ging/fi-ware-idm /opt/fi-ware-idm
 WORKDIR /opt/fi-ware-idm
 
 # configure fabric
@@ -53,8 +50,6 @@ RUN cp conf/settings.py.example conf/settings.py
 RUN bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     mkvirtualenv idm_tools && \
     pip install -r requirements.txt"
-
-#RUN sed -e "s/env.run('sudo apt-get install {0}'.format(dependencies))/env.run('sudo apt-get -y install {0}'.format(dependencies))/g" -i deployment/horizon.py
 
 # install keystone
 RUN bash -c "apt-get update && \
@@ -66,8 +61,6 @@ RUN bash -c "apt-get update && \
     (fab localhost keystone.dev_server &) && \
     sleep 10 && \
     fab localhost keystone.populate && \
-#    fab localhost keystone.test_data && \
-    (ps axf | grep -i keystone-all | grep -v grep | cut -d ' ' -f 1 | xargs kill -s TERM) && \
     sed -e \"s/^start on .*$/start on runlevel [2345]/g\" -i /etc/init/keystone_idm.conf && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete"
@@ -77,7 +70,6 @@ RUN bash -c "apt-get update && \
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
     fab localhost horizon.install && \
-    sed -i /opt/fi-ware-idm/horizon/openstack_dashboard/local/local_settings.py -e 's|OPENSTACK_KEYSTONE_URL = \"https:|OPENSTACK_KEYSTONE_URL = \"http:|g' && \
     apt-get clean && \
     find /var/lib/apt/lists -type f -delete"
 
@@ -95,9 +87,6 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 # Extract clientID and client-secret from database
 
 COPY chanchan-config.py /opt/fi-ware-idm/keystone/chanchan-config.py
-COPY keystone_test.py /opt/fi-ware-idm/deployment/keystone_test.py
-
-RUN bash -c "sed -i '/from deployment import keystone/a from deployment import keystone_test' /opt/fi-ware-idm/fabfile.py" 
 
 # Authzforce domain configuration
 
