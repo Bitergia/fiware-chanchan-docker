@@ -6,7 +6,7 @@
 [ -z "${IDM_KEYROCK_PORT}" ] && echo "IDM_KEYROCK_PORT is undefined.  Using default value of '443'" && export IDM_KEYROCK_PORT=443
 [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
 [ -z "${WORKON_HOME}" ] && echo "WORKON_HOME is undefined.  Using default value of '/opt/virtualenvs'" && export WORKON_HOME=/opt/virtualenvs
-[ -z "${APP_NAME}" ] && echo "APP_NAME is undefined.  Using default value of 'FIWARE devGuide'" && export APP_NAME="FIWARE devGuide"
+[ -z "${APP_NAME}" ] && echo "APP_NAME is undefined.  Using default value of 'FIWAREdevGuide'" && export APP_NAME="FIWAREdevGuide"
 [ -z "${CONFIG_FILE}" ] && echo "CONFIG_FILE is undefined.  Using default value of '/config/idm2chanchan.json'" && export CONFIG_FILE=/config/idm2chanchan.json
 [ -z "${PROVISION_FILE}" ] && echo "PROVISION_FILE is undefined.  Using default value of '/config/keystone_provision.py'" && export PROVISION_FILE=/config/keystone_provision.py
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
