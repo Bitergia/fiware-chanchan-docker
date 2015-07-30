@@ -7,6 +7,7 @@ import json, os, argparse
 parser = argparse.ArgumentParser(description='This is a demo script by nixCraft.')
 parser.add_argument('-n','--name', help='Name of the app to search',required=True)
 parser.add_argument('-f','--file',help='File where to output the results', required=True)
+parser.add_argument('-db','--database',help='Databse from where to extract the data', required=True)
 args = parser.parse_args()
 
 def dict_factory(cursor, row):

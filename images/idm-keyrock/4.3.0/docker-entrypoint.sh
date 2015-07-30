@@ -7,6 +7,7 @@
 [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
 [ -z "${WORKON_HOME}" ] && echo "WORKON_HOME is undefined.  Using default value of '/opt/virtualenvs'" && export WORKON_HOME=/opt/virtualenvs
 [ -z "${APP_NAME}" ] && echo "APP_NAME is undefined.  Using default value of 'FIWAREdevGuide'" && export APP_NAME="FIWAREdevGuide"
+[ -z "${KEYSTONE_DB}" ] && echo "KEYSTONE_DB is undefined.  Using default value of '/opt/fi-ware-idm/keystone/keystone.db'" && export KEYSTONE_DB=/opt/fi-ware-idm/keystone/keystone.db
 [ -z "${CONFIG_FILE}" ] && echo "CONFIG_FILE is undefined.  Using default value of '/config/idm2chanchan.json'" && export CONFIG_FILE=/config/idm2chanchan.json
 [ -z "${PROVISION_FILE}" ] && echo "PROVISION_FILE is undefined.  Using default value of '/config/keystone_provision.py'" && export PROVISION_FILE=/config/keystone_provision.py
 [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
@@ -126,17 +127,22 @@ function check_file () {
 
 function _data_provision () {
 
-    sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
-    cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
-	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-    workon idm_tools
-    echo "Lauching dev_server"
-    (fab localhost keystone.dev_server &)
-    sleep 10
-    echo "Providing the roles"
-    fab localhost keystone_provision.test_data
-    echo "Provision done. Killing process"
-    (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
+    if [ -e /initialize-provision ] ; then
+        sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
+        cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
+	    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        workon idm_tools
+        echo "Lauching dev_server"
+        (fab localhost keystone.dev_server &)
+        sleep 10
+        echo "Providing the roles"
+        fab localhost keystone_provision.test_data
+        echo "Provision done. Killing process"
+        (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
+        rm /initialize-provision
+    else
+        echo "Provision has been done already"
+    fi
 
 }
 
@@ -144,7 +150,7 @@ function _config_file () {
 
 	echo "Parsing App information into a JSON file"
 	source /opt/fi-ware-idm/keystone/.venv/bin/activate
-	python /opt/fi-ware-idm/keystone/chanchan-config.py --name ${APP_NAME} --file ${CONFIG_FILE}
+	python /opt/fi-ware-idm/keystone/params-config.py --name ${APP_NAME} --file ${CONFIG_FILE} --database ${KEYSTONE_DB}
 }
 
 # Call checks

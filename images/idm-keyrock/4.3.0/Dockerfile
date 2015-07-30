@@ -86,7 +86,8 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 
 # Extract clientID and client-secret from database
 
-COPY chanchan-config.py /opt/fi-ware-idm/keystone/chanchan-config.py
+COPY params-config.py /opt/fi-ware-idm/keystone/params-config.py
+RUN touch /initialize-provision
 
 # Authzforce domain configuration
 
