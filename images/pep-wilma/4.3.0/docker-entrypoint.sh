@@ -120,46 +120,44 @@ function domain_permissions() {
 
 }
 
-# Retrieve X-Auth-Token to make request against the protected resource
+function check_file () {
 
-function get_token () {
+    local _tries=0
+    local _is_available=0
 
-    local _user=$1
-    local _pass=$2
+    local _file=$1
+    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
 
-    # Retrieve Client ID and client Secret Automatically
+    echo "Testing if file '${_file}' is available."
 
-    CLIENT_ID="$(cat /config/idm2chanchan.json | awk '/id/{print $NF}' | cut -d '"' -f2)"
-    CLIENT_SECRET="$(cat /config/idm2chanchan.json | awk '/secret/{print $NF}' | cut -d '"' -f2)"
+    while [ ${_tries} -lt ${_max_tries} -a ${_is_available} -eq 0 ] ; do
+    echo -n "Checking file '${_file}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
+    if [ -r ${_file} ] ; then
+        echo "OK."
+        _is_available=1
+    else
+        echo "Failed."
+        sleep 1
+        _tries=$(( ${_tries} + 1 ))
+    fi
+    done
 
-    # Generate the Authentication Header for the request
-
-    AUTH_HEADER="$(echo -n ${CLIENT_ID}:${CLIENT_SECRET} | base64 -w 0)"
-
-    # Define headers
-
-    CONTENT_TYPE="\"Content-Type: application/x-www-form-urlencoded\""
-    AUTH_BASIC="\"Authorization: Basic ${AUTH_HEADER}\""
-
-    # Define data to send
-
-    DATA="'grant_type=password&username=${_user}&password=${_pass}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}'"
-
-    # Create the request
-
-    REQUEST="curl -s --insecure -i --header ${AUTH_BASIC} --header ${CONTENT_TYPE} -X POST https://idm/oauth2/token -d ${DATA}"
-    XAUTH_TOKEN="$(eval ${REQUEST} | grep -Po '(?<="access_token": ")[^"]*')"
-    echo "X-Auth-Token for '${_user}': ${XAUTH_TOKEN}"
-    
+    if [ ${_is_available} -eq 0 ] ; then
+    echo "Failed to to retrieve '${_file}' after ${_tries} tries."
+    echo "File is unavailable."
+    exit 1
+    else
+    echo "File '${_file}' is available."
+    fi
 }
 
 # Call checks
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
+check_file /config/provision-ready
+check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
 domain_permissions ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
-get_token ${IDM_USERNAME} ${IDM_USERPASS}
 
 # Configure PEP Proxy config.js
 
