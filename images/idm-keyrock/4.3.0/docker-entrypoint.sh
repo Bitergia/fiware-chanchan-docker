@@ -140,6 +140,7 @@ function _data_provision () {
         echo "Provision done. Killing process"
         (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
         rm /initialize-provision
+        touch /config/provision-ready
     else
         echo "Provision has been done already"
     fi
