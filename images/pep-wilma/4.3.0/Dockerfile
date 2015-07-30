@@ -35,6 +35,8 @@ RUN npm install forever --global
 # Configure PEP proxy
 
 COPY config.js ${WILMA_HOME}/config.js
+COPY azf.patch ${WILMA_HOME}/lib/azf.patch
+RUN git apply -v ${WILMA_HOME}/lib/azf.patch
 
 COPY wilmapep.conf /etc/init/wilmapep.conf
 

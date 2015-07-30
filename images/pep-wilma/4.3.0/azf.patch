@@ -1,0 +1,56 @@
+diff --git a/lib/azf.js b/lib/azf.js
+index 3738f63..403a455 100644
+--- a/lib/azf.js
++++ b/lib/azf.js
+@@ -2,6 +2,18 @@ var config = require('../config.js'),
+     proxy = require('./HTTPClient.js'),
+     xml2json = require('xml2json');
+ 
++function XmlEncode(s) {
++    return s.replace(/([&<>'"])/g,
++        function (c) {
++            return "&" + {
++                "&": "amp",
++                "<": "lt",
++                ">": "gt",
++                "'": "apos",
++                '"': "quot"
++            }[c] + ";";
++        });
++}
+ 
+ var AZF = (function() {
+ 
+@@ -36,7 +48,7 @@ var AZF = (function() {
+     var checkRESTPolicy = function (roles, resource, action, app_id, auth_token, success, error) {
+         console.log("[AZF] Checking authorization to roles", roles, "to do ", action, " on ", resource, "and app ", app_id);
+ 
+-        var XACMLPolicy = {
++       var XACMLPolicy = {
+             "Request":{
+                 "xmlns":"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17",
+                 "CombinedDecision": "false",
+@@ -85,7 +97,7 @@ var AZF = (function() {
+                                 "IncludeInResult": "false",
+                                 "AttributeValue":{
+                                     "DataType":"http://www.w3.org/2001/XMLSchema#string",
+-                                    "$t": resource
++                                    "$t": XmlEncode(resource)  
+                                 }
+                             }
+                         ]
+@@ -118,7 +130,6 @@ var AZF = (function() {
+                 //}
+             };
+         }
+-
+         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + xml2json.toXml(XACMLPolicy);
+ 
+         //console.log(xml);
+@@ -156,4 +167,4 @@ var AZF = (function() {
+     }
+ 
+ })();
+-exports.AZF = AZF;
+\ No newline at end of file
++exports.AZF = AZF;
