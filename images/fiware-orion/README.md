@@ -6,7 +6,7 @@ The [Orion Context Broker](http://catalogue.fiware.org/enablers/publishsubscribe
 
 * [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.22.0/Dockerfile))
 * [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.23.0/Dockerfile))
-
+* [`master`   (master/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/master/Dockerfile))
 
 Find detailed information of this Generic enabler at [Fiware catalogue](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker).
 
@@ -85,6 +85,30 @@ To stop the container, just use the `docker stop <container-id>` command.  This 
 By default, orion sends its output to stdout/stderr and this output can be viewed via the `docker logs <container-id>` command.
 
 If you need to run another command in the same container, you can use the `docker exec` command.
+
+## Orion master image ##
+
+This image is the same as the 0.23.0 image but with orion compiled from HEAD of master branch.
+
+### Keeping the development tools ###
+
+If you want to keep the development tools on the image, you can do so by modifying the following line on the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/master/Dockerfile):
+
+```
+ENV CLEAN_DEV_TOOLS 1
+```
+
+changing the value to `0`:
+
+```
+ENV CLEAN_DEV_TOOLS 0
+```
+
+This will skip the cleaning process made at the end of the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/master/Dockerfile) in order to thin the final image.  This will grow the final image size from ~250 MB to ~1 GB.  Then you can build the image by using the available [Makefile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/Makefile) by running:
+
+```
+make orion-master
+```
 
 ## Orion 0.22.0 image ##
 
