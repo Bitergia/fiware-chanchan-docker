@@ -88,6 +88,7 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 
 COPY params-config.py /opt/fi-ware-idm/keystone/params-config.py
 RUN touch /initialize-provision
+RUN touch /initialize-domain-request
 
 # Authzforce domain configuration
 

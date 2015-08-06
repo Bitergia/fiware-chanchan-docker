@@ -29,7 +29,6 @@ cur = con.cursor()
 
 symbol = args.name
 t = (symbol,)
-print "Value is %s." % t
 
 # Extract the Oauth2 client ID
 

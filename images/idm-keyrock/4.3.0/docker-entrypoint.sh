@@ -76,23 +76,26 @@ function check_domain () {
 	local _host=$1
     local _port=$2
 
-	# Request to Authzforce to retrieve Domain
+    if [ -e /initialize-domain-request ] ; then
 
-	DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)" 
+        # Creates the domain
 
-	# Checks if the Domain exists. If not, creates one
+        curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://${_host}:${_port}/authzforce/domains --output /dev/null
+        DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
+        echo "Domain has been created: $DOMAIN"
+        rm /initialize-domain-request
+        touch /config/domain-ready
 
-	if [ -z "$DOMAIN" ]; then 
-	    echo "Domain is not created yet!"
-	    curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://${_host}:${_port}/authzforce/domains --output /dev/null
-	    DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
-	    echo "Domain has been created: $DOMAIN"
-	else
-	    echo "Domain value is not empty: "
-	    echo $DOMAIN
-	fi
+    else
 
+        # Retrieves the already created one
+
+        DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
+        echo "Domain retrieved: $DOMAIN"
+
+    fi
 }
+
 
 function check_file () {
 

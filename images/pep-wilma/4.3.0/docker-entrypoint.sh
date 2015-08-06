@@ -74,7 +74,7 @@ function check_host_port () {
 }
 
 
-function check_domain () {
+function get_domain () {
 
     if [ $# -lt 2 ] ; then
     echo "check_host_port: missing parameters."
@@ -88,18 +88,7 @@ function check_domain () {
     # Request to Authzforce to retrieve Domain
 
     DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)" 
-
-    # Checks if the Domain exists. If not, creates one
-
-    if [ -z "$DOMAIN" ]; then 
-        echo "Domain is not created yet!"
-        curl -s --request POST --header "Content-Type: application/xml;charset=UTF-8" --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' --header "Accept: application/xml" http://${_host}:${_port}/authzforce/domains --output /dev/null
-        DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)"
-        echo "Domain has been created: $DOMAIN"
-    else
-        echo "Domain value is not empty: "
-        echo $DOMAIN
-    fi
+    echo "Domain retrieved: $DOMAIN"
 
 }
 
@@ -153,8 +142,8 @@ function check_file () {
 
 # Call checks
 
-check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
+check_file /config/domain-ready
+get_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 check_file /config/provision-ready
 check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
 domain_permissions ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
