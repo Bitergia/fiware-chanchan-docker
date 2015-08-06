@@ -86,6 +86,7 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 
 # Extract clientID and client-secret from database
 
+COPY default_provision.py /opt/fi-ware-idm/deployment/default_provision.py
 COPY params-config.py /opt/fi-ware-idm/keystone/params-config.py
 RUN touch /initialize-provision
 RUN touch /initialize-domain-request

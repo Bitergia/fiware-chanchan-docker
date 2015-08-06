@@ -103,7 +103,7 @@ function check_file () {
     local _is_available=0
 
     local _file=$1
-    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
+    local _max_tries=10
 
     echo "Testing if file '${_file}' is available."
 
@@ -122,28 +122,45 @@ function check_file () {
     if [ ${_is_available} -eq 0 ] ; then
     echo "Failed to to retrieve '${_file}' after ${_tries} tries."
     echo "File is unavailable."
-    exit 1
+    return 1
     else
     echo "File '${_file}' is available."
     fi
 }
 
 function _data_provision () {
-
     if [ -e /initialize-provision ] ; then
-        sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
-        cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
-	    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-        workon idm_tools
-        echo "Lauching dev_server"
-        (fab localhost keystone.dev_server &)
-        sleep 10
-        echo "Providing the roles"
-        fab localhost keystone_provision.test_data
-        echo "Provision done. Killing process"
-        (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
-        rm /initialize-provision
-        touch /config/provision-ready
+        check_file ${PROVISION_FILE}
+        check_file_result=$?
+        if [[ $check_file_result -eq 1 ]] ; then
+            echo "Launching default provision file"
+            sed -i '/from deployment import keystone/a from deployment import default_provision' /opt/fi-ware-idm/fabfile.py
+            source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+            workon idm_tools
+            echo "Lauching dev_server"
+            (fab localhost keystone.dev_server &)
+            sleep 10
+            echo "Providing the roles"
+            fab localhost default_provision.test_data
+            echo "Provision done. Killing process"
+            (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
+            rm /initialize-provision
+            touch /config/provision-ready
+        else
+            sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
+            cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
+    	    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+            workon idm_tools
+            echo "Lauching dev_server"
+            (fab localhost keystone.dev_server &)
+            sleep 10
+            echo "Providing the roles"
+            fab localhost keystone_provision.test_data
+            echo "Provision done. Killing process"
+            (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
+            rm /initialize-provision
+            touch /config/provision-ready
+        fi
     else
         echo "Provision has been done already"
     fi
@@ -161,7 +178,6 @@ function _config_file () {
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-check_file ${PROVISION_FILE}
 _data_provision
 _config_file
 
