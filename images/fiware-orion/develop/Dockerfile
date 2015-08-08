@@ -4,7 +4,7 @@ MAINTAINER David Muriel <dmuriel@bitergia.com>, Alberto Martín <alberto.martin@
 
 ENV ORION_USER orion
 ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7
-ENV GIT_REV_ORION master
+ENV GIT_REV_ORION develop
 ENV CLEAN_DEV_TOOLS 1
 
 RUN adduser --comment "${ORION_USER}" ${ORION_USER}
