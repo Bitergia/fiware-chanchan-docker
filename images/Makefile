@@ -31,7 +31,7 @@ help:
 	$(info )
 	$(info Other available options:)
 	$(info - orion.ubuntu:		Build Orion Context Broker using Ubuntu baseimage)
-	$(info - orion-master:		Build Orion Context Broker from git master baseimage)
+	$(info - orion-develop:		Build Orion Context Broker from git develop baseimage)
 	$(info - orion-0.22.0:		Build Orion Context Broker 0.22.0 baseimage)
 	$(info - orion-0.22.0.ubuntu:	Build Orion Context Broker 0.22.0 using Ubuntu baseimage)
 	$(info - mongodb-2.6:		Build MongoDB 2.6 image)
@@ -58,11 +58,11 @@ pep-wilma:
 cygnus:
 	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
 
-.PHONY: orion-0.22.0 orion-master orion
+.PHONY: orion-0.22.0 orion-develop orion
 orion-0.22.0:
 	@$(MAKE) orion ORION_VERSION=0.22.0
-orion-master:
-	@$(MAKE) orion ORION_VERSION=master
+orion-develop:
+	@$(MAKE) orion ORION_VERSION=develop
 orion:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) fiware-orion/$(ORION_VERSION)/
 
