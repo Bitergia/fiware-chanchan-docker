@@ -38,7 +38,7 @@ help:
 	$(info - mongodb-3.0:		Build MongoDB 3.0 image)
 	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
-	$(info - idas-ul20:		Build IDAS UltraLight 2.0 IoTAgent image)
+	$(info - ul20-client:		Build IDAS UltraLight 2.0 Test Client image)
 	$(info )
 	@echo ""
 
@@ -92,10 +92,10 @@ orion-0.22.0.ubuntu:
 orion.ubuntu:
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
-.PHONY: idas idas-ul20 idas-iota-lwm2m idas-iota-cpp
+.PHONY: idas idas-iota-lwm2m idas-iota-cpp ul20-client
 idas: idas-iota-lwm2m idas-iota-cpp
-idas-ul20:
-	docker build -t bitergia/idas:ul20 idas/ul20/
+ul20-client:
+	docker build -t bitergia/ul20-client idas/ul20-client
 idas-iota-lwm2m:
 	docker build -t bitergia/idas-iota-lwm2m:$(IDAS_LWM2M_VERSION) idas/iota-lwm2m/$(IDAS_LWM2M_VERSION)/
 

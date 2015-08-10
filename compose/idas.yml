@@ -1,22 +1,25 @@
 mongodbdata:
-    image: bitergia/mongodb:2.6
+    image: mongo:2.6
     volumes:
-        - /var/lib/mongo
+        - /data/db
     restart: no
-    entrypoint: ["/bin/echo","Data-only container for mongodb"]
+    command: /bin/echo "Data-only container for mongodb."
 
 mongodb:
-    image: bitergia/mongodb:2.6
+    image: mongo:2.6
     volumes_from:
         - mongodbdata
     expose:
         - "27017"
+    command: --smallfiles
+
 orion:
-    image: bitergia/fiware-orion:0.22.0
+    image: bitergia/fiware-orion:0.23.0
     links:
         - mongodb
     expose:
-        - "10026"
+        - "1026"
+    command: -fg
 
 idasiotacpp:
     image: bitergia/idas-iota-cpp:1.2.0
@@ -34,3 +37,10 @@ idasiotalwm2m:
         - orion
     expose:
         - "4041"
+
+ul20client:
+    image: bitergia/ul20-client:latest
+    links:
+        - orion
+        - idasiotacpp:iota
+    command: --acpi
