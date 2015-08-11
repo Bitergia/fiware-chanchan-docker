@@ -4,7 +4,7 @@
 from pysqlite2 import dbapi2 as sqlite3
 import json, os, argparse
 
-parser = argparse.ArgumentParser(description='This is a demo script by nixCraft.')
+parser = argparse.ArgumentParser(description='Script to retrieva values from the database')
 parser.add_argument('-n','--name', help='Name of the app to search',required=True)
 parser.add_argument('-f','--file',help='File where to output the results', required=True)
 parser.add_argument('-db','--database',help='Databse from where to extract the data', required=True)

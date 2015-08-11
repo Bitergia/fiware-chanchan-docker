@@ -19,6 +19,8 @@ if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
     export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
 fi
 
+# Function to check the availaibility of a host and its port
+
 function check_host_port () {
 
     local _timeout=10
@@ -64,6 +66,7 @@ function check_host_port () {
     fi
 }
 
+# Funtion that checks if the domain has been already created at Authzforce
 
 function check_domain () {
 
@@ -96,6 +99,7 @@ function check_domain () {
     fi
 }
 
+# Function that checks if a file is available
 
 function check_file () {
 
@@ -128,58 +132,70 @@ function check_file () {
     fi
 }
 
+# Function to call a script that generates a JSON with the app information
+
+function _config_file () {
+
+    echo "Parsing App information into a JSON file"
+    source /opt/fi-ware-idm/keystone/.venv/bin/activate
+    python /opt/fi-ware-idm/keystone/params-config.py --name ${APP_NAME} --file ${CONFIG_FILE} --database ${KEYSTONE_DB}
+}
+
+# Syncronize roles and permissions to Authzforce from the scratch
+
+function _authzforce_sync () {
+
+        sed -i '/from deployment import keystone/a from deployment import access_control_sync' /opt/fi-ware-idm/fabfile.py
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 
+        workon idm_tools
+        fab localhost access_control_sync.sync
+        echo "Authzforce sucessfully parsed"
+
+}
+
+# Provide a set of users, roles, permissions, etc to handle KeyRock
+
 function _data_provision () {
     if [ -e /initialize-provision ] ; then
+
         check_file ${PROVISION_FILE}
         check_file_result=$?
+
         if [[ $check_file_result -eq 1 ]] ; then
             echo "Launching default provision file"
+            FILE=default_provision
             sed -i '/from deployment import keystone/a from deployment import default_provision' /opt/fi-ware-idm/fabfile.py
-            source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-            workon idm_tools
-            echo "Lauching dev_server"
-            (fab localhost keystone.dev_server &)
-            sleep 10
-            echo "Providing the roles"
-            fab localhost default_provision.test_data
-            echo "Provision done. Killing process"
-            (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
-            rm /initialize-provision
-            touch /config/provision-ready
         else
-            sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
+            FILE=keystone_provision
             cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
-    	    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-            workon idm_tools
-            echo "Lauching dev_server"
-            (fab localhost keystone.dev_server &)
-            sleep 10
-            echo "Providing the roles"
-            fab localhost keystone_provision.test_data
-            echo "Provision done. Killing process"
-            (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
-            rm /initialize-provision
-            touch /config/provision-ready
+            sed -i '/from deployment import keystone/a from deployment import keystone_provision' /opt/fi-ware-idm/fabfile.py
         fi
+
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        workon idm_tools
+        echo "Lauching dev_server"
+        (fab localhost keystone.dev_server &)
+        sleep 5
+        echo "Providing the roles"
+        fab localhost ${FILE}.test_data
+        sleep 5
+        echo "Provision done. Killing process"
+        _config_file
+        _authzforce_sync
+        (ps axf | grep -i keystone-all | grep -v grep | sed -e 's/^ *//g' | cut -d ' ' -f 1 | xargs kill -s TERM)
+        rm /initialize-provision
+        touch /config/provision-ready
+
     else
         echo "Provision has been done already"
     fi
 
 }
 
-function _config_file () {
-
-	echo "Parsing App information into a JSON file"
-	source /opt/fi-ware-idm/keystone/.venv/bin/activate
-	python /opt/fi-ware-idm/keystone/params-config.py --name ${APP_NAME} --file ${CONFIG_FILE} --database ${KEYSTONE_DB}
-}
-
 # Call checks
 
 check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-_data_provision
-_config_file
 
 # Parse the value into the IdM settings
 
@@ -190,6 +206,10 @@ sed -e "s@^ACCESS_CONTROL_MAGIC_KEY = None@ACCESS_CONTROL_MAGIC_KEY = '${MAGIC_K
 
 sed -i /etc/apache2/sites-available/idm.conf \
     -e "s|IDM_KEYROCK_HOSTNAME|${IDM_KEYROCK_HOSTNAME}|g"
+
+_data_provision
+
+chown -R www-data:www-data /opt/fi-ware-idm/horizon/openstack_dashboard/local
 
 # Start container back
 

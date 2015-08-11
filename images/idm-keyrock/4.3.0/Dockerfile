@@ -88,6 +88,8 @@ RUN mkdir -p ${KEYROCK_HOME}/horizon/static && chown www-data:www-data ${KEYROCK
 
 COPY default_provision.py /opt/fi-ware-idm/deployment/default_provision.py
 COPY params-config.py /opt/fi-ware-idm/keystone/params-config.py
+COPY access_control_sync.py /opt/fi-ware-idm/deployment/access_control_sync.py
+COPY access_control_xacml.py /opt/fi-ware-idm/horizon/access_control_xacml.py
 RUN touch /initialize-provision
 RUN touch /initialize-domain-request
 
