@@ -4,11 +4,93 @@ The [Orion Context Broker](http://catalogue.fiware.org/enablers/publishsubscribe
 
 ## Supported tags and respective `Dockerfile` links ##
 
-* [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.22.0/Dockerfile))
-* [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.23.0/Dockerfile))
 * [`develop`   (develop/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/develop/Dockerfile))
+* [`0.23.0`   (0.23.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.23.0/Dockerfile))
+* [`0.22.0`   (0.22.0/Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/0.22.0/Dockerfile))
 
 Find detailed information of this Generic enabler at [Fiware catalogue](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker).
+
+## Orion develop image ##
+
+This image has orion compiled from HEAD of develop branch.
+
+### Requirements ###
+
+- MongoDB.  You can use the official images available at [Docker Hub](https://registry.hub.docker.com/_/mongo/).  This image has been tested with mongo:2.6 image.
+
+### Image Contents ###
+
+- [x] `centos:centos6` baseimage available [here](https://registry.hub.docker.com/_/centos/)
+- [x] Orion Context Broker (built from source)
+- [x] Running on port `1026`
+
+### Usage ###
+
+We strongly suggest you to use [docker-compose](https://docs.docker.com/compose/). With docker compose you can define multiple containers in a single file, and link them easily. 
+
+So for this purpose, we have already a simple file that launches:
+
+   * A MongoDB database
+   * Data-only container for the MongoDB database
+   * Orion Context Broker
+
+The file `orion.yml` can be downloaded from [here](https://raw.githubusercontent.com/Bitergia/fiware-chanchan-docker/master/compose/orion.yml).
+
+Once you get it, you just have to:
+
+```
+docker-compose -f orion.yml up -d
+```
+
+And all the services will be up. End to end testing can be done by doing:
+
+```
+curl <container-ip>:1026/version
+```
+
+### What if I don't want to use docker-compose? ###
+
+No problem, the only thing is that you will have to deploy a MongoDB yourself and specify the parameters.
+
+An example of how to run it could be:
+
+```
+docker run -d --name <container-name> bitergia/fiware-orion:develop -dbhost <mongo_server>
+```
+
+By running this, it expects a MongoDB database running on `<mongo_server>:27017` and orion will use port 1026.
+
+Any parameter added after `bitergia/fiware-orion:develop` is passed directly to orion.  The image already adds `-fg` to tell orion not to detach itself as a daemon.  This is needed if you want to keep the container running as docker stops the container when the PID 1 process inside the container exits.
+
+### Stopping the container ###
+
+To stop the container, just use the `docker stop <container-id>` command.  This will send the TERM signal to orion triggering a clean shutdown of the container.
+
+### Logs and other commands ###
+
+By default, orion sends its output to stdout/stderr and this output can be viewed via the `docker logs <container-id>` command.
+
+If you need to run another command in the same container, you can use the `docker exec` command.
+
+### Keeping the development tools ###
+
+If you want to keep the development tools on the image, you can do so by modifying the following line on the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/develop/Dockerfile):
+
+```
+ENV CLEAN_DEV_TOOLS 1
+```
+
+changing the value to `0`:
+
+```
+ENV CLEAN_DEV_TOOLS 0
+```
+
+This will skip the cleaning process made at the end of the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/develop/Dockerfile) in order to thin the final image.  This will grow the final image size from ~250 MB to ~1 GB.  Then you can build the image by using the available [Makefile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/Makefile) by running:
+
+```
+make orion-develop
+```
 
 ## Orion 0.23.0 image ##
 
@@ -85,30 +167,6 @@ To stop the container, just use the `docker stop <container-id>` command.  This 
 By default, orion sends its output to stdout/stderr and this output can be viewed via the `docker logs <container-id>` command.
 
 If you need to run another command in the same container, you can use the `docker exec` command.
-
-## Orion develop image ##
-
-This image is the same as the 0.23.0 image but with orion compiled from HEAD of develop branch.
-
-### Keeping the development tools ###
-
-If you want to keep the development tools on the image, you can do so by modifying the following line on the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/develop/Dockerfile):
-
-```
-ENV CLEAN_DEV_TOOLS 1
-```
-
-changing the value to `0`:
-
-```
-ENV CLEAN_DEV_TOOLS 0
-```
-
-This will skip the cleaning process made at the end of the [Dockerfile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/fiware-orion/develop/Dockerfile) in order to thin the final image.  This will grow the final image size from ~250 MB to ~1 GB.  Then you can build the image by using the available [Makefile](https://github.com/Bitergia/fiware-chanchan-docker/blob/master/images/Makefile) by running:
-
-```
-make orion-develop
-```
 
 ## Orion 0.22.0 image ##
 

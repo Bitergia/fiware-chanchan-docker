@@ -102,9 +102,7 @@ RUN yum -y install epel-release && \
 
 WORKDIR /
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/bin/contextBroker"]
+ENTRYPOINT ["/usr/bin/contextBroker","-fg"]
 
 ### Exposed ports
 # - Default Orion port
