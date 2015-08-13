@@ -209,7 +209,7 @@ sed -i /etc/apache2/sites-available/idm.conf \
 
 _data_provision
 
-chown -R www-data:www-data /opt/fi-ware-idm/horizon/openstack_dashboard/local
+chown www-data:www-data /opt/fi-ware-idm/horizon/openstack_dashboard/local/.secret_key_store
 
 # Start container back
 
