@@ -1,32 +1,6 @@
 #!/bin/bash
 
-[ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
-[ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
-[ -z "${IDM_KEYSTONE_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYSTONE_HOSTNAME=idm
-[ -z "${IDM_KEYSTONE_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_KEYSTONE_PORT=5000
-[ -z "${APP_HOSTNAME}" ] && echo "APP_HOSTNAME is undefined.  Using default value of 'orion'" && export APP_HOSTNAME=orion
-[ -z "${APP_PORT}" ] && echo "APP_PORT is undefined.  Using default value of '10026'" && export APP_PORT=10026
-[ -z "${PEP_USERNAME}" ] && echo "PEP_USERNAME is undefined. Using default value of 'pepproxy@test.com'" && export PEP_USERNAME=pepproxy@test.com
-[ -z "${PEP_PASSWORD}" ] && echo "PEP_PASSWORD is undefined. Using default value of 'test'" && export PEP_PASSWORD=test
-[ -z "${PEP_PORT}" ] && echo "PEP_PORT is undefined. Using default value of '1026'" && export PEP_PORT=1026
-[ -z "${IDM_USERNAME}" ] && echo "IDM_USERNAME is undefined. Using default value of 'user0@test.com'" && export IDM_USERNAME=user0@test.com
-[ -z "${IDM_USERPASS}" ] && echo "IDM_USERPASS is undefined. Using default value of 'test'" && export IDM_USERPASS=test
-[ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
-[ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
-
 declare DOMAIN=''
-
-# fix variables when using docker-compose
-if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-    export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
-fi
-if [[ ${IDM_KEYSTONE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-    export IDM_KEYSTONE_PORT=${BASH_REMATCH[1]}
-fi
-if [[ ${APP_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-    export ORION_PORT=${BASH_REMATCH[1]}
-fi
-
 
 function check_host_port () {
 
@@ -72,7 +46,6 @@ function check_host_port () {
     echo "Port '${_port}' at host '${_host}' is open."
     fi
 }
-
 
 function get_domain () {
 
@@ -140,29 +113,61 @@ function check_file () {
     fi
 }
 
-# Call checks
+if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
-check_file /config/domain-ready
-get_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
-check_file /config/provision-ready
-check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
-domain_permissions ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
+    [ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
+    [ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
+    [ -z "${IDM_KEYSTONE_HOSTNAME}" ] && echo "IDM_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYSTONE_HOSTNAME=idm
+    [ -z "${IDM_KEYSTONE_PORT}" ] && echo "IDM_PORT is undefined.  Using default value of '5000'" && export IDM_KEYSTONE_PORT=5000
+    [ -z "${APP_HOSTNAME}" ] && echo "APP_HOSTNAME is undefined.  Using default value of 'orion'" && export APP_HOSTNAME=orion
+    [ -z "${APP_PORT}" ] && echo "APP_PORT is undefined.  Using default value of '10026'" && export APP_PORT=10026
+    [ -z "${PEP_USERNAME}" ] && echo "PEP_USERNAME is undefined. Using default value of 'pepproxy@test.com'" && export PEP_USERNAME=pepproxy@test.com
+    [ -z "${PEP_PASSWORD}" ] && echo "PEP_PASSWORD is undefined. Using default value of 'test'" && export PEP_PASSWORD=test
+    [ -z "${PEP_PORT}" ] && echo "PEP_PORT is undefined. Using default value of '1026'" && export PEP_PORT=1026
+    [ -z "${IDM_USERNAME}" ] && echo "IDM_USERNAME is undefined. Using default value of 'user0@test.com'" && export IDM_USERNAME=user0@test.com
+    [ -z "${IDM_USERPASS}" ] && echo "IDM_USERPASS is undefined. Using default value of 'test'" && export IDM_USERPASS=test
+    [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
+    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
 
-# Configure PEP Proxy config.js
+    # fix variables when using docker-compose
+    if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+	export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
+    fi
+    if [[ ${IDM_KEYSTONE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+	export IDM_KEYSTONE_PORT=${BASH_REMATCH[1]}
+    fi
+    if [[ ${APP_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+	export ORION_PORT=${BASH_REMATCH[1]}
+    fi
 
-sed -i /opt/fi-ware-pep-proxy/config.js \
-    -e "s|PEP_PORT|${PEP_PORT}|g" \
-    -e "s|IDM_KEYSTONE_HOSTNAME|${IDM_KEYSTONE_HOSTNAME}|g" \
-    -e "s|IDM_KEYSTONE_PORT|${IDM_KEYSTONE_PORT}|g" \
-    -e "s|APP_HOSTNAME|${APP_HOSTNAME}|g" \
-    -e "s|APP_PORT|${APP_PORT}|g" \
-    -e "s|PEP_USERNAME|${PEP_USERNAME}|g" \
-    -e "s|PEP_PASSWORD|${PEP_PASSWORD}|g" \
-    -e "s|AUTHZFORCE_HOSTNAME|${AUTHZFORCE_HOSTNAME}|g" \
-    -e "s|AUTHZFORCE_PORT|${AUTHZFORCE_PORT}|g" \
-    -e "s|DOMAIN|${DOMAIN}|g" \
-    -e "s|MAGIC_KEY|${MAGIC_KEY}|g"
+    # Call checks
 
-# Start container back
+    check_file /config/domain-ready
+    get_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
+    check_file /config/provision-ready
+    check_host_port ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
+    domain_permissions ${IDM_KEYSTONE_HOSTNAME} ${IDM_KEYSTONE_PORT}
 
-exec /sbin/init
+    # Configure PEP Proxy config.js
+
+    sed -i /opt/fi-ware-pep-proxy/config.js \
+	-e "s|PEP_PORT|${PEP_PORT}|g" \
+	-e "s|IDM_KEYSTONE_HOSTNAME|${IDM_KEYSTONE_HOSTNAME}|g" \
+	-e "s|IDM_KEYSTONE_PORT|${IDM_KEYSTONE_PORT}|g" \
+	-e "s|APP_HOSTNAME|${APP_HOSTNAME}|g" \
+	-e "s|APP_PORT|${APP_PORT}|g" \
+	-e "s|PEP_USERNAME|${PEP_USERNAME}|g" \
+	-e "s|PEP_PASSWORD|${PEP_PASSWORD}|g" \
+	-e "s|AUTHZFORCE_HOSTNAME|${AUTHZFORCE_HOSTNAME}|g" \
+	-e "s|AUTHZFORCE_PORT|${AUTHZFORCE_PORT}|g" \
+	-e "s|DOMAIN|${DOMAIN}|g" \
+	-e "s|MAGIC_KEY|${MAGIC_KEY}|g"
+
+    # Start PEP Proxy
+
+    cd ${WILMA_HOME}
+    su - ${WILMA_USER} -c "cd ${WILMA_HOME} ; PORT=${PEP_PORT} NODE_ENV=development forever start server.js"
+    exec su - ${WILMA_USER} -c "forever --fifo logs 0"
+else
+    exec "$@"
+fi

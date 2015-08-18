@@ -6,8 +6,7 @@ Find detailed information of this Generic enabler at [Fiware catalogue](http://c
 
 ## Image contents
 
-- [x] `bitergia/ubuntu-trusty` baseimage contents listed [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#image-contents)
-- [x] Node.js
+- [x] `node:0.10-slim` official image available [here](https://hub.docker.com/_/node/)
 - [x] PEP Wilma
 - [x] PEP Wilma running on port `1026`
 
@@ -79,7 +78,7 @@ And that's it!
 
 You can always play with the users, roles and permissions at IdM (add, remove...) to check that the resource is being well protected :)
 
-For that purpose, the user aware of roles management is the `pepproxy@test.com` (provider). This means, you will have to login with this user in order to be able to handle the roles and permissions of the application. Check [here](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idm-keyrock#idm-users-organizations-apps-roles-and-permissions) the full list of users, organizations, roles and apps provided.
+For that purpose, the user aware of roles management is `pepproxy@test.com` (provider). This means, you will have to login with this user in order to be able to handle the roles and permissions of the application. Check [here](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idm-keyrock#idm-users-organizations-apps-roles-and-permissions) the full list of users, organizations, roles and apps provided.
 
 ## What if I don't want to use docker-compose?
 
@@ -119,39 +118,6 @@ docker run -d --name <container-name> \
 -e APP_PORT=<app-port> \
 bitergia/pep-wilma:4.3.0
 ```
-
-## About SSH
-
-SSH is enabled by default with a pre-generated insecure SSH key. As the image us based in `bitergia/ubuntu-trusty` image, it contains the same SSH privileges.
-That means, for accessing the image through SSH, you will need the SSH insecure keys. Those keys are the following:
-
-* `bitergia-docker` - Available [here](https://raw.githubusercontent.com/Bitergia/docker/master/baseimages/bitergia-docker)
-* `bitergia-docker.pub` - Available [here](https://raw.githubusercontent.com/Bitergia/docker/master/baseimages/bitergia-docker.pub)
-
-Once the container is up, you can access the container easily by using our own [docker-ssh](https://github.com/Bitergia/docker/tree/master/utils#docker-ssh) script:
-
-```
-docker-ssh bitergia@<container-id>
-```
-
-Or you can just use the old-fashioned way to access a docker container: 
-
-```
-ssh bitergia@<container-ip>
-```
-
-Container IP can be retrieved using the following command:
-
-```
-docker inspect -f "{{ .NetworkSettings.IPAddress }}" <container-id>
-```
-
-You can also use the [get-container-ip](https://github.com/Bitergia/docker/tree/master/utils#get-container-ip) script provided in this repository. 
-
-### Using/generate your own SSH key
-
-Information on how to do that can be found [here](https://github.com/Bitergia/docker/tree/master/baseimages/ubuntu#about-ssh).
-**Note** that the information below is regarding the `bitergia/ubuntu-trusty` baseimage. If you have already pulled or made a `bitergia/pep-wilma` image based in the `bitergia/ubuntu-trusty` image before applying the keys change, you will need to re-build both images again.
 
 ## User feedback
 
