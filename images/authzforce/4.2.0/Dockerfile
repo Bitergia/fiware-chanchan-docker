@@ -14,7 +14,7 @@ RUN curl -O -L http://catalogue.fiware.org/sites/default/files/storage/enablers/
     mv /root/authzforce/opt/* /opt/ && \
     rm -rf /opt/authzforce/data/domains/* && \
     rm -rf /root/authzforce && \
-    rm -f authforce_4.2.0-fiware_all.deb
+    rm -f authzforce_4.2.0-fiware_all.deb
 
 ### Exposed ports
 # - App server
