@@ -113,7 +113,7 @@ function register_sensors () {
 
 if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
-    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
+    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '60'" && export DEFAULT_MAX_TRIES=60
 
     [ -z "${ORION_HOSTNAME}" ] && echo "ORION_HOSTNAME is undefined.  Using default value of 'orion'" && export ORION_HOSTNAME=orion
     [ -z "${ORION_PORT}" ] && echo "ORION_PORT is undefined.  Using default value of '1026'" && export ORION_PORT=1026

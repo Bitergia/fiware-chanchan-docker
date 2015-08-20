@@ -127,7 +127,7 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     [ -z "${IDM_USERNAME}" ] && echo "IDM_USERNAME is undefined. Using default value of 'user0@test.com'" && export IDM_USERNAME=user0@test.com
     [ -z "${IDM_USERPASS}" ] && echo "IDM_USERPASS is undefined. Using default value of 'test'" && export IDM_USERPASS=test
     [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
-    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
+    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '60'" && export DEFAULT_MAX_TRIES=60
 
     # fix variables when using docker-compose
     if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then

@@ -76,8 +76,8 @@ fi
 if [ "${1}" = "/usr/bin/contextBroker" ] ; then
 
     if [ -z "${DEFAULT_MAX_TRIES}" ]; then
-	echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'"
-	export DEFAULT_MAX_TRIES=30
+	echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '60'"
+	export DEFAULT_MAX_TRIES=60
     fi
 
     # check specified parameters

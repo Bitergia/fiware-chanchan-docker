@@ -223,7 +223,7 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     [ -z "${KEYSTONE_DB}" ] && echo "KEYSTONE_DB is undefined.  Using default value of '/opt/fi-ware-idm/keystone/keystone.db'" && export KEYSTONE_DB=/opt/fi-ware-idm/keystone/keystone.db
     [ -z "${CONFIG_FILE}" ] && echo "CONFIG_FILE is undefined.  Using default value of '/config/idm2chanchan.json'" && export CONFIG_FILE=/config/idm2chanchan.json
     [ -z "${PROVISION_FILE}" ] && echo "PROVISION_FILE is undefined.  Using default value of '/config/keystone_provision.py'" && export PROVISION_FILE=/config/keystone_provision.py
-    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '30'" && export DEFAULT_MAX_TRIES=30
+    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '60'" && export DEFAULT_MAX_TRIES=60
     [ -z "${KEYSTONE_VERBOSE}" ] && echo "KEYSTONE_VERBOSE is undefined.  Using default value of 'no'" && export KEYSTONE_VERBOSE=no
 
     # fix variables when using docker-compose
