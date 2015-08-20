@@ -93,15 +93,19 @@ function check_file () {
     echo "Testing if file '${_file}' is available."
 
     while [ ${_tries} -lt ${_max_tries} -a ${_is_available} -eq 0 ] ; do
-    echo -n "Checking file '${_file}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
-    if [ -r ${_file} ] ; then
-        echo "OK."
-        _is_available=1
-    else
-        echo "Failed."
-        sleep 1
-        _tries=$(( ${_tries} + 1 ))
-    fi
+        echo -n "Checking file '${_file}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
+        if [ -r ${_file} ] ; then
+            echo "OK."
+            _is_available=1
+        else
+            sleep 1
+            _tries=$(( ${_tries} + 1 ))
+            if [ ${_tries} -lt ${_max_tries} ] ; then
+                echo "Retrying."
+            else
+                echo "Failed."
+            fi
+        fi
     done
 
     if [ ${_is_available} -eq 0 ] ; then
