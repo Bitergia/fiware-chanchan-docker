@@ -9,9 +9,9 @@ function check_host_port () {
     local _is_open=0
 
     if [ $# -lt 2 ] ; then
-    echo "check_host_port: missing parameters."
-    echo "Usage: check_host_port <host> <port> [max-tries]"
-    exit 1
+        echo "check_host_port: missing parameters."
+        echo "Usage: check_host_port <host> <port> [max-tries]"
+        exit 1
     fi
 
     local _host=$1
@@ -20,39 +20,43 @@ function check_host_port () {
     local NC=$( which nc )
 
     if [ ! -e "${NC}" ] ; then
-    echo "Unable to find 'nc' command."
-    exit 1
+        echo "Unable to find 'nc' command."
+        exit 1
     fi
 
     echo "Testing if port '${_port}' is open at host '${_host}'."
 
     while [ ${_tries} -lt ${_max_tries} -a ${_is_open} -eq 0 ] ; do
-    echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
+        echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
     if ${NC} -z -w ${_timeout} ${_host} ${_port} ; then
         echo "OK."
         _is_open=1
     else
-        echo "Failed."
         sleep 1
         _tries=$(( ${_tries} + 1 ))
+        if [ ${_tries} -lt ${_max_tries} ] ; then
+            echo "Retrying."
+        else
+            echo "Failed."
+        fi
     fi
     done
 
     if [ ${_is_open} -eq 0 ] ; then
-    echo "Failed to connect to port '${_port}' on host '${_host}' after ${_tries} tries."
-    echo "Port is closed or host is unreachable."
-    exit 1
+        echo "Failed to connect to port '${_port}' on host '${_host}' after ${_tries} tries."
+        echo "Port is closed or host is unreachable."
+        exit 1
     else
-    echo "Port '${_port}' at host '${_host}' is open."
+        echo "Port '${_port}' at host '${_host}' is open."
     fi
 }
 
 function get_domain () {
 
     if [ $# -lt 2 ] ; then
-    echo "check_host_port: missing parameters."
-    echo "Usage: check_host_port <host> <port> [max-tries]"
-    exit 1
+        echo "check_host_port: missing parameters."
+        echo "Usage: check_host_port <host> <port> [max-tries]"
+        exit 1
     fi
 
     local _host=$1
@@ -60,12 +64,12 @@ function get_domain () {
 
     # Request to Authzforce to retrieve Domain
 
-    DOMAIN="$(curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2)" 
+    DOMAIN=$( curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
     echo "Domain retrieved: $DOMAIN"
 
 }
 
-# Configure Domain permissions to user 'pepproxy' at IdM. 
+# Configure Domain permissions to user 'pepproxy' at IdM.
 # TODO: make it more configurable
 
 function domain_permissions() {
@@ -73,9 +77,9 @@ function domain_permissions() {
     local _host=$1
     local _port=$2
 
-    FRESHTOKEN="$(curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "idm", "domain": { "id": "default" }, "password": "idm"} } } } }' http://${_host}:${_port}/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}')"
-    MEMBERID="$(curl -s -H "X-Auth-Token:${FRESHTOKEN}" -H "Content-type: application/json" http://${_host}:${_port}/v3/roles | python -m json.tool | grep -iw id | awk -F'"' '{print $4}' | head -n 1)"
-    REQUEST="$(curl -s -X PUT -H "X-Auth-Token:${FRESHTOKEN}" -H "Content-type: application/json" http://${_host}:${_port}/v3/domains/default/users/pepproxy/roles/${MEMBERID})"
+    FRESHTOKEN=$( curl -s -i   -H "Content-Type: application/json"   -d '{ "auth": {"identity": {"methods": ["password"], "password": { "user": { "name": "idm", "domain": { "id": "default" }, "password": "idm"} } } } }' http://${_host}:${_port}/v3/auth/tokens | grep ^X-Subject-Token: | awk '{print $2}' )
+    MEMBERID=$( curl -s -H "X-Auth-Token:${FRESHTOKEN}" -H "Content-type: application/json" http://${_host}:${_port}/v3/roles | python -m json.tool | grep -iw id | awk -F'"' '{print $4}' | head -n 1 )
+    REQUEST=$( curl -s -X PUT -H "X-Auth-Token:${FRESHTOKEN}" -H "Content-type: application/json" http://${_host}:${_port}/v3/domains/default/users/pepproxy/roles/${MEMBERID} )
     echo "User pepproxy has been granted with:"
     echo "Role: ${MEMBERID}"
     echo "Token:  ${FRESHTOKEN}"
@@ -109,11 +113,11 @@ function check_file () {
     done
 
     if [ ${_is_available} -eq 0 ] ; then
-    echo "Failed to to retrieve '${_file}' after ${_tries} tries."
-    echo "File is unavailable."
-    exit 1
+        echo "Failed to to retrieve '${_file}' after ${_tries} tries."
+        echo "File is unavailable."
+        exit 1
     else
-    echo "File '${_file}' is available."
+        echo "File '${_file}' is available."
     fi
 }
 
@@ -135,13 +139,13 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
     # fix variables when using docker-compose
     if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-	export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
+        export AUTHZFORCE_PORT=${BASH_REMATCH[1]}
     fi
     if [[ ${IDM_KEYSTONE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-	export IDM_KEYSTONE_PORT=${BASH_REMATCH[1]}
+        export IDM_KEYSTONE_PORT=${BASH_REMATCH[1]}
     fi
     if [[ ${APP_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-	export ORION_PORT=${BASH_REMATCH[1]}
+        export ORION_PORT=${BASH_REMATCH[1]}
     fi
 
     # Call checks
@@ -155,17 +159,17 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     # Configure PEP Proxy config.js
 
     sed -i /opt/fi-ware-pep-proxy/config.js \
-	-e "s|PEP_PORT|${PEP_PORT}|g" \
-	-e "s|IDM_KEYSTONE_HOSTNAME|${IDM_KEYSTONE_HOSTNAME}|g" \
-	-e "s|IDM_KEYSTONE_PORT|${IDM_KEYSTONE_PORT}|g" \
-	-e "s|APP_HOSTNAME|${APP_HOSTNAME}|g" \
-	-e "s|APP_PORT|${APP_PORT}|g" \
-	-e "s|PEP_USERNAME|${PEP_USERNAME}|g" \
-	-e "s|PEP_PASSWORD|${PEP_PASSWORD}|g" \
-	-e "s|AUTHZFORCE_HOSTNAME|${AUTHZFORCE_HOSTNAME}|g" \
-	-e "s|AUTHZFORCE_PORT|${AUTHZFORCE_PORT}|g" \
-	-e "s|DOMAIN|${DOMAIN}|g" \
-	-e "s|MAGIC_KEY|${MAGIC_KEY}|g"
+        -e "s|PEP_PORT|${PEP_PORT}|g" \
+        -e "s|IDM_KEYSTONE_HOSTNAME|${IDM_KEYSTONE_HOSTNAME}|g" \
+        -e "s|IDM_KEYSTONE_PORT|${IDM_KEYSTONE_PORT}|g" \
+        -e "s|APP_HOSTNAME|${APP_HOSTNAME}|g" \
+        -e "s|APP_PORT|${APP_PORT}|g" \
+        -e "s|PEP_USERNAME|${PEP_USERNAME}|g" \
+        -e "s|PEP_PASSWORD|${PEP_PASSWORD}|g" \
+        -e "s|AUTHZFORCE_HOSTNAME|${AUTHZFORCE_HOSTNAME}|g" \
+        -e "s|AUTHZFORCE_PORT|${AUTHZFORCE_PORT}|g" \
+        -e "s|DOMAIN|${DOMAIN}|g" \
+        -e "s|MAGIC_KEY|${MAGIC_KEY}|g"
 
     # Start PEP Proxy
 
