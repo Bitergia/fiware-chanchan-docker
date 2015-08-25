@@ -44,3 +44,5 @@ ul20client:
         - orion
         - idasiotacpp:iota
     command: --acpi
+    environment:
+        - IOTA_PORT=8080
