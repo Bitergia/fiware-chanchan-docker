@@ -1,0 +1,78 @@
+mongodbdata:
+    image: mongo:2.6
+    volumes:
+        - /data/db
+    restart: no
+    command: /bin/echo "Data-only container for mongodb."
+
+mongodb:
+    image: mongo:2.6
+    volumes_from:
+        - mongodbdata
+    expose:
+        - "27017"
+    command: --smallfiles
+
+orion:
+    image: bitergia/fiware-orion:0.23.0
+    links:
+        - mongodb
+    expose:
+        - "1026"
+    command: -fg
+
+idasiotacpp:
+    image: bitergia/idas-iota-cpp:1.2.0
+    links:
+        - mongodb
+        - orion
+    expose:
+        - "8080"
+        - "8081"
+
+idasiotalwm2m:
+    image: bitergia/idas-iota-lwm2m:0.2.0
+    links:
+        - mongodb
+        - orion
+    expose:
+        - "4041"
+
+ul20client:
+    image: bitergia/ul20-client:latest
+    links:
+        - orion
+        - idasiotacpp:iota
+    command: --acpi
+    environment:
+        - IOTA_PORT=8080
+
+mariadbdata:
+    image: mariadb:10.0
+    volumes:
+        - /var/lib/mysql
+    restart: no
+    command: /bin/echo "Data-only container for mariadb."
+
+mariadb:
+    image: mariadb:10.0
+    volumes_from:
+        - mariadbdata
+    expose:
+        - "3306"
+    environment:
+        - MYSQL_ROOT_PASSWORD=bitergia
+    command: --verbose
+
+cygnus:
+    image: bitergia/cygnus:develop
+    links:
+        - orion
+        - mariadb
+    expose:
+        - "5050"
+    environment:
+        - MYSQL_HOST=mariadb
+        - MYSQL_PORT=3306
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=bitergia

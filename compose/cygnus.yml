@@ -1,50 +1,50 @@
 mariadbdata:
-    image: bitergia/mariadb:10.0
+    image: mariadb:10.0
     volumes:
         - /var/lib/mysql
     restart: no
-    entrypoint: ["/bin/echo","Data-only container for mariadb"]
+    command: /bin/echo "Data-only container for mariadb."
 
 mariadb:
-    image: bitergia/mariadb:10.0
+    image: mariadb:10.0
     volumes_from:
         - mariadbdata
     expose:
         - "3306"
+    environment:
+        - MYSQL_ROOT_PASSWORD=bitergia
 
 mongodbdata:
-    image: bitergia/mongodb:2.6
+    image: mongo:2.6
     volumes:
-        - /var/lib/mongo
+        - /data/db
     restart: no
-    entrypoint: ["/bin/echo","Data-only container for mongodb"]
+    command: /bin/echo "Data-only container for mongodb."
 
 mongodb:
-    image: bitergia/mongodb:2.6
+    image: mongo:2.6
     volumes_from:
         - mongodbdata
     expose:
         - "27017"
+    command: --smallfiles
 
 orion:
-    image: bitergia/fiware-orion:0.22.0
+    image: bitergia/fiware-orion:develop
     links:
         - mongodb
     expose:
-        - "10026"
+        - "1026"
+    command: -dbhost mongodb
 
 cygnus:
-    image: bitergia/cygnus
+    image: bitergia/cygnus:develop
     links:
         - orion
         - mariadb
     expose:
-        - "5001"
-        - "5002"
         - "5050"
-        - "6001"
     environment:
-        - CKAN_API_KEY=44f762b2-978a-40ca-9dfc-1a8ec8855599
         - MYSQL_HOST=mariadb
         - MYSQL_PORT=3306
         - MYSQL_USER=root

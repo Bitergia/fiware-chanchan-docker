@@ -39,6 +39,7 @@ help:
 	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
 	$(info - ul20-client:		Build IDAS UltraLight 2.0 Test Client image)
+	$(info - cygnus-develop:	Build Cygnus image from git develop branch)
 	$(info )
 	@echo ""
 
@@ -54,7 +55,9 @@ authzforce:
 pep-wilma:
 	docker build -t bitergia/pep-wilma:$(WILMA_VERSION) pep-wilma/$(WILMA_VERSION)/
 
-.PHONY: cygnus
+.PHONY: cygnus cygnus-develop
+cygnus-develop:
+	@$(MAKE) cygnus CYGNUS_VERSION=develop
 cygnus:
 	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
 
