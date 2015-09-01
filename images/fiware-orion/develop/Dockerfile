@@ -60,7 +60,7 @@ RUN yum -y install epel-release && \
     chown ${ORION_USER} /var/run/contextBroker && \
     cd /opt && \
     if [ ${CLEAN_DEV_TOOLS} -eq 0 ] ; then yum clean all && exit 0 ; fi && \
-    # cleanup sources, dev tools and yum cache to reduce the final image size
+    # cleanup sources, dev tools, locales and yum cache to reduce the final image size
     rm -rf /opt/legacy-1.0.2.tar.gz \
            /opt/mongo-cxx-driver-legacy-1.0.2 \
            /usr/local/include/mongo \
@@ -98,7 +98,12 @@ RUN yum -y install epel-release && \
         boost-program-options boost-math \
         openssh openssh-clients libedit \
         && \
-    yum clean all
+    yum clean all && \
+    bash -c 'find /usr/share/locale -maxdepth 1 -mindepth 1 -type d | grep -v -e "en_US" | xargs rm -rfv' && \
+    bash -c 'localedef --list-archive | grep -v -e "en_US" | xargs localedef --delete-from-archive' && \
+    mv -f /usr/lib/locale/locale-archive /usr/lib/locale/locale-archive.tmpl && \
+    build-locale-archive
+
 
 WORKDIR /
 
