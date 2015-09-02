@@ -65,31 +65,37 @@ function check_domain () {
 
     local _host=$1
     local _port=$2
+    local CURL=$( which curl )
+
+    if [ ! -e "${CURL}" ] ; then
+        echo "Unable to find 'curl' command."
+        exit 1
+    fi
 
     if [ -e /initialize-domain-request ] ; then
 
         # Creates the domain
 
-        curl -s \
-             --request POST \
-             --header "Content-Type: application/xml;charset=UTF-8" \
-             --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' \
-             --header "Accept: application/xml" \
-             --output /dev/null \
-             http://${_host}:${_port}/authzforce/domains
+        ${CURL} -s \
+                --request POST \
+                --header "Content-Type: application/xml;charset=UTF-8" \
+                --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' \
+                --header "Accept: application/xml" \
+                --output /dev/null \
+                http://${_host}:${_port}/authzforce/domains
 
-        DOMAIN=$( curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
-        echo "Domain has been created: $DOMAIN"
-        rm /initialize-domain-request
-        touch /config/domain-ready
+    fi
 
+    DOMAIN=$( ${CURL} -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
+    if [ -z "${DOMAIN}" ] ; then
+        echo "Unable to find domain."
+        exit 1
     else
-
-        # Retrieves the already created one
-
-        DOMAIN=$( curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
-        echo "Domain retrieved: $DOMAIN"
-
+        echo "Domain: $DOMAIN"
+        if [ -e /initialize-domain-request ] ; then
+            rm /initialize-domain-request
+            touch /config/domain-ready
+        fi
     fi
 }
 

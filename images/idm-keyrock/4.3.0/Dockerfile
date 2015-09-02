@@ -17,6 +17,7 @@ WORKDIR /opt/fi-ware-idm
 # install dependencies
 RUN apt-get update && \
     apt-get -y install --no-install-recommends\
+            curl \
             git \
             ca-certificates \
             bash-completion \
