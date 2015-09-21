@@ -68,6 +68,7 @@ COPY config.json /etc/iot/
 RUN chown ${IOTACPP_USER}:${IOTACPP_USER} /etc/iot/config.json
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ### Exposed ports

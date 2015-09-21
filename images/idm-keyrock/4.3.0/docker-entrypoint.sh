@@ -1,57 +1,8 @@
 #!/bin/bash
 
+source /entrypoint-common.sh
+
 declare DOMAIN=''
-
-# Function to check the availaibility of a host and its port
-
-function check_host_port () {
-
-    local _timeout=10
-    local _tries=0
-    local _is_open=0
-
-    if [ $# -lt 2 ] ; then
-        echo "check_host_port: missing parameters."
-        echo "Usage: check_host_port <host> <port> [max-tries]"
-        exit 1
-    fi
-
-    local _host=$1
-    local _port=$2
-    local _max_tries=${3:-${DEFAULT_MAX_TRIES}}
-    local NC=$( which nc )
-
-    if [ ! -e "${NC}" ] ; then
-        echo "Unable to find 'nc' command."
-        exit 1
-    fi
-
-    echo "Testing if port '${_port}' is open at host '${_host}'."
-
-    while [ ${_tries} -lt ${_max_tries} -a ${_is_open} -eq 0 ] ; do
-        echo -n "Checking connection to '${_host}:${_port}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
-        if ${NC} -z -w ${_timeout} ${_host} ${_port} ; then
-            echo "OK."
-            _is_open=1
-        else
-            sleep 1
-            _tries=$(( ${_tries} + 1 ))
-            if [ ${_tries} -lt ${_max_tries} ] ; then
-                echo "Retrying."
-            else
-                echo "Failed."
-            fi
-        fi
-    done
-
-    if [ ${_is_open} -eq 0 ] ; then
-        echo "Failed to connect to port '${_port}' on host '${_host}' after ${_tries} tries."
-        echo "Port is closed or host is unreachable."
-        exit 1
-    else
-        echo "Port '${_port}' at host '${_host}' is open."
-    fi
-}
 
 # Funtion that checks if the domain has been already created at Authzforce
 
@@ -99,45 +50,6 @@ function check_domain () {
     fi
 }
 
-# Function that checks if a file is available
-
-function check_file () {
-
-    local _tries=0
-    local _is_available=0
-
-    local _file=$1
-    local _max_tries=10
-    local ret=0
-
-    echo "Testing if file '${_file}' is available."
-
-    while [ ${_tries} -lt ${_max_tries} -a ${_is_available} -eq 0 ] ; do
-        echo -n "Checking file '${_file}' [try $(( ${_tries} + 1 ))/${_max_tries}] ... "
-        if [ -r ${_file} ] ; then
-            echo "OK."
-            _is_available=1
-        else
-            sleep 1
-            _tries=$(( ${_tries} + 1 ))
-            if [ ${_tries} -lt ${_max_tries} ] ; then
-                echo "Retrying."
-            else
-                echo "Failed."
-            fi
-        fi
-    done
-
-    if [ ${_is_available} -eq 0 ] ; then
-        echo "Failed to to retrieve '${_file}' after ${_tries} tries."
-        echo "File is unavailable."
-        ret=1
-    else
-        echo "File '${_file}' is available."
-    fi
-    return $ret
-}
-
 # Function to call a script that generates a JSON with the app information
 
 function _config_file () {
@@ -167,7 +79,7 @@ function _data_provision () {
 
         local FILE=default_provision
 
-        if check_file ${PROVISION_FILE} ; then
+        if check_file ${PROVISION_FILE} 10 ; then
             FILE=keystone_provision
             cp ${PROVISION_FILE} /opt/fi-ware-idm/deployment/keystone_provision.py
         else
@@ -219,19 +131,18 @@ function tail_logs () {
 
 if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
-    [ -z "${AUTHZFORCE_HOSTNAME}" ] && echo "AUTHZFORCE_HOSTNAME is undefined.  Using default value of 'authzforce'" && export AUTHZFORCE_HOSTNAME=authzforce
-    [ -z "${AUTHZFORCE_PORT}" ] && echo "AUTHZFORCE_PORT is undefined.  Using default value of '8080'" && export AUTHZFORCE_PORT=8080
-    [ -z "${IDM_KEYROCK_HOSTNAME}" ] && echo "IDM_KEYROCK_HOSTNAME is undefined.  Using default value of 'idm'" && export IDM_KEYROCK_HOSTNAME=idm
-    [ -z "${IDM_KEYROCK_PORT}" ] && echo "IDM_KEYROCK_PORT is undefined.  Using default value of '443'" && export IDM_KEYROCK_PORT=443
-    [ -z "${MAGIC_KEY}" ] && echo "MAGIC_KEY is undefined. Using default value of 'daf26216c5434a0a80f392ed9165b3b4'" && export MAGIC_KEY=daf26216c5434a0a80f392ed9165b3b4
-    [ -z "${WORKON_HOME}" ] && echo "WORKON_HOME is undefined.  Using default value of '/opt/virtualenvs'" && export WORKON_HOME=/opt/virtualenvs
-    [ -z "${APP_NAME}" ] && echo "APP_NAME is undefined.  Using default value of 'FIWAREdevGuide'" && export APP_NAME="FIWAREdevGuide"
-    [ -z "${KEYSTONE_DB}" ] && echo "KEYSTONE_DB is undefined.  Using default value of '/opt/fi-ware-idm/keystone/keystone.db'" && export KEYSTONE_DB=/opt/fi-ware-idm/keystone/keystone.db
-    [ -z "${CONFIG_FILE}" ] && echo "CONFIG_FILE is undefined.  Using default value of '/config/idm2chanchan.json'" && export CONFIG_FILE=/config/idm2chanchan.json
-    [ -z "${PROVISION_FILE}" ] && echo "PROVISION_FILE is undefined.  Using default value of '/config/keystone_provision.py'" && export PROVISION_FILE=/config/keystone_provision.py
-    [ -z "${DEFAULT_MAX_TRIES}" ] && echo "DEFAULT_MAX_TRIES is undefined.  Using default value of '60'" && export DEFAULT_MAX_TRIES=60
-    [ -z "${KEYSTONE_VERBOSE}" ] && echo "KEYSTONE_VERBOSE is undefined.  Using default value of 'no'" && export KEYSTONE_VERBOSE=no
-
+    check_var AUTHZFORCE_HOSTNAME authzforce
+    check_var AUTHZFORCE_PORT 8080
+    check_var IDM_KEYROCK_HOSTNAME idm
+    check_var IDM_KEYROCK_PORT 443
+    check_var MAGIC_KEY daf26216c5434a0a80f392ed9165b3b4
+    check_var WORKON_HOME /opt/virtualenvs
+    check_var APP_NAME "FIWAREdevGuide"
+    check_var KEYSTONE_DB /opt/fi-ware-idm/keystone/keystone.db
+    check_var CONFIG_FILE /config/idm2chanchan.json
+    check_var PROVISION_FILE /config/keystone_provision.py
+    check_var KEYSTONE_VERBOSE no
+    
     # fix variables when using docker-compose
     if [[ ${AUTHZFORCE_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
         export AUTHZFORCE_PORT=${BASH_REMATCH[1]}

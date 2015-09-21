@@ -54,6 +54,7 @@ RUN yum -y install git make cmake gcc-c++ scons libmicrohttpd-devel boost-devel 
 WORKDIR /
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ### Exposed ports

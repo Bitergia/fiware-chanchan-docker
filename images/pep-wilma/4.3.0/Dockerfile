@@ -50,7 +50,8 @@ RUN chmod 755 /usr/local/bin/auth-token.sh
 
 # Retrieve domain
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 RUN chmod 755 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

@@ -16,4 +16,5 @@ RUN curl -kOL https://forge.fiware.org/docman/view.php/49/5159/iot-agent-mqtt.tg
 COPY config.json /etc/iot/
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]

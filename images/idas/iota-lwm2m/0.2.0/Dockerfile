@@ -28,6 +28,7 @@ RUN apt-get update && \
     rm -rf /root/.npm /root/.node-gyp
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ### Exposed ports

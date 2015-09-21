@@ -28,4 +28,5 @@ COPY therm-sensors.sh /opt/scripts/
 COPY send-data.sh /opt/scripts/
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]

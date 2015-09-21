@@ -66,6 +66,7 @@ RUN yum -y install tar nc which git java-1.6.0-openjdk-devel && \
 
 COPY subscription-therm-sensors.sh ${SUBSCRIPTIONS_PATH}/
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ### Exposed ports

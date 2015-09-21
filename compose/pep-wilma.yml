@@ -17,7 +17,7 @@ orion:
     links:
         - mongodb
     expose:
-        - "10026"
+        - "1026"
 
 authzforce:
     image: bitergia/authzforce:4.2.0

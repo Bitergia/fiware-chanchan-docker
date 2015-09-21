@@ -69,6 +69,7 @@ RUN sed -i /etc/default/cygnus \
     update-rc.d cygnus defaults 90 90
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 RUN touch /subscribe-to-orion
 

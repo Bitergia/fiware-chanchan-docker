@@ -101,6 +101,7 @@ RUN yum -y install epel-release && \
 WORKDIR /
 
 COPY docker-entrypoint.sh /
+ADD https://raw.githubusercontent.com/Bitergia/docker/master/utils/entrypoint-common.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/bin/contextBroker"]
 
