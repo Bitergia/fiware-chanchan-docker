@@ -65,7 +65,7 @@ mariadb:
     command: --verbose
 
 cygnus:
-    image: bitergia/cygnus:develop
+    image: bitergia/cygnus:0.8.2
     links:
         - orion
         - mariadb
