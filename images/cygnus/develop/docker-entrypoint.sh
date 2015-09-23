@@ -25,13 +25,6 @@ else
         cp ${CYGNUS_HOME}/conf/agent.conf.template ${CONF_PATH}/cygnus.conf
         export CONF_FILE=${CONF_PATH}/cygnus.conf
 
-        check_var ORION_HOSTNAME orion
-        check_var ORION_PORT 1026
-
-        if [[ ${ORION_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
-            export ORION_PORT=${BASH_REMATCH[1]}
-        fi
-
 	check_var ENABLE_MYSQL yes
 
 	if [ "${ENABLE_MYSQL}" = "yes" ] ; then
@@ -66,6 +59,13 @@ else
     fi
 
     if [ -e /subscribe-to-orion ] ; then
+
+        check_var ORION_HOSTNAME orion
+        check_var ORION_PORT 1026
+
+        if [[ ${ORION_PORT} =~ ^tcp://[^:]+:(.*)$ ]] ; then
+            export ORION_PORT=${BASH_REMATCH[1]}
+        fi
 
         check_host_port ${ORION_HOSTNAME} ${ORION_PORT}
 
