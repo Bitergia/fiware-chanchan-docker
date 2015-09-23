@@ -44,12 +44,17 @@ else
 		-e "s/^cygnusagent.sinks.mysql-sink.attr_persistence = .*/cygnusagent.sinks.mysql-sink.attr_persistence = row/g"
 
 	    ENABLED_CHANNELS="${ENABLED_CHANNELS} mysql-channel"
+	    ENABLED_SINKS="${ENABLED_SINKS} mysql-sink"
 	fi
 
 	check_var ENABLED_CHANNELS
+	check_var ENABLED_SINKS
 	
 	sed -i ${CONF_FILE} \
-	    -e "s/^cygnusagent.sources.http-source.channels = .*/cygnusagent.sources.http-source.channels = ${ENABLED_CHANNELS}/g"
+	    -e "s/^cygnusagent.sources.http-source.channels = .*/cygnusagent.sources.http-source.channels = ${ENABLED_CHANNELS}/g" \
+	    -e "s/^cygnusagent.channels = .*/cygnusagent.channels = ${ENABLED_CHANNELS}/g" \
+	    -e "s/^cygnusagent.sinks = .*/cygnusagent.sinks = ${ENABLED_SINKS}/g"
+
     fi
 
     if [ "${1:0:1}" = '-' ]; then
