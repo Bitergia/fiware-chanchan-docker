@@ -44,7 +44,11 @@ RUN yum -y install tar nc which git java-1.6.0-openjdk-devel && \
     # make a shallow clone to help reduce final image size
     git clone --depth 1 ${GIT_URL_CYGNUS} ${CYGNUS_HOME} && \
     cd ${CYGNUS_HOME} && \
-    git checkout ${GIT_REV_CYGNUS} && \
+    git checkout ${GIT_REV_CYGNUS}
+
+RUN cd ${CYGNUS_HOME} && \
+    # fiware lab needs 0.20.2-cdh3u6 and it is hard to find (from cloudera)
+    sed -i pom.xml -e "s/0.20.2-cdh3u6/1.2.1/g" && \
     ${MVN_HOME}/bin/mvn clean compile exec:exec assembly:single && \
     cp target/cygnus-*-jar-with-dependencies.jar ${FLUME_HOME}/plugins.d/cygnus/lib/ && \
     cp target/classes/cygnus-flume-ng ${FLUME_HOME}/bin/ && \
