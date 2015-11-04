@@ -28,6 +28,8 @@ WORKDIR /opt
 
 RUN adduser --comment "${CYGNUS_USER}" ${CYGNUS_USER}
 
+ENV NEW_VERSION "true"
+
 RUN yum -y install tar nc which git java-1.6.0-openjdk-devel && \
     yum clean all && \
     curl --remote-name --location --insecure --silent --show-error "${MVN_URL}" && \
