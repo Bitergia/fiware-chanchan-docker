@@ -95,6 +95,8 @@ function _data_provision () {
         fab keystone.populate
         fab ${FILE}.test_data
         echo "Provision done."
+        # after keystone database generation, horizon Role ID must be fixed
+        echo Y | fab horizon.check
         _config_file
         _authzforce_sync
         rm /initialize-provision
