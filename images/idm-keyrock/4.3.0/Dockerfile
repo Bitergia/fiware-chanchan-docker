@@ -53,12 +53,12 @@ RUN apt-get update && \
     # install keystone
     bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
-    fab localhost keystone.install" && \
+    fab keystone.install" && \
     # install horizon
     bash -c "apt-get update && \
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
-    fab localhost horizon.install" && \
+    fab horizon.install" && \
     apt-get -y install --no-install-recommends apache2 libapache2-mod-wsgi ssl-cert && \
     mv /opt/idm.conf /etc/apache2/sites-available/idm.conf && \
     a2enmod wsgi ssl && \
