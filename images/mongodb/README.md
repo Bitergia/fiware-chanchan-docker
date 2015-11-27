@@ -1,3 +1,6 @@
+# Warning: This image has been deprecated and is no longer maintained. #
+Please use the official image available at https://hub.docker.com/_/mongo/
+
 ## MongoDB Docker image
 
 Dockerfile to build a [MongoDB](https://en.wikipedia.org/wiki/MongoDB) container image which can be linked to other containers.

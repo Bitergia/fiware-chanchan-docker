@@ -1,3 +1,6 @@
+# Warning: This image has been deprecated and is no longer maintained. #
+Please use the official image available at https://hub.docker.com/_/mariadb/
+
 ## MariaDB Docker image
 
 Dockerfile to build a [MariaDB](https://mariadb.org/en/about) container image which can be linked to other containers.
