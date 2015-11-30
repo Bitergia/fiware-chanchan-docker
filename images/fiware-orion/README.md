@@ -1,3 +1,6 @@
+# Warning: This image has been deprecated and is no longer maintained. #
+Please use the official image available at https://hub.docker.com/r/fiware/orion/
+
 ## Orion Context Broker Docker image ##
 
 The [Orion Context Broker](http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker) is an implementation of the Publish/Subscribe Context Broker GE, providing the NGSI9 and NGSI10 interfaces.

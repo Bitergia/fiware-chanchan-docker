@@ -10,7 +10,6 @@ All the images are already available at [Bitergia Docker Hub](https://registry.h
 
 * [Authzforce](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/authzforce)
 * [Cygnus](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/cygnus)
-* [Orion Context Broker](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/fiware-orion)
 * [Backend Device Management - IDAS](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idas)
 * [IDM KeyRock](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idm-keyrock)
 * [idmauthlegacy](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idmauthlegacy)
@@ -20,6 +19,7 @@ All the images are already available at [Bitergia Docker Hub](https://registry.h
 The following images are deprecated and no longer maintained.  Please, use the official ones.
 * [MariaDB](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/mariadb).  Official image available at https://hub.docker.com/_/mariadb/
 * [MongoDB](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/mongodb).  Official image available at https://hub.docker.com/_/mongo/
+* [Orion Context Broker](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/fiware-orion).  Official image available at https://hub.docker.com/r/fiware/orion/
 
 ### Docker Compose
 

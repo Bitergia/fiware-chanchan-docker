@@ -14,9 +14,12 @@ mongodb:
     command: --smallfiles
 
 orion:
-    image: bitergia/fiware-orion:develop
+    image: fiware/orion:latest
+    hostname: orion
     links:
         - mongodb
     expose:
         - "1026"
+    ports:
+        - "1026:1026"
     command: -dbhost mongodb

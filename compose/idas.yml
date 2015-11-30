@@ -14,12 +14,15 @@ mongodb:
     command: --smallfiles
 
 orion:
-    image: bitergia/fiware-orion:0.23.0
+    image: fiware/orion:latest
+    hostname: orion
     links:
         - mongodb
     expose:
         - "1026"
-    command: -fg
+    ports:
+        - "1026:1026"
+    command: -dbhost mongodb
 
 idasiotacpp:
     image: bitergia/idas-iota-cpp:1.2.0
