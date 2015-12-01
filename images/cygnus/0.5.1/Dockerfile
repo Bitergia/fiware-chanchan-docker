@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM bitergia/ubuntu-trusty:latest
-MAINTAINER Alvaro del Castillo <acs@bitergia.com>, David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 

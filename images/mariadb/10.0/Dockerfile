@@ -1,6 +1,6 @@
 FROM bitergia/ubuntu-trusty
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV MARIADB_VERSION 10.0

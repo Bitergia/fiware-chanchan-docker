@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV GIT_URL_FIGWAY https://github.com/telefonicaid/fiware-figway.git
 ENV GIT_REV_FIGWAY master

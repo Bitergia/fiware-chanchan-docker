@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM tomcat:7.0
-MAINTAINER Alberto Martín <alberto.martin@bitergia.com>, David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -1,6 +1,6 @@
 FROM centos:6
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV GIT_URL_IOTACPP https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus.git
 ENV GIT_REV_IOTACPP develop

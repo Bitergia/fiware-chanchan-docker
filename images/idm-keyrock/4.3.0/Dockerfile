@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM ubuntu:14.04
-MAINTAINER Alvaro del Castillo <acs@bitergia.com>, Alberto Martín <alberto.martin@bitergia.com>, David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV WORKON_HOME /opt/virtualenvs
 ENV KEYROCK_HOME /opt/fi-ware-idm

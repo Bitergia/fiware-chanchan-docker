@@ -1,6 +1,6 @@
 FROM centos:centos6
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>, Alberto Martín <alberto.martin@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV ORION_USER orion
 ENV GIT_REV_ORION_PROXYCOAP 749e22376664dd3adae17492090e58882d3b28a7

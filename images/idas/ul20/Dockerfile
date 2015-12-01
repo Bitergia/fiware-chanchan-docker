@@ -1,6 +1,6 @@
 FROM bitergia/centos-6
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 WORKDIR /root
 

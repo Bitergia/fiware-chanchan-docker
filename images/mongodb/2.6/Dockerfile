@@ -1,6 +1,6 @@
 FROM bitergia/centos-6
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ADD mongodb-org-2.6.repo /etc/yum.repos.d/
 

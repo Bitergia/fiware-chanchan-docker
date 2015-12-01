@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM centos:6
-MAINTAINER Alvaro del Castillo <acs@bitergia.com>, David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV CYGNUS_USER "cygnus"
 ENV CYGNUS_HOME "/opt/fiware-cygnus"

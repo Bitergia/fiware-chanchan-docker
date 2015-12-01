@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM bitergia/ubuntu-trusty:latest
-MAINTAINER Alvaro del Castillo <acs@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV GIT_REV_IDM=99c9591c8b547583946af08d2f4c77b1db6719fd
 ENV GIT_REV_KEYPASS=431ea3c83d0ebc8809391f136e2b00954f0c014b

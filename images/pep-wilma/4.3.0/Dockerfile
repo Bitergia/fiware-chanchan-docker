@@ -2,7 +2,7 @@
 # GPLv3 License
 
 FROM node:0.10-slim
-MAINTAINER Alberto Martín <alberto.martin@bitergia.com>, David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV WILMA_HOME /opt/fi-ware-pep-proxy
 ENV WILMA_USER pepproxy

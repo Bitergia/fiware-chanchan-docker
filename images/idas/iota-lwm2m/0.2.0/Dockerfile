@@ -1,6 +1,6 @@
 FROM node:0.10-slim
 
-MAINTAINER David Muriel <dmuriel@bitergia.com>
+MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV IOTA_PATH /opt/iotagent-lwm2m
 ENV IOTA_LOG_PATH /var/log/iotagent-lwm2m
