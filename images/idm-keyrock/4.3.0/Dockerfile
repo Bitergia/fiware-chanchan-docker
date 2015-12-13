@@ -11,7 +11,6 @@ RUN mkdir -p /opt/virtualenvs
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD no
 
-COPY idm.conf /opt/idm.conf
 WORKDIR /opt/fi-ware-idm
 
 # install dependencies
@@ -60,16 +59,18 @@ RUN apt-get update && \
     workon idm_tools && \
     fab horizon.install" && \
     apt-get -y install --no-install-recommends apache2 libapache2-mod-wsgi ssl-cert && \
-    mv /opt/idm.conf /etc/apache2/sites-available/idm.conf && \
+    apt-get clean && \
+    find /var/lib/apt/lists -type f -delete && \
+    rm -rf /root/.cache /root/.distlib
+    
+COPY idm.conf /opt/idm.conf
+RUN mv /opt/idm.conf /etc/apache2/sites-available/idm.conf && \
     a2enmod wsgi ssl && \
     a2dissite 000-default && \
     a2ensite idm && \
     chown www-data:www-data ${KEYROCK_HOME}/horizon/openstack_dashboard/local && \
     mkdir -p ${KEYROCK_HOME}/horizon/static && \
-    chown www-data:www-data ${KEYROCK_HOME}/horizon/static && \
-    apt-get clean && \
-    find /var/lib/apt/lists -type f -delete && \
-    rm -rf /root/.cache /root/.distlib
+    chown www-data:www-data ${KEYROCK_HOME}/horizon/static
 
 # Extract clientID and client-secret from database
 
