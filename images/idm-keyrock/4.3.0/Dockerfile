@@ -71,6 +71,9 @@ RUN apt-get update && \
     find /var/lib/apt/lists -type f -delete && \
     rm -rf /root/.cache /root/.distlib
 
+# use always https
+RUN sed -i 's/http:\/\//https:\/\//g' /opt/fi-ware-idm/horizon/openstack_dashboard/static/fiware/signOut.js
+
 # Extract clientID and client-secret from database
 
 COPY default_provision.py /opt/fi-ware-idm/deployment/default_provision.py
