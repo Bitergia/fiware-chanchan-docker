@@ -6,7 +6,7 @@ MAINTAINER Alvaro del Castillo <acs@bitergia.com>, Alberto Martín <alberto.mart
 
 ENV WORKON_HOME /opt/virtualenvs
 ENV KEYROCK_HOME /opt/fi-ware-idm
-ENV GIT_URL_KEYROCK https://github.com/ging/fi-ware-idm
+ENV GIT_URL_KEYROCK https://github.com/ging/fiware-idm
 RUN mkdir -p /opt/virtualenvs
 ENV DEBIAN_FRONTEND noninteractive
 ENV INITRD no
