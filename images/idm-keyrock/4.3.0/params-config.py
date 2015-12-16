@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pysqlite2 import dbapi2 as sqlite3
+from sqlite3 import dbapi2 as sqlite3
 import json, os, argparse
 
 parser = argparse.ArgumentParser(description='Script to retrieva values from the database')
