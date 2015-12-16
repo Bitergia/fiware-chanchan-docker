@@ -55,7 +55,6 @@ function check_domain () {
 function _config_file () {
 
     echo "Parsing App information into a JSON file"
-    source /opt/fi-ware-idm/keystone/.venv/bin/activate
     python /opt/fi-ware-idm/keystone/params-config.py --name ${APP_NAME} --file ${CONFIG_FILE} --database ${KEYSTONE_DB}
 }
 
