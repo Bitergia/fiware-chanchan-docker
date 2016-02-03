@@ -2,7 +2,7 @@ MONGO_VERSION = 2.6
 ORION_VERSION = 0.23.0
 MARIADB_VERSION = 10.0
 CYGNUS_VERSION = 0.5.1
-IDM_VERSION = 4.3.0
+IDM_VERSION = master
 WILMA_VERSION = 4.3.0
 AUTHZFORCE_VERSION = 4.2.0
 IDAS_LWM2M_VERSION = 0.2.0
@@ -17,7 +17,7 @@ help:
 	$(info Available options:)
 	$(info )
 	$(info - all:			Build all available images)
-	$(info - idm-keyrock:		Build Keyrock IdM image (based on the new Keyrock version))
+	$(info - idm-keyrock:		Build Keyrock IdM image (based on master version))
 	$(info - idas:			Build IDAS images)
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
@@ -42,6 +42,7 @@ help:
 	$(info - mongodb-3.0:		Build MongoDB 3.0 image)
 	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
+	$(info - idm-keyrock-4.3.0:	Build Keyrock IdM image (based on the new Keyrock version))
 	$(info )
 	@echo ""
 
@@ -84,7 +85,7 @@ clean_idm-keyrock:
 
 deprecation-warning:
 	$(warning )
-	$(warning This image has been deprecated an is no longer maintained.)
+	$(warning This image has been deprecated and is no longer maintained.)
 	$(warning Use the official image where available (see README.md).)
 	$(warning )
 ifneq ($(BUILD_DEPRECATED), yes)
@@ -131,3 +132,6 @@ orion-0.22.0.ubuntu:
 orion.ubuntu: deprecation-warning
 	docker build -t bitergia/fiware-orion:$(ORION_VERSION) -f fiware-orion/$(ORION_VERSION)/Dockerfile.$@ fiware-orion/$(ORION_VERSION)/
 
+.PHONY: idm-keyrock-4.3.0
+idm-keyrock-4.3.0: deprecation-warning
+	@$(MAKE) idm-keyrock IDM_VERSION=4.3.0
