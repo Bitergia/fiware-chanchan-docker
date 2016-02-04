@@ -46,7 +46,7 @@ RUN apt-get update && \
             && \
 
     # clone git repo
-    git clone ${GIT_URL_KEYROCK} ${KEYROCK_HOME} && \
+    git clone --depth 1 ${GIT_URL_KEYROCK} ${KEYROCK_HOME} && \
     cd ${KEYROCK_HOME} && \
     git checkout ${GIT_REV_KEYROCK} && \
     sed -e "/^        lrun('git checkout tags\/keyrock-{0}'.format(version))/d" \
@@ -61,13 +61,13 @@ RUN apt-get update && \
     pip install -r requirements.txt" && \
 
     # install keystone
-    git clone --branch ${GIT_REV_KEYSTONE} ${GIT_URL_KEYSTONE} ${KEYROCK_HOME}/keystone && \
+    git clone --depth 1 --branch ${GIT_REV_KEYSTONE} ${GIT_URL_KEYSTONE} ${KEYROCK_HOME}/keystone && \
     bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
     fab keystone.install" && \
 
     # install horizon
-    git clone --branch ${GIT_REV_HORIZON} ${GIT_URL_HORIZON} ${KEYROCK_HOME}/horizon && \
+    git clone --depth 1 --branch ${GIT_REV_HORIZON} ${GIT_URL_HORIZON} ${KEYROCK_HOME}/horizon && \
     bash -c "apt-get update && \
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && \
     workon idm_tools && \
