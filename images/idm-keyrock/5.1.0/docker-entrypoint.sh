@@ -77,12 +77,6 @@ function _data_provision () {
 
         local FILE=/config/default_provision.py
 
-        if check_file ${PROVISION_FILE} 10 ; then
-            FILE=${PROVISION_FILE}
-        else
-            echo "Launching default provision file"
-        fi
-
         echo "Creating Keystone database."
         pushd ${KEYROCK_HOME}/keystone
         source .venv/bin/activate
@@ -94,6 +88,13 @@ function _data_provision () {
         bin/keystone-manage -v db_sync --extension=endpoint_filter
         echo "Provisioning users, roles, and apps."
         (sleep 5 ; echo idm) | bin/keystone-manage -v db_sync --populate
+
+        if check_file ${PROVISION_FILE} 30 ; then
+            FILE=${PROVISION_FILE}
+        else
+            echo "Launching default provision file"
+        fi
+
         python ${FILE}
         echo "Provision done."
         _config_file
