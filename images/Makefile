@@ -18,6 +18,7 @@ help:
 	$(info )
 	$(info - all:			Build all available images)
 	$(info - idm-keyrock:		Build Keyrock IdM image (based on master version))
+	$(info - idm-keyrock-5.1.0:	Build Keyrock IdM image (based on release 5.1.0))
 	$(info - idas:			Build IDAS images)
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
@@ -49,6 +50,9 @@ help:
 .PHONY: idm-keyrock
 idm-keyrock:
 	docker build -t bitergia/idm-keyrock:$(IDM_VERSION) idm-keyrock/$(IDM_VERSION)/
+.PHONY: idm-keyrock-5.1.0
+idm-keyrock-5.1.0:
+	@$(MAKE) idm-keyrock IDM_VERSION=5.1.0
 
 .PHONY: authzforce
 authzforce:
