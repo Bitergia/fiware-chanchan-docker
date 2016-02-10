@@ -7,6 +7,7 @@ WILMA_VERSION = 4.3.0
 AUTHZFORCE_VERSION = 4.2.0
 IDAS_LWM2M_VERSION = 0.2.0
 IDAS_IOTACPP_VERSION = 1.2.0
+CEP_VERSION = master
 
 .PHONY: help
 help:
@@ -23,6 +24,7 @@ help:
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
+	$(info - cep-proton:		Build Proton CEP image (based on master version))
 	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
 	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
 	$(info )
@@ -57,6 +59,10 @@ idm-keyrock-5.1.0:
 .PHONY: authzforce
 authzforce:
 	docker build -t bitergia/authzforce:$(AUTHZFORCE_VERSION) authzforce/$(AUTHZFORCE_VERSION)/
+
+.PHONY: cep-proton
+cep-proton:
+	docker build -t bitergia/cep-proton:$(CEP_VERSION) cep-proton/$(CEP_VERSION)/
 
 .PHONY: pep-wilma
 pep-wilma:
