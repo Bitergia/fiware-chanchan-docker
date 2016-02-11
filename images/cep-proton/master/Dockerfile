@@ -39,3 +39,7 @@ ENV CATALINA_OPTS "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote
 ### Exposed ports
 # - App server
 EXPOSE 8080
+EXPOSE 8686
+# - Proton
+EXPOSE 3002
+EXPOSE 3302
