@@ -113,8 +113,6 @@ function _data_provision () {
 function start_keystone () {
     echo "Starting Keystone server."
     (
-        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-        workon idm_tools
         cd ${KEYROCK_HOME}/keystone/
         ./tools/with_venv.sh bin/keystone-all ${KEYSTONE_VERBOSE_LOG} >> /var/log/keystone.log 2>&1 &
         # wait for keystone to be ready
@@ -141,7 +139,6 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     check_var IDM_KEYROCK_HOSTNAME idm
     check_var IDM_KEYROCK_PORT 443
     check_var MAGIC_KEY daf26216c5434a0a80f392ed9165b3b4
-    check_var WORKON_HOME /opt/virtualenvs
     check_var APP_NAME "FIWAREdevGuide"
     check_var KEYSTONE_DB ${KEYROCK_HOME}/keystone/keystone.db
     check_var CONFIG_FILE /config/idm2chanchan.json
