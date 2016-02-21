@@ -3,7 +3,7 @@ FROM centos:6
 MAINTAINER Bitergia <fiware-testing@bitergia.com>
 
 ENV GIT_URL_IOTACPP https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus.git
-ENV GIT_REV_IOTACPP develop
+ENV GIT_REV_IOTACPP 1.2.1
 ENV GIT_PATH_IOTACPP /opt/iotacpp
 ENV IOTACPP_BUILD_TYPE Release
 ENV IOTACPP_USER iotagent
@@ -17,6 +17,7 @@ RUN yum -y install tar gzip unzip file nc which \
                    rpm-build && \
     git clone ${GIT_URL_IOTACPP} ${GIT_PATH_IOTACPP} && \
     cd ${GIT_PATH_IOTACPP} && \
+    git checkout ${GIT_REV_IOTACPP} && \
     # Disable tests before compiling and fix mongo-cxx-driver git url
     sed -i CMakeLists.txt \
         -e 's|^add_test|#add_test|g' \
