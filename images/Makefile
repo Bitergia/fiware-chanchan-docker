@@ -23,7 +23,6 @@ help:
 	$(info - idas:			Build IDAS images)
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
-	$(info - authzforce:		Build Authzforce image (based on the GE version))
 	$(info - cep-proton:		Build Proton CEP image (based on master version))
 	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
 	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
@@ -46,6 +45,7 @@ help:
 	$(info - mariadb-5.5:		Build MariaDB 5.5 image)
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
 	$(info - idm-keyrock-4.3.0:	Build Keyrock IdM image (based on the new Keyrock version))
+	$(info - authzforce:		Build Authzforce image (based on the GE version))
 	$(info )
 	@echo ""
 
@@ -55,10 +55,6 @@ idm-keyrock:
 .PHONY: idm-keyrock-5.1.0
 idm-keyrock-5.1.0:
 	@$(MAKE) idm-keyrock IDM_VERSION=5.1.0
-
-.PHONY: authzforce
-authzforce:
-	docker build -t bitergia/authzforce:$(AUTHZFORCE_VERSION) authzforce/$(AUTHZFORCE_VERSION)/
 
 .PHONY: cep-proton
 cep-proton:
@@ -145,3 +141,8 @@ orion.ubuntu: deprecation-warning
 .PHONY: idm-keyrock-4.3.0
 idm-keyrock-4.3.0: deprecation-warning
 	@$(MAKE) idm-keyrock IDM_VERSION=4.3.0
+
+.PHONY: authzforce
+authzforce: deprecation-warning
+	docker build -t bitergia/authzforce:$(AUTHZFORCE_VERSION) authzforce/$(AUTHZFORCE_VERSION)/
+

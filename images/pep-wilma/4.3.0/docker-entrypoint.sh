@@ -17,7 +17,7 @@ function get_domain () {
 
     # Request to Authzforce to retrieve Domain
 
-    DOMAIN=$( curl -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
+    DOMAIN=$( curl -s --request GET http://${_host}:${_port}/${AUTHZFORCE_BASE_PATH}/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
     echo "Domain retrieved: $DOMAIN"
 
 }
@@ -43,6 +43,15 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
     check_var AUTHZFORCE_HOSTNAME authzforce
     check_var AUTHZFORCE_PORT 8080
+    check_var AUTHZFORCE_VERSION 4.2.0
+    case "${AUTHZFORCE_VERSION}" in
+        "4.2.0")
+            check_var AUTHZFORCE_BASE_PATH authzforce
+            ;;
+        *)
+            check_var AUTHZFORCE_BASE_PATH authzforce-ce
+            ;;
+    esac
     check_var IDM_KEYSTONE_HOSTNAME idm
     check_var IDM_KEYSTONE_PORT 5000
     check_var APP_HOSTNAME orion

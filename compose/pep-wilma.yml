@@ -27,13 +27,15 @@ orion:
     command: -dbhost mongodb
 
 authzforce:
-    image: bitergia/authzforce:4.2.0
+    image: fiware/authzforce:4.4.0
     hostname: authzforce
     expose:
         - "8080"
+    # remove predefined domains before starting tomcat
+    command: bash -c "rm -rfv /opt/authzforce-ce-server/data/domains/* ; exec catalina.sh run"
 
 idm:
-    image: bitergia/idm-keyrock:4.3.0
+    image: bitergia/idm-keyrock:5.1.0
     hostname: idm
     links:
         - authzforce

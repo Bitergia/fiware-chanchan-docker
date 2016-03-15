@@ -27,17 +27,29 @@ function check_domain () {
 
         # Creates the domain
 
+        payload_440='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:domainProperties xmlns:ns4="http://authzforce.github.io/rest-api-model/xmlns/authz/4" externalId="external0"><description>This is my domain</description></ns4:domainProperties>'
+        payload_420='<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>'
+
+        case "${AUTHZFORCE_VERSION}" in
+            "4.2.0")
+                payload="${payload_420}"
+                ;;
+            *)
+                payload="${payload_440}"
+                ;;
+        esac
+
         ${CURL} -s \
                 --request POST \
                 --header "Content-Type: application/xml;charset=UTF-8" \
-                --data '<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>MyDomain</name><description>This is my domain.</description></taz:properties>' \
+                --data "$payload" \
                 --header "Accept: application/xml" \
                 --output /dev/null \
-                http://${_host}:${_port}/authzforce/domains
+                http://${_host}:${_port}/${AUTHZFORCE_BASE_PATH}/domains
 
     fi
 
-    DOMAIN=$( ${CURL} -s --request GET http://${_host}:${_port}/authzforce/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
+    DOMAIN=$( ${CURL} -s --request GET http://${_host}:${_port}/${AUTHZFORCE_BASE_PATH}/domains | awk '/href/{print $NF}' | cut -d '"' -f2 )
     if [ -z "${DOMAIN}" ] ; then
         echo "Unable to find domain."
         exit 1
@@ -136,6 +148,15 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     check_var KEYROCK_HOME /opt/fiware-idm
     check_var AUTHZFORCE_HOSTNAME authzforce
     check_var AUTHZFORCE_PORT 8080
+    check_var AUTHZFORCE_VERSION 4.2.0
+    case "${AUTHZFORCE_VERSION}" in
+        "4.2.0")
+            check_var AUTHZFORCE_BASE_PATH authzforce
+            ;;
+        *)
+            check_var AUTHZFORCE_BASE_PATH authzforce-ce
+            ;;
+    esac
     check_var IDM_KEYROCK_HOSTNAME idm
     check_var IDM_KEYROCK_PORT 443
     check_var MAGIC_KEY daf26216c5434a0a80f392ed9165b3b4
@@ -167,7 +188,7 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
 
     # Parse the value into the IdM settings
 
-    sed -e "s@^ACCESS_CONTROL_URL = None@ACCESS_CONTROL_URL = 'http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/authzforce/domains/${DOMAIN}/pap/policySet'@" -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py
+    sed -e "s@^ACCESS_CONTROL_URL = None@ACCESS_CONTROL_URL = 'http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/${AUTHZFORCE_BASE_PATH}/domains/${DOMAIN}/pap/policySet'@" -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py
     sed -e "s@^ACCESS_CONTROL_MAGIC_KEY = None@ACCESS_CONTROL_MAGIC_KEY = '${MAGIC_KEY}'@" -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py
 
     # Parse value into apache configuration
