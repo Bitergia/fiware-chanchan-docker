@@ -12,6 +12,7 @@ All the images are already available at [Bitergia Docker Hub](https://registry.h
 * [Backend Device Management - IDAS](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idas)
 * [IDM KeyRock](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/idm-keyrock)
 * [PEP Proxy - Wilma](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/pep-wilma)
+* [CEP](https://github.com/Bitergia/fiware-chanchan-docker/tree/master/images/cep-proton)
 
 #### Deprecated images
 The following images are deprecated and no longer maintained.  Please, use the official ones where available.
