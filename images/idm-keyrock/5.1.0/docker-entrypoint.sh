@@ -76,6 +76,8 @@ function _authzforce_sync () {
 
     echo "Syncing with Authzforce."
     pushd ${KEYROCK_HOME}/horizon/
+    sed -i openstack_dashboard/fiware_api/access_control_ge.py \
+        -e 's/requests.put/requests.post/'
     tools/with_venv.sh python access_control_xacml.py
     popd
     echo "Authzforce sucessfully parsed."
@@ -182,14 +184,24 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     check_host_port ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
     check_domain ${AUTHZFORCE_HOSTNAME} ${AUTHZFORCE_PORT}
 
+    case "${AUTHZFORCE_VERSION}" in
+        "4.2.0")
+            ACCESS_CONTROL_URL="http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/${AUTHZFORCE_BASE_PATH}/domains/${DOMAIN}/pap/policySet"
+            ;;
+        *)
+            ACCESS_CONTROL_URL="http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/${AUTHZFORCE_BASE_PATH}/domains/${DOMAIN}/pap/policies"
+            ;;
+    esac
+
     start_keystone
 
     tail_logs & _waitpid=$!
 
     # Parse the value into the IdM settings
 
-    sed -e "s@^ACCESS_CONTROL_URL = None@ACCESS_CONTROL_URL = 'http://${AUTHZFORCE_HOSTNAME}:${AUTHZFORCE_PORT}/${AUTHZFORCE_BASE_PATH}/domains/${DOMAIN}/pap/policySet'@" -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py
-    sed -e "s@^ACCESS_CONTROL_MAGIC_KEY = None@ACCESS_CONTROL_MAGIC_KEY = '${MAGIC_KEY}'@" -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py
+    sed  -i ${KEYROCK_HOME}/horizon/openstack_dashboard/local/local_settings.py \
+         -e "s|^ACCESS_CONTROL_URL = None|ACCESS_CONTROL_URL = '${ACCESS_CONTROL_URL}'|" \
+         -e "s|^ACCESS_CONTROL_MAGIC_KEY = None|ACCESS_CONTROL_MAGIC_KEY = '${MAGIC_KEY}'|"
 
     # Parse value into apache configuration
 
