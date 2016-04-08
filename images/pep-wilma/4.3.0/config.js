@@ -34,7 +34,7 @@ config.azf = {
     enabled: true,
     host: 'AUTHZFORCE_HOSTNAME',
     port: AUTHZFORCE_PORT,
-    path: '/authzforce/domains/DOMAIN/pdp'
+    path: '/AUTHZFORCE_BASE_PATH/domains/DOMAIN/pdp'
 };
 
 // options: oauth2/keystone

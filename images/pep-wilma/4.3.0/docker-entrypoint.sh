@@ -94,6 +94,7 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
         -e "s|PEP_PASSWORD|${PEP_PASSWORD}|g" \
         -e "s|AUTHZFORCE_HOSTNAME|${AUTHZFORCE_HOSTNAME}|g" \
         -e "s|AUTHZFORCE_PORT|${AUTHZFORCE_PORT}|g" \
+        -e "s|AUTHZFORCE_BASE_PATH|${AUTHZFORCE_BASE_PATH}|g" \
         -e "s|DOMAIN|${DOMAIN}|g" \
         -e "s|MAGIC_KEY|${MAGIC_KEY}|g"
 
