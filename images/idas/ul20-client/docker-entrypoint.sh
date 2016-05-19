@@ -132,6 +132,9 @@ s|host_id=.*|host_id=${UL20_HOST_ID}|g
 }
 EOF
 
+    # fix content-type when sending measureme
+    sed -i ${IDAS_SCRIPTS_PATH}/SendObservation.py -e 's|application/json|text/plain|g'
+
     register_service ${UL20_SERVICE_NAME} ${UL20_API_KEY} ${ORION_HOSTNAME} ${ORION_PORT}
 
     exec bash -c "/opt/scripts/therm-sensors.sh $* | /opt/scripts/send-data.sh"
