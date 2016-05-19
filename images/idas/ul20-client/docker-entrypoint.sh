@@ -100,7 +100,7 @@ if [ $# -eq 0 -o "${1:0:1}" = '-' ] ; then
     check_var UL20_HOST_ID ${HOSTNAME}
 
     check_host_port ${ORION_HOSTNAME} ${ORION_PORT}
-    check_host_port ${IOTA_HOSTNAME} ${IOTA_PORT}
+    check_host_port ${UL20_IOTA_HOST} ${UL20_IOTA_PORT}
 
     cat <<EOF | sed -i ${FIGWAY_CONFIG_FILE} -f -
 /\[user\]/,/\[contextbroker\]/ {
