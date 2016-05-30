@@ -24,8 +24,6 @@ help:
 	$(info - pep-wilma:		Build PEP Wilma Proxy image)
 	$(info - cygnus:		Build Cygnus image)
 	$(info - cep-proton:		Build Proton CEP image (based on master version))
-	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
-	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
 	$(info )
 	$(info Other available options:)
 	$(info - ul20-client:		Build IDAS UltraLight 2.0 Test Client image)
@@ -46,6 +44,8 @@ help:
 	$(info - mariadb-10.0:		Build MariaDB 10.0 image)
 	$(info - idm-keyrock-4.3.0:	Build Keyrock IdM image (based on the new Keyrock version))
 	$(info - authzforce:		Build Authzforce image (based on the GE version))
+	$(info - idas-iota-cpp:	Build IDAS IoTAgent CPlusPlus image (Ultralight 2.0, MQTT, TT))
+	$(info - idas-iota-lwm2m:	Build IDAS OMA Lightweight M2M IoTAgent image)
 	$(info )
 	@echo ""
 
@@ -70,15 +70,9 @@ cygnus-develop:
 cygnus:
 	docker build -t bitergia/cygnus:$(CYGNUS_VERSION) cygnus/$(CYGNUS_VERSION)/
 
-.PHONY: idas idas-iota-lwm2m idas-iota-cpp ul20-client
-idas: idas-iota-lwm2m idas-iota-cpp
+.PHONY: ul20-client
 ul20-client:
 	docker build -t bitergia/ul20-client idas/ul20-client
-idas-iota-lwm2m:
-	docker build -t bitergia/idas-iota-lwm2m:$(IDAS_LWM2M_VERSION) idas/iota-lwm2m/$(IDAS_LWM2M_VERSION)/
-
-idas-iota-cpp:
-	docker build -t bitergia/idas-iota-cpp:$(IDAS_IOTACPP_VERSION) idas/iota-cpp/$(IDAS_IOTACPP_VERSION)/
 
 .PHONY: all
 all: idm-keyrock authzforce pep-wilma cygnus idas
@@ -145,4 +139,12 @@ idm-keyrock-4.3.0: deprecation-warning
 .PHONY: authzforce
 authzforce: deprecation-warning
 	docker build -t bitergia/authzforce:$(AUTHZFORCE_VERSION) authzforce/$(AUTHZFORCE_VERSION)/
+
+.PHONY: idas idas-iota-lwm2m idas-iota-cpp
+idas: idas-iota-lwm2m idas-iota-cpp
+idas-iota-lwm2m: deprecation-warning
+	docker build -t bitergia/idas-iota-lwm2m:$(IDAS_LWM2M_VERSION) idas/iota-lwm2m/$(IDAS_LWM2M_VERSION)/
+
+idas-iota-cpp: deprecation-warning
+	docker build -t bitergia/idas-iota-cpp:$(IDAS_IOTACPP_VERSION) idas/iota-cpp/$(IDAS_IOTACPP_VERSION)/
 

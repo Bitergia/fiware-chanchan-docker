@@ -1,3 +1,6 @@
+# Warning: This image has been deprecated and is no longer maintained. #
+Please use the official image available at https://hub.docker.com/r/fiware/iotagent-ul
+
 ## Backend Device Management - IDAS Docker image
 
 The [Backend Device Management](http://catalogue.fiware.org/enablers/backend-device-management-idas) is an implementation of the Backend Device Management GE. 
