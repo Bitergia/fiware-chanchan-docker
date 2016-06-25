@@ -72,6 +72,9 @@ RUN mv /opt/idm.conf /etc/apache2/sites-available/idm.conf && \
     mkdir -p ${KEYROCK_HOME}/horizon/static && \
     chown www-data:www-data ${KEYROCK_HOME}/horizon/static
 
+# use always https
+RUN sed -i 's/http:\/\//https:\/\//g' /opt/fi-ware-idm/horizon/openstack_dashboard/static/fiware/signOut.js
+
 # Extract clientID and client-secret from database
 
 COPY default_provision.py /opt/fi-ware-idm/deployment/default_provision.py
